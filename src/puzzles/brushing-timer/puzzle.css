@@ -1,0 +1,76 @@
+.brush-root {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.brush-sign {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.brush-zone-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+}
+
+.brush-zone {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--corner-radius);
+  border: 2px solid var(--color-line);
+  background: var(--color-bg-deep);
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 700;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.brush-zone.on {
+  border-color: var(--color-success);
+  background: color-mix(in srgb, var(--color-success) 30%, var(--color-bg-deep));
+  color: var(--color-success);
+}
+
+.brush-state {
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+  min-height: 1.4rem;
+}
+
+.brush-state[data-level="low"] {
+  color: var(--color-hologram);
+}
+
+.brush-state[data-level="good"] {
+  color: var(--color-success);
+}
+
+.brush-state[data-level="high"] {
+  color: var(--color-danger);
+}
+
+.brush-confirm-btn {
+  min-height: 52px;
+  min-width: 120px;
+  padding: 0.5rem 1.4rem;
+  border-radius: var(--corner-radius);
+  border: 2px solid var(--color-success);
+  background: color-mix(in srgb, var(--color-success) 16%, transparent);
+  color: var(--color-success);
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.brush-done {
+  text-align: center;
+  font-weight: 800;
+  color: var(--color-success);
+}

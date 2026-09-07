@@ -1,0 +1,40 @@
+{
+  "id": "toilet-paper-pull",
+  "title": "화장실 휴지 — 접어서 서너 번",
+  "act": 1,
+  "concept": "적당한 길이 판단 — 당겨서 쓰는 길이",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "몸과 주변을 깨끗이 하기",
+    "성취기준": "근거 문항 HY-005(imankeum) — 화장실 휴지를 알맞은 길이만큼 뽑아 사용한다"
+  },
+  "narrative": {
+    "intro": "story.md#hy-paper-intro",
+    "clear": "story.md#hy-paper-clear",
+    "extra": {
+      "toolow": "story.md#hy-paper-toolow",
+      "toohigh": "story.md#hy-paper-toohigh"
+    },
+    "notes": ["note-04"]
+  },
+  "trigger": {
+    "map": "hygiene-room",
+    "objectId": "toilet-paper-pull"
+  },
+  "reward": {
+    "event": "code:paper-solved"
+  },
+  "testIds": {
+    "root": "puzzle-paper",
+    "solveCheck": "paper-done"
+  },
+  "principle": [
+    "휴지는 짧으면 손에 묻고, 너무 길면 바닥에 끌리고 잘 안 끊긴다.",
+    "손바닥 위에 서너 번 접어 올릴 수 있는 길이가 쓰기에도, 아끼기에도 좋다."
+  ],
+  "hints": [
+    "한 번에 너무 긴 휴지가 나오지 않게 해봐요.",
+    "손바닥 위에 접어 올릴 수 있는 길이를 생각해봐요.",
+    "지금보다 한 단계만 줄이거나 늘려 보세요."
+  ]
+}

@@ -51,6 +51,14 @@ export async function enterRoom(page: Page, character: "m" | "f" = "m", path = "
   await dismissDialogues(page);
 }
 
+/** 「깨끗한 방」(hygiene-room)으로 진입. 지금은 첫 방이므로 enterRoom이 곧 이 방이다. */
+export async function enterHygieneRoom(page: Page, character: "m" | "f" = "m"): Promise<void> {
+  await enterRoom(page, character, "/?grid");
+  await expect
+    .poll(() => page.evaluate(() => (window as never as { __qe: { map: string } }).__qe.map))
+    .toBe("hygiene-room");
+}
+
 /** 타이틀 → '이어하기'로 마지막 방에 재개 (프롤로그 생략) */
 export async function continueGame(page: Page): Promise<void> {
   await page.goto("/");
