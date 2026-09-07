@@ -1,0 +1,100 @@
+.tooth-root {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.tooth-sign {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.tooth-svg {
+  width: 100%;
+  max-width: 320px;
+  align-self: center;
+  aspect-ratio: 1 / 1;
+}
+
+.tooth-brush {
+  fill: var(--color-screen-bright, #e1e9f6);
+  stroke: var(--color-line);
+  stroke-width: 2.5;
+}
+
+.tooth-handle {
+  fill: color-mix(in srgb, var(--color-hologram) 25%, transparent);
+  stroke: var(--color-line);
+  stroke-width: 2.5;
+}
+
+.tooth-blob {
+  fill: var(--color-success);
+  stroke: var(--color-line);
+  stroke-width: 2.5;
+  transition: opacity 0.15s ease;
+}
+
+.tooth-button-row {
+  display: flex;
+  gap: 0.7rem;
+  justify-content: center;
+}
+
+.tooth-btn {
+  min-height: 52px;
+  min-width: 96px;
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--corner-radius);
+  border: 2px solid var(--color-line);
+  background: var(--color-bg-deep);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tooth-btn-squeeze {
+  border-color: var(--color-hologram);
+  background: color-mix(in srgb, var(--color-hologram) 18%, var(--color-bg-deep));
+}
+
+.tooth-state {
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+  min-height: 1.4rem;
+}
+
+.tooth-state[data-level="low"] {
+  color: var(--color-hologram);
+}
+
+.tooth-state[data-level="good"] {
+  color: var(--color-success);
+}
+
+.tooth-state[data-level="high"] {
+  color: var(--color-danger);
+}
+
+.tooth-confirm-btn {
+  min-height: 44px;
+  padding: 0.4rem 1.3rem;
+  border-radius: var(--corner-radius);
+  border: 1px solid var(--color-success);
+  background: color-mix(in srgb, var(--color-success) 16%, transparent);
+  color: var(--color-success);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tooth-done {
+  text-align: center;
+  font-weight: 800;
+  color: var(--color-success);
+}

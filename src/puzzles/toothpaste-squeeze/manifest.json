@@ -1,0 +1,40 @@
+{
+  "id": "toothpaste-squeeze",
+  "title": "치약 짜기 — 완두콩 한 알만큼",
+  "act": 1,
+  "concept": "적당한 양 판단 — 짜서 쓰는 양",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "몸과 주변을 깨끗이 하기",
+    "성취기준": "근거 문항 HY-001(imankeum) — 이를 닦을 때 치약을 알맞은 양만큼 짜서 사용한다"
+  },
+  "narrative": {
+    "intro": "story.md#hy-tooth-intro",
+    "clear": "story.md#hy-tooth-clear",
+    "extra": {
+      "toolow": "story.md#hy-tooth-toolow",
+      "toohigh": "story.md#hy-tooth-toohigh"
+    },
+    "notes": ["note-01"]
+  },
+  "trigger": {
+    "map": "hygiene-room",
+    "objectId": "toothpaste-squeeze"
+  },
+  "reward": {
+    "event": "code:tooth-solved"
+  },
+  "testIds": {
+    "root": "puzzle-tooth",
+    "solveCheck": "tooth-done"
+  },
+  "principle": [
+    "치약은 많이 쓸수록 좋은 게 아니다 — 완두콩 한 알만큼이면 거품이 이 사이사이까지 골고루 퍼진다.",
+    "너무 적으면 거품이 잘 안 나서 잘 안 닦이고, 너무 많으면 거품이 넘치고 치약도 빨리 떨어진다."
+  ],
+  "hints": [
+    "칫솔 위가 치약으로 가득 덮이지 않게 해봐요.",
+    "완두콩 한 알 크기를 떠올려 보세요.",
+    "지금보다 한 단계만 줄이거나 늘려 보세요."
+  ]
+}

@@ -4,21 +4,9 @@
  * 그 오브젝트는 `interactAnchor` 대사만 띄운다.
  */
 import type { PuzzleModule } from "./engine/puzzle-host/types";
-import { pendulumDynamo } from "./puzzles/pendulum-dynamo/puzzle";
-import { wallSounding } from "./puzzles/wall-sounding/puzzle";
-import { silentNode } from "./puzzles/silent-node/puzzle";
-import { monochord } from "./puzzles/monochord/puzzle";
-import { sonicConsole } from "./puzzles/sonic-console/puzzle";
+import { toothpasteSqueeze } from "./puzzles/toothpaste-squeeze/puzzle";
 
-// 배열 순서 = 저널의 원리 카드 나열 순서. 관례상 코드 조각 순서와 맞추고 콘솔을 마지막에 둔다.
-// (여기선 멜로디 음 순서 — 도·미·라·솔)
-export const puzzles: PuzzleModule[] = [
-  pendulumDynamo,
-  wallSounding,
-  silentNode,
-  monochord,
-  sonicConsole,
-];
+export const puzzles: PuzzleModule[] = [toothpasteSqueeze];
 
 export function findPuzzle(id: string): PuzzleModule | undefined {
   return puzzles.find((p) => p.manifest.id === id);

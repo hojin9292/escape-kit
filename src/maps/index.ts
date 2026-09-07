@@ -1,12 +1,12 @@
 import type { GameMap } from "./types";
-import { sonicRoom } from "./sonic-room";
+import { hygieneRoom } from "./hygiene-room";
 
 export const maps: Record<string, GameMap> = {
-  [sonicRoom.id]: sonicRoom,
+  [hygieneRoom.id]: hygieneRoom,
 };
 
 /** 프롤로그 다음에 들어서는 첫 방. 이어하기 저장이 없을 때의 시작 지점이기도 하다. */
-export const FIRST_ROOM = sonicRoom;
+export const FIRST_ROOM = hygieneRoom;
 
 /**
  * 방 사슬 — 순서대로 진행되며, 각 방의 unlockEvent가 발화되면 다음 방의 문이 열린다.
@@ -18,5 +18,5 @@ export const FIRST_ROOM = sonicRoom;
  * 마지막 방의 출구는 `door: { ending: true }`로 엔딩을 담당한다.
  */
 export const ROOM_CHAIN: { id: string; unlockEvent: string }[] = [
-  { id: sonicRoom.id, unlockEvent: "door:sonic-open" },
+  { id: hygieneRoom.id, unlockEvent: "door:hygiene-open" },
 ];

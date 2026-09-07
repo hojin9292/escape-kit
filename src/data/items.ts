@@ -16,12 +16,4 @@ export interface ItemDef {
   anchor: string;
 }
 
-export const ITEMS: Record<string, ItemDef> = {
-  // P2(벽 노크)가 벽감에서 내주는 릴 테이프 — 최종 콘솔의 아이템 게이트 열쇠
-  "reel-tape": {
-    id: "reel-tape",
-    name: "릴 테이프",
-    emoji: "📼",
-    anchor: "#item-reel-tape",
-  },
-};
+export const ITEMS: Record<string, ItemDef> = {};
