@@ -189,3 +189,4 @@ hygiene-room과 같은 뼈대로 2번 방을 만들고, hygiene-room의 출구�
   칫솔모 중앙을 기준으로만 커지게 바꿨다.
 - 자홍 배경의 5칸 생성 아트를 반복 가공할 수 있도록
   `scripts/split-magenta-atlas.py`와 `scripts/import-hojinti.py`를 추가했다.
+- 타이틀의 문의하기 버튼과 폼을 제거하고, 수정자와 원작자 크레딧을 두 줄로 명시했다.

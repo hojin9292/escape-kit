@@ -16,8 +16,6 @@ import {
   START_LABEL,
   CHAR_SELECT_LABEL,
   CREDIT,
-  CONTACT_EMAIL,
-  CONTACT_CATEGORIES,
 } from "./config";
 
 const BASE = import.meta.env.BASE_URL;
@@ -33,106 +31,6 @@ function applyTokens(): void {
   root.setProperty("--corner-radius", `${tokens["corner-radius"]}px`);
   root.setProperty("--font-family", tokens.font.family);
   root.setProperty("--font-holo-letter-spacing", tokens.font["holo-letter-spacing"]);
-}
-
-/** 문의하기 — Netlify Forms 제출, 실패 시(로컬 실행 등) 메일 앱 폴백 */
-function showContactForm(app: HTMLElement): void {
-  const overlay = document.createElement("div");
-  overlay.className = "contact-overlay";
-  overlay.dataset.testid = "contact-overlay";
-
-  const panel = document.createElement("form");
-  panel.className = "contact-panel";
-
-  const title = document.createElement("div");
-  title.className = "contact-title";
-  title.textContent = "문의하기";
-
-  const fieldset = document.createElement("fieldset");
-  fieldset.className = "contact-categories";
-  for (const [i, label] of CONTACT_CATEGORIES.entries()) {
-    const wrap = document.createElement("label");
-    wrap.className = "contact-radio";
-    const radio = document.createElement("input");
-    radio.type = "radio";
-    radio.name = "category";
-    radio.value = label;
-    radio.checked = i === 0;
-    wrap.append(radio, document.createTextNode(label));
-    fieldset.appendChild(wrap);
-  }
-
-  const textarea = document.createElement("textarea");
-  textarea.className = "contact-textarea";
-  textarea.name = "message";
-  textarea.dataset.testid = "contact-message";
-  textarea.placeholder = "내용을 적어 주세요. 버그라면 어느 장치에서 무슨 일이 있었는지 알려 주시면 큰 도움이 됩니다.";
-  textarea.rows = 5;
-
-  const status = document.createElement("div");
-  status.className = "contact-status";
-  status.dataset.testid = "contact-status";
-
-  const actions = document.createElement("div");
-  actions.className = "contact-actions";
-  const cancel = document.createElement("button");
-  cancel.type = "button";
-  cancel.className = "title-start contact-btn";
-  cancel.dataset.testid = "contact-close";
-  cancel.textContent = "닫기";
-  const send = document.createElement("button");
-  send.type = "submit";
-  send.className = "title-start contact-btn";
-  send.dataset.testid = "contact-submit";
-  send.textContent = "제출";
-  actions.append(cancel, send);
-
-  const close = () => {
-    document.removeEventListener("keydown", onKey);
-    overlay.remove();
-  };
-  const onKey = (e: KeyboardEvent) => {
-    if (e.key === "Escape") close();
-  };
-  document.addEventListener("keydown", onKey);
-  cancel.addEventListener("click", close);
-
-  panel.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const checked = panel.querySelector<HTMLInputElement>('input[name="category"]:checked');
-    const category = checked?.value ?? CONTACT_CATEGORIES[0];
-    const message = textarea.value.trim();
-    if (!message) {
-      status.textContent = "내용을 입력해 주세요.";
-      return;
-    }
-    send.disabled = true;
-    status.textContent = "보내는 중…";
-    void fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ "form-name": "contact", category, message }).toString(),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        Sfx.confirm();
-        status.textContent = "전송 완료! 소중한 의견 감사합니다.";
-        setTimeout(close, 1500);
-      })
-      .catch(() => {
-        // 로컬 실행·폼 미설정 등 — 기기의 메일 앱으로 폴백
-        const subject = encodeURIComponent(`[${TITLE_SUB}] ${category}`);
-        const body = encodeURIComponent(message);
-        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-        status.textContent = "전송 서버에 연결하지 못해 메일 앱을 엽니다.";
-        send.disabled = false;
-      });
-  });
-
-  panel.append(title, fieldset, textarea, status, actions);
-  overlay.appendChild(panel);
-  app.appendChild(overlay);
-  textarea.focus();
 }
 
 function showTitle(app: HTMLElement): void {
@@ -233,15 +131,7 @@ function showTitle(app: HTMLElement): void {
   const credit = document.createElement("div");
   credit.className = "title-credit";
   credit.textContent = CREDIT;
-  const contact = document.createElement("button");
-  contact.className = "title-contact";
-  contact.dataset.testid = "contact-button";
-  contact.textContent = "문의하기";
-  contact.addEventListener("click", () => {
-    Sfx.select();
-    showContactForm(app);
-  });
-  footer.append(credit, contact);
+  footer.appendChild(credit);
 
   content.append(sub, main, tagline, features, buttons);
   screen.append(art, shade, content, footer);

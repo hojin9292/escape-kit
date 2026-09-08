@@ -22,17 +22,9 @@ export const START_LABEL = "시작하기";
 /** 주인공 소개 화면 안내문 */
 export const CHAR_SELECT_LABEL = "호진티와 함께 출발해요!";
 
-/** 타이틀 하단 제작자 표기 */
-export const CREDIT = "만든 사람: 딱! 이만큼";
-
-/** 문의하기 — 메일 폴백 주소와 분류. 두 번째 항목이 교과 질문 자리다. */
-export const CONTACT_EMAIL = "teacher@example.com";
-export const CONTACT_CATEGORIES = [
-  "새로운 방 아이디어 제안",
-  "버그 제보",
-  "생활 습관 질문",
-  "기타 의견",
-] as const;
+/** 타이틀 하단 제작·원작자 표기 */
+export const CREDIT =
+  "수정한 사람: HOJIN-T(hjchei97@gmail.com)\n방탈출 키트 원작자: @dossam_lab";
 
 /** 엔딩 화면 */
 export const ENDING_SUB = TITLE_SUB;
