@@ -73,7 +73,7 @@ export const socialRoom: GameMap = {
       tile: [7, 1],
       range: 1.6,
       interactAnchor: "#sys-door-locked",
-      door: { requiresEvent: "door:social-open", ending: true },
+      door: { requiresEvent: "door:social-open", toMap: "objects-room", spawn: [2, 7] },
     },
     { id: "note-16", name: "쪽지", sprite: "note", tile: [3, 1.5], range: 1.2, noteId: "note-16" },
     { id: "note-17", name: "쪽지", sprite: "note", tile: [12, 1.5], range: 1.2, noteId: "note-17" },

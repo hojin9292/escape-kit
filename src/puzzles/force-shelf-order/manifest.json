@@ -1,0 +1,29 @@
+{
+  "id": "force-shelf-order",
+  "title": "힘 진열대 — 적은 힘부터 큰 힘 순으로",
+  "act": 1,
+  "concept": "서열 판단 — 같은 힘주기, 다른 알맞은 세기(일반화)",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "물건 사용하기",
+    "성취기준": "근거 문항 OB-005·OB-013·OB-001·OB-009(imankeum) — 물건에 따라 알맞은 힘이 다름을 서열로 안다"
+  },
+  "narrative": {
+    "intro": "story.md#ob-shelf-open",
+    "clear": "story.md#ob-shelf-clear",
+    "extra": { "wrong": "story.md#ob-shelf-wrong" },
+    "notes": ["note-25"]
+  },
+  "trigger": { "map": "objects-room", "objectId": "force-shelf-order" },
+  "reward": { "event": "door:objects-open" },
+  "testIds": { "root": "puzzle-ob-shelf", "solveCheck": "ob-shelf-done" },
+  "principle": [
+    "태블릿·스티커·연필·과자 봉지 — 전부 힘을 주는 건데도 알맞은 세기는 다 다르다.",
+    "물건이 약할수록 적게, 단단할수록 크게 — 그게 '적당히'다."
+  ],
+  "hints": [
+    "태블릿 화면이랑 과자 봉지, 어느 쪽에 더 힘이 필요할까?",
+    "제일 적은 힘이 필요한 건 태블릿 터치야.",
+    "태블릿 → 스티커 → 연필 → 과자 봉지 순서예요."
+  ]
+}

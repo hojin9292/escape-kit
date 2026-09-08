@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { enterSocialRoom, openStation, dismissDialogues } from "./helpers";
+import { enterSocialRoom, openStation, dismissDialogues, goDoor } from "./helpers";
 import {
   GOOD_MIN as ELEV_GOOD_MIN,
   GOOD_MAX as ELEV_GOOD_MAX,
@@ -127,4 +127,6 @@ test("「함께 지내는 방」 완주 — 네 가지를 풀면 진열대가 �
   await expect
     .poll(() => page.evaluate(() => (window as never as { __qe: { events: string[] } }).__qe.events))
     .toContain("door:social-open");
+
+  await goDoor(page, isMobile, 7, 1, "objects-room");
 });

@@ -1,0 +1,29 @@
+{
+  "id": "faucet-turn",
+  "title": "수도꼭지 — 물줄기가 곧게 떨어질 만큼",
+  "act": 1,
+  "concept": "적당한 정도 판단 — 돌리는 정도",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "물건 사용하기",
+    "성취기준": "근거 문항 OB-004(imankeum) — 수도꼭지를 알맞은 정도로 연다"
+  },
+  "narrative": {
+    "intro": "story.md#ob-faucet-intro",
+    "clear": "story.md#ob-faucet-clear",
+    "extra": { "toolow": "story.md#ob-faucet-toolow", "toohigh": "story.md#ob-faucet-toohigh" },
+    "notes": ["note-22"]
+  },
+  "trigger": { "map": "objects-room", "objectId": "faucet-turn" },
+  "reward": { "event": "code:faucet-solved" },
+  "testIds": { "root": "puzzle-faucet", "solveCheck": "faucet-done" },
+  "principle": [
+    "필요한 만큼만 열면 사용하기 편하고 물도 덜 낭비된다.",
+    "물줄기가 곧게 떨어지고 튀지 않는 정도면 충분하다."
+  ],
+  "hints": [
+    "세면대 밖으로 물이 튀지 않는지 봐요.",
+    "물줄기가 곧게 떨어지는 정도를 떠올려 보세요.",
+    "지금보다 한 단계만 줄이거나 늘려 보세요."
+  ]
+}

@@ -3,12 +3,14 @@ import { hygieneRoom } from "./hygiene-room";
 import { foodRoom } from "./food-room";
 import { communicationRoom } from "./communication-room";
 import { socialRoom } from "./social-room";
+import { objectsRoom } from "./objects-room";
 
 export const maps: Record<string, GameMap> = {
   [hygieneRoom.id]: hygieneRoom,
   [foodRoom.id]: foodRoom,
   [communicationRoom.id]: communicationRoom,
   [socialRoom.id]: socialRoom,
+  [objectsRoom.id]: objectsRoom,
 };
 
 /** 프롤로그 다음에 들어서는 첫 방. 이어하기 저장이 없을 때의 시작 지점이기도 하다. */
@@ -28,6 +30,7 @@ export const ROOM_CHAIN: { id: string; unlockEvent: string }[] = [
   { id: foodRoom.id, unlockEvent: "door:food-open" },
   { id: communicationRoom.id, unlockEvent: "door:communication-open" },
   { id: socialRoom.id, unlockEvent: "door:social-open" },
+  { id: objectsRoom.id, unlockEvent: "door:objects-open" },
 ];
 
 /**
@@ -39,4 +42,5 @@ export const ROOM_INTRO_ANCHOR: Record<string, string> = {
   [foodRoom.id]: "#fo-room-intro",
   [communicationRoom.id]: "#co-room-intro",
   [socialRoom.id]: "#so-room-intro",
+  [objectsRoom.id]: "#ob-room-intro",
 };
