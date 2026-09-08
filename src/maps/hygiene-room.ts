@@ -11,9 +11,12 @@ import type { GameMap } from "./types";
 
 export const hygieneRoom: GameMap = {
   id: "hygiene-room",
+  title: "깨끗한 방",
+  icon: "🫧",
   cols: 14,
   rows: 14,
   spawn: [2, 7],
+  background: { sprite: "room-hygiene", scale: 1.485, scaleY: 1.246, offsetX: -930, offsetY: -540 },
   blocks: [
     { x0: -1, y0: -1, x1: 14, y1: 0.9 }, // 북쪽 벽 띠
     { x0: -1, y0: -1, x1: 0.9, y1: 14 }, // 서쪽 벽 띠
@@ -36,6 +39,7 @@ export const hygieneRoom: GameMap = {
     {
       id: "toothpaste-squeeze",
       name: "치약과 칫솔",
+      icon: "🪥",
       tile: [4, 3],
       range: 1.6,
       puzzleId: "toothpaste-squeeze",
@@ -44,6 +48,7 @@ export const hygieneRoom: GameMap = {
     {
       id: "hand-sanitizer-pump",
       name: "손 소독제",
+      icon: "🧴",
       tile: [11, 3],
       range: 1.6,
       puzzleId: "hand-sanitizer-pump",
@@ -52,6 +57,7 @@ export const hygieneRoom: GameMap = {
     {
       id: "brushing-timer",
       name: "양치대",
+      icon: "⏱️",
       tile: [4, 6.5],
       range: 1.6,
       puzzleId: "brushing-timer",
@@ -60,6 +66,7 @@ export const hygieneRoom: GameMap = {
     {
       id: "toilet-paper-pull",
       name: "휴지걸이",
+      icon: "🧻",
       tile: [11, 6.5],
       range: 1.6,
       puzzleId: "toilet-paper-pull",
@@ -69,6 +76,7 @@ export const hygieneRoom: GameMap = {
     {
       id: "soap-shelf-order",
       name: "정리대",
+      icon: "↕️",
       tile: [9, 11.5],
       range: 1.8,
       puzzleId: "soap-shelf-order",
@@ -78,6 +86,7 @@ export const hygieneRoom: GameMap = {
     {
       id: "exit-door",
       name: "교실 문 — 다음 방으로",
+      icon: "🚪",
       tile: [7, 1],
       range: 1.6,
       interactAnchor: "#sys-door-locked",

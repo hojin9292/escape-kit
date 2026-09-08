@@ -10,9 +10,12 @@ import type { GameMap } from "./types";
 
 export const foodRoom: GameMap = {
   id: "food-room",
+  title: "먹고 마시는 방",
+  icon: "🥣",
   cols: 14,
   rows: 14,
   spawn: [2, 7],
+  background: { sprite: "room-food", scale: 1.485, scaleY: 1.246, offsetX: -930, offsetY: -540 },
   blocks: [
     { x0: -1, y0: -1, x1: 14, y1: 0.9 }, // 북쪽 벽 띠
     { x0: -1, y0: -1, x1: 0.9, y1: 14 }, // 서쪽 벽 띠
@@ -35,6 +38,7 @@ export const foodRoom: GameMap = {
     {
       id: "water-pour",
       name: "컵과 물병",
+      icon: "🥛",
       tile: [4, 3],
       range: 1.6,
       puzzleId: "water-pour",
@@ -43,6 +47,7 @@ export const foodRoom: GameMap = {
     {
       id: "ice-drop",
       name: "얼음통",
+      icon: "🧊",
       tile: [11, 3],
       range: 1.6,
       puzzleId: "ice-drop",
@@ -51,6 +56,7 @@ export const foodRoom: GameMap = {
     {
       id: "jam-spread",
       name: "식빵과 잼",
+      icon: "🍞",
       tile: [4, 6.5],
       range: 1.6,
       puzzleId: "jam-spread",
@@ -59,6 +65,7 @@ export const foodRoom: GameMap = {
     {
       id: "yogurt-topping",
       name: "요거트",
+      icon: "🥣",
       tile: [11, 6.5],
       range: 1.6,
       puzzleId: "yogurt-topping",
@@ -68,6 +75,7 @@ export const foodRoom: GameMap = {
     {
       id: "pour-shelf-order",
       name: "식탁 정리대",
+      icon: "↕️",
       tile: [9, 11.5],
       range: 1.8,
       puzzleId: "pour-shelf-order",
@@ -77,6 +85,7 @@ export const foodRoom: GameMap = {
     {
       id: "exit-door",
       name: "급식실 문 — 다음 방으로",
+      icon: "🚪",
       tile: [7, 1],
       range: 1.6,
       interactAnchor: "#sys-door-locked",

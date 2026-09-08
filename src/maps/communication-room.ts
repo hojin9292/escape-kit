@@ -7,9 +7,12 @@ import type { GameMap } from "./types";
 
 export const communicationRoom: GameMap = {
   id: "communication-room",
+  title: "말하고 듣는 방",
+  icon: "💬",
   cols: 14,
   rows: 14,
   spawn: [2, 7],
+  background: { sprite: "room-communication", scale: 1.485, scaleY: 1.246, offsetX: -930, offsetY: -540 },
   blocks: [
     { x0: -1, y0: -1, x1: 14, y1: 0.9 },
     { x0: -1, y0: -1, x1: 0.9, y1: 14 },
@@ -25,6 +28,7 @@ export const communicationRoom: GameMap = {
     {
       id: "voice-volume",
       name: "짝꿍",
+      icon: "🔊",
       tile: [4, 3],
       range: 1.6,
       puzzleId: "voice-volume",
@@ -33,6 +37,7 @@ export const communicationRoom: GameMap = {
     {
       id: "call-name",
       name: "선생님",
+      icon: "🙋",
       tile: [11, 3],
       range: 1.6,
       puzzleId: "call-name",
@@ -41,6 +46,7 @@ export const communicationRoom: GameMap = {
     {
       id: "wait-answer",
       name: "질문 상자",
+      icon: "⏳",
       tile: [4, 6.5],
       range: 1.6,
       puzzleId: "wait-answer",
@@ -49,6 +55,7 @@ export const communicationRoom: GameMap = {
     {
       id: "story-turn",
       name: "이야기 의자",
+      icon: "🗣️",
       tile: [11, 6.5],
       range: 1.6,
       puzzleId: "story-turn",
@@ -57,6 +64,7 @@ export const communicationRoom: GameMap = {
     {
       id: "voice-shelf-order",
       name: "목소리 진열대",
+      icon: "↕️",
       tile: [9, 11.5],
       range: 1.8,
       puzzleId: "voice-shelf-order",
@@ -65,6 +73,7 @@ export const communicationRoom: GameMap = {
     {
       id: "exit-door",
       name: "교실 문 — 다음 방으로",
+      icon: "🚪",
       tile: [7, 1],
       range: 1.6,
       interactAnchor: "#sys-door-locked",

@@ -7,9 +7,12 @@ import type { GameMap } from "./types";
 
 export const objectsRoom: GameMap = {
   id: "objects-room",
+  title: "물건 쓰는 방",
+  icon: "🧰",
   cols: 14,
   rows: 14,
   spawn: [2, 7],
+  background: { sprite: "room-objects", scale: 1.485, scaleY: 1.246, offsetX: -930, offsetY: -540 },
   blocks: [
     { x0: -1, y0: -1, x1: 14, y1: 0.9 },
     { x0: -1, y0: -1, x1: 0.9, y1: 14 },
@@ -25,6 +28,7 @@ export const objectsRoom: GameMap = {
     {
       id: "pencil-grip",
       name: "연필",
+      icon: "✏️",
       tile: [4, 3],
       range: 1.6,
       puzzleId: "pencil-grip",
@@ -33,6 +37,7 @@ export const objectsRoom: GameMap = {
     {
       id: "faucet-turn",
       name: "수도꼭지",
+      icon: "🚰",
       tile: [11, 3],
       range: 1.6,
       puzzleId: "faucet-turn",
@@ -41,6 +46,7 @@ export const objectsRoom: GameMap = {
     {
       id: "book-stack",
       name: "책상",
+      icon: "📚",
       tile: [4, 6.5],
       range: 1.6,
       puzzleId: "book-stack",
@@ -49,6 +55,7 @@ export const objectsRoom: GameMap = {
     {
       id: "glue-spread",
       name: "풀과 종이",
+      icon: "🖍️",
       tile: [11, 6.5],
       range: 1.6,
       puzzleId: "glue-spread",
@@ -57,6 +64,7 @@ export const objectsRoom: GameMap = {
     {
       id: "force-shelf-order",
       name: "힘 진열대",
+      icon: "↕️",
       tile: [9, 11.5],
       range: 1.8,
       puzzleId: "force-shelf-order",
@@ -65,6 +73,7 @@ export const objectsRoom: GameMap = {
     {
       id: "exit-door",
       name: "교실 문 — 다음 방으로",
+      icon: "🚪",
       tile: [7, 1],
       range: 1.6,
       interactAnchor: "#sys-door-locked",

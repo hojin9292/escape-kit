@@ -1,5 +1,5 @@
 /**
- * 모바일 가상 조이스틱 + ACT(상호작용) 버튼.
+ * 모바일 가상 조이스틱 + 살펴보기(상호작용) 버튼.
  * Pointer Events 통일 계층(onDrag) 위에서 동작 — 터치/마우스 공용.
  * 표시 여부는 엔진이 결정 (pointer: coarse 감지).
  */
@@ -26,7 +26,8 @@ export class VirtualJoystick {
     const act = document.createElement("button");
     act.className = "act-button";
     act.dataset.testid = "act-button";
-    act.textContent = "ACT";
+    act.textContent = "살펴보기";
+    act.setAttribute("aria-label", "가까운 물건 살펴보기");
 
     this.root.append(base, act);
     host.appendChild(this.root);

@@ -7,9 +7,12 @@ import type { GameMap } from "./types";
 
 export const timeRoom: GameMap = {
   id: "time-room",
+  title: "시간과 횟수 방",
+  icon: "⏰",
   cols: 14,
   rows: 14,
   spawn: [2, 7],
+  background: { sprite: "room-time", scale: 1.485, scaleY: 1.246, offsetX: -930, offsetY: -540 },
   blocks: [
     { x0: -1, y0: -1, x1: 14, y1: 0.9 },
     { x0: -1, y0: -1, x1: 0.9, y1: 14 },
@@ -37,6 +40,7 @@ export const timeRoom: GameMap = {
     {
       id: "microwave-wait",
       name: "전자레인지",
+      icon: "📟",
       tile: [4, 3],
       range: 1.6,
       puzzleId: "microwave-wait",
@@ -45,6 +49,7 @@ export const timeRoom: GameMap = {
     {
       id: "homework-check",
       name: "숙제",
+      icon: "✅",
       tile: [11, 3],
       range: 1.6,
       puzzleId: "homework-check",
@@ -53,6 +58,7 @@ export const timeRoom: GameMap = {
     {
       id: "crosswalk-signal",
       name: "횡단보도",
+      icon: "🚦",
       tile: [4, 6.5],
       range: 1.6,
       puzzleId: "crosswalk-signal",
@@ -61,6 +67,7 @@ export const timeRoom: GameMap = {
     {
       id: "friend-turn-wait",
       name: "이야기하는 친구",
+      icon: "💬",
       tile: [11, 6.5],
       range: 1.6,
       puzzleId: "friend-turn-wait",
@@ -69,6 +76,7 @@ export const timeRoom: GameMap = {
     {
       id: "wait-shelf-order",
       name: "기다림 진열대",
+      icon: "↕️",
       tile: [9, 11.5],
       range: 1.8,
       puzzleId: "wait-shelf-order",
@@ -77,6 +85,7 @@ export const timeRoom: GameMap = {
     {
       id: "exit-door",
       name: "교실 문 — 출구",
+      icon: "🚪",
       tile: [7, 1],
       range: 1.6,
       interactAnchor: "#sys-door-locked",

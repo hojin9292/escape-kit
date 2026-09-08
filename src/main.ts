@@ -11,12 +11,16 @@ import type { GameMap } from "./maps/types";
 import {
   TITLE_SUB,
   TITLE_MAIN,
+  TITLE_TAGLINE,
+  TITLE_FEATURES,
   START_LABEL,
   CHAR_SELECT_LABEL,
   CREDIT,
   CONTACT_EMAIL,
   CONTACT_CATEGORIES,
 } from "./config";
+
+const BASE = import.meta.env.BASE_URL;
 
 /** design-tokens.json → :root CSS 변수 주입 (색·치수 단일 소스) */
 function applyTokens(): void {
@@ -136,6 +140,17 @@ function showTitle(app: HTMLElement): void {
   screen.className = "title-screen";
   screen.dataset.testid = "title-screen";
 
+  const art = document.createElement("img");
+  art.className = "title-art";
+  art.src = `${BASE}assets/title-life-lab.png`;
+  art.alt = "손 씻기, 식사, 대화, 관계, 물건 사용, 기다림을 연습하는 여섯 생활 연구실";
+
+  const shade = document.createElement("div");
+  shade.className = "title-shade";
+
+  const content = document.createElement("main");
+  content.className = "title-content";
+
   const sub = document.createElement("div");
   sub.className = "title-sub";
   sub.textContent = TITLE_SUB;
@@ -145,6 +160,24 @@ function showTitle(app: HTMLElement): void {
   // 작은 영문 시리즈명 + 큰 한글 부제. 한 방 이름을 부제로 쓰면 방이 늘었을 때
   // 한 방이 전체를 대표하는 꼴이 된다. 브라우저·링크 제목은 index.html이 따로 들고 있다.
   main.textContent = TITLE_MAIN;
+
+  const tagline = document.createElement("p");
+  tagline.className = "title-tagline";
+  tagline.textContent = TITLE_TAGLINE;
+
+  const features = document.createElement("div");
+  features.className = "title-features";
+  features.setAttribute("aria-label", "게임 구성");
+  for (const [value, label] of TITLE_FEATURES) {
+    const chip = document.createElement("div");
+    chip.className = "title-feature";
+    const strong = document.createElement("strong");
+    strong.textContent = value;
+    const span = document.createElement("span");
+    span.textContent = label;
+    chip.append(strong, span);
+    features.appendChild(chip);
+  }
 
   const buttons = document.createElement("div");
   buttons.className = "title-buttons";
@@ -168,17 +201,32 @@ function showTitle(app: HTMLElement): void {
   start.className = "title-start";
   start.dataset.testid = "start-button";
   start.textContent = hasProgress() ? "처음부터" : START_LABEL;
-  start.addEventListener("click", () => {
+  const beginNewGame = () => {
     Sfx.confirm();
     Ambience.start();
     clearProgress();
     screen.remove();
     void showCharSelect(app).then((character) => {
-      saveProgress({ events: [], notes: [], character });
+      saveProgress({ events: [], notes: [], lastMap: FIRST_ROOM.id, character });
       void startPrologue(app);
     });
+  };
+  start.addEventListener("click", () => {
+    if (hasProgress()) showResetConfirm(app, beginNewGame);
+    else beginNewGame();
   });
   buttons.appendChild(start);
+
+  const how = document.createElement("button");
+  how.type = "button";
+  how.className = "title-how";
+  how.dataset.testid = "how-button";
+  how.textContent = "게임 방법";
+  how.addEventListener("click", () => {
+    Sfx.select();
+    showHowToPlay(app);
+  });
+  buttons.appendChild(how);
 
   const footer = document.createElement("div");
   footer.className = "title-footer";
@@ -195,8 +243,87 @@ function showTitle(app: HTMLElement): void {
   });
   footer.append(credit, contact);
 
-  screen.append(sub, main, buttons, footer);
+  content.append(sub, main, tagline, features, buttons);
+  screen.append(art, shade, content, footer);
   app.appendChild(screen);
+}
+
+/** 저장 삭제 전 한 번 더 확인 — 학생의 진행을 실수로 지우지 않는다. */
+function showResetConfirm(app: HTMLElement, onConfirm: () => void): void {
+  const overlay = document.createElement("div");
+  overlay.className = "simple-overlay";
+  overlay.dataset.testid = "reset-confirm";
+  const panel = document.createElement("div");
+  panel.className = "simple-panel";
+  panel.setAttribute("role", "alertdialog");
+  panel.setAttribute("aria-modal", "true");
+  const title = document.createElement("h2");
+  title.textContent = "처음부터 시작할까요?";
+  const copy = document.createElement("p");
+  copy.textContent = "지금까지 찾은 쪽지와 완료한 미션이 모두 지워져요.";
+  const actions = document.createElement("div");
+  actions.className = "simple-actions";
+  const cancel = document.createElement("button");
+  cancel.className = "simple-button";
+  cancel.textContent = "계속 이어하기";
+  const confirm = document.createElement("button");
+  confirm.className = "simple-button danger";
+  confirm.textContent = "처음부터 시작";
+  const close = () => overlay.remove();
+  cancel.addEventListener("click", close);
+  confirm.addEventListener("click", () => {
+    close();
+    onConfirm();
+  });
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) close();
+  });
+  actions.append(cancel, confirm);
+  panel.append(title, copy, actions);
+  overlay.appendChild(panel);
+  app.appendChild(overlay);
+  cancel.focus();
+}
+
+function showHowToPlay(app: HTMLElement): void {
+  const overlay = document.createElement("div");
+  overlay.className = "simple-overlay";
+  overlay.dataset.testid = "how-overlay";
+  const panel = document.createElement("section");
+  panel.className = "simple-panel how-panel";
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-modal", "true");
+  const title = document.createElement("h2");
+  title.textContent = "이렇게 플레이해요";
+  const steps = document.createElement("div");
+  steps.className = "how-steps";
+  const data = [
+    ["1", "움직이기", "방향키·WASD 또는 왼쪽 조이스틱으로 걸어요."],
+    ["2", "살펴보기", "빛나는 장치 가까이에서 Space·E 또는 ‘살펴보기’를 눌러요."],
+    ["3", "알맞게 판단하기", "너무 적지도, 많지도 않은 선택을 찾아 여러 번 도전해요."],
+    ["4", "자동 저장", "미션을 마치면 바로 저장돼요. 다음에 ‘이어하기’를 누르면 돼요."],
+  ];
+  for (const [n, label, copy] of data) {
+    const card = document.createElement("article");
+    const badge = document.createElement("b");
+    badge.textContent = n;
+    const body = document.createElement("div");
+    const heading = document.createElement("h3");
+    heading.textContent = label;
+    const text = document.createElement("p");
+    text.textContent = copy;
+    body.append(heading, text);
+    card.append(badge, body);
+    steps.appendChild(card);
+  }
+  const close = document.createElement("button");
+  close.className = "simple-button primary";
+  close.textContent = "알겠어요";
+  close.addEventListener("click", () => overlay.remove());
+  panel.append(title, steps, close);
+  overlay.appendChild(panel);
+  app.appendChild(overlay);
+  close.focus();
 }
 
 /** 새 시작 시 캐릭터 선택 — 픽셀 스프라이트 2종 중 탭 */
@@ -213,7 +340,6 @@ function showCharSelect(app: HTMLElement): Promise<"m" | "f"> {
     const row = document.createElement("div");
     row.className = "char-select-row";
 
-    const BASE = import.meta.env.BASE_URL;
     for (const g of ["m", "f"] as const) {
       const btn = document.createElement("button");
       btn.className = "char-select-btn";
@@ -221,7 +347,9 @@ function showCharSelect(app: HTMLElement): Promise<"m" | "f"> {
       const img = document.createElement("img");
       img.src = `${BASE}assets/char-${g}-se-idle.png`;
       img.alt = g === "m" ? "남학생" : "여학생";
-      btn.appendChild(img);
+      const label = document.createElement("span");
+      label.textContent = g === "m" ? "친구 하나" : "친구 두리";
+      btn.append(img, label);
       btn.addEventListener("click", () => {
         Sfx.confirm();
         screen.remove();

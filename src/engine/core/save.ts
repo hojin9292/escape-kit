@@ -39,7 +39,14 @@ export function loadProgress(): SaveData {
 /** 저장된 진행이 있는가 (이어하기 노출 판정) */
 export function hasProgress(): boolean {
   const p = loadProgress();
-  return p.events.length > 0 || p.notes.length > 0;
+  return (
+    p.events.length > 0 ||
+    p.notes.length > 0 ||
+    (p.items?.length ?? 0) > 0 ||
+    (p.searched?.length ?? 0) > 0 ||
+    !!p.lastMap ||
+    !!p.character
+  );
 }
 
 export function saveProgress(data: SaveData): void {

@@ -7,9 +7,12 @@ import type { GameMap } from "./types";
 
 export const socialRoom: GameMap = {
   id: "social-room",
+  title: "함께 지내는 방",
+  icon: "🤝",
   cols: 14,
   rows: 14,
   spawn: [2, 7],
+  background: { sprite: "room-social", scale: 1.485, scaleY: 1.246, offsetX: -930, offsetY: -540 },
   blocks: [
     { x0: -1, y0: -1, x1: 14, y1: 0.9 },
     { x0: -1, y0: -1, x1: 0.9, y1: 14 },
@@ -30,6 +33,7 @@ export const socialRoom: GameMap = {
     {
       id: "elevator-distance",
       name: "엘리베이터",
+      icon: "↔️",
       tile: [4, 3],
       range: 1.6,
       puzzleId: "elevator-distance",
@@ -38,6 +42,7 @@ export const socialRoom: GameMap = {
     {
       id: "shoulder-tap",
       name: "짝꿍",
+      icon: "👆",
       tile: [11, 3],
       range: 1.6,
       puzzleId: "shoulder-tap",
@@ -46,6 +51,7 @@ export const socialRoom: GameMap = {
     {
       id: "approach-friend",
       name: "책 읽는 친구",
+      icon: "📖",
       tile: [4, 6.5],
       range: 1.6,
       puzzleId: "approach-friend",
@@ -54,6 +60,7 @@ export const socialRoom: GameMap = {
     {
       id: "bag-space",
       name: "버스 좌석",
+      icon: "👜",
       tile: [11, 6.5],
       range: 1.6,
       puzzleId: "bag-space",
@@ -62,6 +69,7 @@ export const socialRoom: GameMap = {
     {
       id: "distance-shelf-order",
       name: "거리 진열대",
+      icon: "↕️",
       tile: [9, 11.5],
       range: 1.8,
       puzzleId: "distance-shelf-order",
@@ -70,6 +78,7 @@ export const socialRoom: GameMap = {
     {
       id: "exit-door",
       name: "교실 문 — 다음 방으로",
+      icon: "🚪",
       tile: [7, 1],
       range: 1.6,
       interactAnchor: "#sys-door-locked",

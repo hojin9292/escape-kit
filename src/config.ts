@@ -6,7 +6,15 @@
 
 /** 타이틀 화면 — 작은 시리즈명 + 큰 한글 부제 */
 export const TITLE_SUB = "딱! 이만큼";
-export const TITLE_MAIN = "깨끗한 방 탈출";
+export const TITLE_MAIN = "생활연구소 대탈출";
+
+/** 타이틀 설명 — 학습 범위와 분량을 첫 화면에서 바로 알 수 있게 한다. */
+export const TITLE_TAGLINE = "생활 속 ‘알맞은 만큼’을 찾아 여섯 개의 방을 탈출해요";
+export const TITLE_FEATURES = [
+  ["6", "생활 주제"],
+  ["30", "판단 미션"],
+  ["자동", "진행 저장"],
+] as const;
 
 /** 시작 버튼 (저장된 진행이 있으면 '처음부터'가 대신 나온다) */
 export const START_LABEL = "시작하기";
@@ -28,9 +36,9 @@ export const CONTACT_CATEGORIES = [
 
 /** 엔딩 화면 */
 export const ENDING_SUB = TITLE_SUB;
-export const ENDING_MAIN = "깨끗한 방 탈출 성공!";
-export const ENDING_NOTES_COMPLETE = "이 방의 쪽지를 전부 읽었어요. 짝꿍이 남긴 이야기를 다 알게 됐어요.";
-export const ENDING_NOTES_INCOMPLETE = "…방 안 어딘가에 아직 읽지 않은 쪽지가 남아 있어요.";
+export const ENDING_MAIN = "생활연구소 탈출 성공!";
+export const ENDING_NOTES_COMPLETE = "마지막 방의 쪽지를 전부 읽고 ‘알맞은 만큼’의 비밀을 찾았어요.";
+export const ENDING_NOTES_INCOMPLETE = "탈출에는 성공했어요. 마지막 방에 아직 읽지 않은 쪽지가 있어요.";
 
 /**
  * localStorage 저장 키. **다른 게임과 반드시 다르게 둘 것** —

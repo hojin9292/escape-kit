@@ -109,6 +109,8 @@ export class Game {
   private totalNotes = 0;
   private allNotes: NoteMeta[] = [];
   private noteCounter!: HTMLElement;
+  /** 현재 방과 완료 미션 수 — 긴 6방 여정에서 목표를 잃지 않게 하는 상시 HUD */
+  private roomHud!: HTMLElement;
 
   constructor(
     private host: HTMLElement,
@@ -176,6 +178,12 @@ export class Game {
     });
     this.ui.appendChild(muteBtn);
 
+    this.roomHud = document.createElement("div");
+    this.roomHud.className = "room-hud";
+    this.roomHud.dataset.testid = "room-hud";
+    this.roomHud.setAttribute("aria-live", "polite");
+    this.ui.appendChild(this.roomHud);
+
     // 저장된 진행 복원 (해금 이벤트·수집 노트·단서 아이템·수색 기록)
     const saved = loadProgress();
     saved.events.forEach((e) => this.firedEvents.add(e));
@@ -183,6 +191,7 @@ export class Game {
     (saved.items ?? []).forEach((i) => this.items.add(i));
     (saved.searched ?? []).forEach((s) => this.searched.add(s));
     this.syncNoteCounter();
+    this.syncRoomHud();
 
     // 인벤토리 HUD — 획득한 단서 아이콘 스트립 (클릭 시 발견 텍스트 재열람)
     this.itemHud = document.createElement("div");
@@ -235,6 +244,7 @@ export class Game {
           )
         )
           Sfx.lightsOn();
+        this.syncRoomHud();
         this.persist();
       }),
     );
@@ -308,7 +318,38 @@ export class Game {
   }
 
   private syncNoteCounter(): void {
-    this.noteCounter.textContent = `연구노트 ${this.collectedNotes.size} / ${this.totalNotes}`;
+    const roomNotes = this.map.objects.flatMap((o) => (o.noteId ? [o.noteId] : []));
+    const roomDone = roomNotes.filter((id) => this.collectedNotes.has(id)).length;
+    this.noteCounter.textContent = `쪽지 ${roomDone}/${roomNotes.length} · 전체 ${this.collectedNotes.size}/${this.totalNotes}`;
+  }
+
+  private syncRoomHud(): void {
+    const roomIndex = Math.max(0, ROOM_CHAIN.findIndex((r) => r.id === this.map.id));
+    const missions = this.map.objects.flatMap((o) => {
+      const puzzle = o.puzzleId ? findPuzzle(o.puzzleId) : undefined;
+      return puzzle ? [{ name: o.name, event: puzzle.manifest.reward.event }] : [];
+    });
+    const done = missions.filter((m) => this.firedEvents.has(m.event)).length;
+
+    const kicker = document.createElement("span");
+    kicker.className = "room-hud-kicker";
+    kicker.textContent = `${roomIndex + 1} / ${ROOM_CHAIN.length}번째 방`;
+    const title = document.createElement("strong");
+    title.className = "room-hud-title";
+    title.textContent = `${this.map.icon} ${this.map.title}`;
+    const progress = document.createElement("div");
+    progress.className = "room-hud-progress";
+    progress.setAttribute("aria-label", `미션 ${done}개 완료, 전체 ${missions.length}개`);
+    for (let i = 0; i < missions.length; i++) {
+      const dot = document.createElement("span");
+      dot.className = i < done ? "done" : "";
+      dot.textContent = i < done ? "✓" : "";
+      progress.appendChild(dot);
+    }
+    const count = document.createElement("span");
+    count.className = "room-hud-count";
+    count.textContent = `미션 ${done} / ${missions.length}`;
+    this.roomHud.replaceChildren(kicker, title, progress, count);
   }
 
   private persist(): void {
@@ -340,6 +381,8 @@ export class Game {
       this.lit = true;
     }
     this.syncSeals(next);
+    this.syncNoteCounter();
+    this.syncRoomHud();
     this.persist();
     bus.emit(`map:enter:${next.id}`);
   }
@@ -768,6 +811,93 @@ export class Game {
     ctx.strokeStyle = "rgba(206,222,240,0.42)";
     ctx.lineWidth = 2;
     ctx.stroke();
+    ctx.restore();
+  }
+
+  /**
+   * 스프라이트가 아직 없는 생활 미션도 빈 좌표로 보이지 않게 하는 공용 단말기.
+   * 개별 그림 대신 동일한 시각 문법(바닥 패드→홀로그램→쉬운 상징)을 써서
+   * 글을 읽기 어려운 학습자도 ‘여기서 활동한다’를 바로 찾을 수 있다.
+   */
+  private drawMissionStation(
+    ctx: CanvasRenderingContext2D,
+    cx: number,
+    footY: number,
+    obj: MapObject,
+    solved: boolean,
+  ): void {
+    const glow = solved ? tokens.color.success : tokens.color.hologram;
+    const locked = !!obj.door && this.isDoorLocked(obj);
+    ctx.save();
+    ctx.globalAlpha = solved ? 0.78 : locked ? 0.72 : 1;
+
+    if (obj.door) {
+      const w = 118;
+      const h = 166;
+      ctx.shadowColor = glow;
+      ctx.shadowBlur = 12;
+      ctx.strokeStyle = glow;
+      ctx.lineWidth = 5;
+      ctx.strokeRect(cx - w / 2, footY - h, w, h);
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = "rgba(16,19,24,0.78)";
+      ctx.fillRect(cx - w / 2 + 8, footY - h + 8, w - 16, h - 8);
+      ctx.fillStyle = glow;
+      ctx.globalAlpha *= 0.22;
+      ctx.fillRect(cx - w / 2 + 16, footY - h + 16, w - 32, h - 24);
+      ctx.globalAlpha = locked ? 0.72 : 1;
+      ctx.font = "52px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(locked ? "🔒" : (obj.icon ?? "🚪"), cx, footY - h / 2);
+      ctx.restore();
+      return;
+    }
+
+    this.drawGroundPad(ctx, cx, footY + 8, 132);
+    this.drawContactShadow(ctx, cx, footY + 8, 112, 0.55);
+    ctx.fillStyle = tokens.color["console-body"];
+    ctx.strokeStyle = tokens.color.line;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(cx - 45, footY - 12);
+    ctx.lineTo(cx - 34, footY - 82);
+    ctx.lineTo(cx + 34, footY - 82);
+    ctx.lineTo(cx + 45, footY - 12);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.shadowColor = glow;
+    ctx.shadowBlur = 12;
+    ctx.fillStyle = "rgba(16,19,24,0.92)";
+    ctx.strokeStyle = glow;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.roundRect(cx - 39, footY - 139, 78, 68, 8);
+    ctx.fill();
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.font = "46px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = tokens.color.text;
+    ctx.fillText(obj.icon ?? "◆", cx, footY - 105);
+
+    if (solved) {
+      ctx.fillStyle = tokens.color.success;
+      ctx.beginPath();
+      ctx.arc(cx + 42, footY - 143, 18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = tokens.color["bg-void"];
+      ctx.lineWidth = 5;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(cx + 33, footY - 143);
+      ctx.lineTo(cx + 40, footY - 136);
+      ctx.lineTo(cx + 52, footY - 151);
+      ctx.stroke();
+    }
     ctx.restore();
   }
 
@@ -1288,7 +1418,24 @@ export class Game {
         continue;
       const [sx, sy] = worldToScreen(obj.tile[0], obj.tile[1]);
       const img = obj.sprite ? this.sprites[obj.sprite] : undefined;
-      if (!img) continue; // 스프라이트 없는 핫스팟(수색 지점) — 스파클 마커가 대신 표시
+      const puzzle = obj.puzzleId ? findPuzzle(obj.puzzleId) : undefined;
+      const solved = !!puzzle && this.firedEvents.has(puzzle.manifest.reward.event);
+      if (!img) {
+        // 퍼즐·문은 공용 홀로그램 장치로 시각화한다. 순수 수색 지점만 스파클 마커에 맡긴다.
+        if (!obj.puzzleId && !obj.door) continue;
+        drawables.push({
+          sy: sy + TILE_H / 4,
+          draw: () =>
+            this.drawMissionStation(
+              ctx,
+              ox + sx,
+              oy + sy + TILE_H / 4,
+              obj,
+              solved,
+            ),
+        });
+        continue;
+      }
       // 잠긴 문·이미 읽은 노트는 흐릿하게
       const alpha =
         this.isDoorLocked(obj) ||
@@ -1477,10 +1624,11 @@ export class Game {
       const obj = this.nearObject;
       const img = obj.sprite ? this.sprites[obj.sprite] : undefined;
       const [sx, sy] = worldToScreen(obj.tile[0], obj.tile[1]);
-      const hint = this.joystick ? "ACT" : "Space/E";
-      this.label.textContent = `${obj.name} (${hint} 상호작용)`;
+      const hint = this.joystick ? "살펴보기" : "Space / E";
+      this.label.textContent = `${obj.icon ?? ""} ${obj.name} · ${hint}`.trim();
       // 라벨은 DOM(실제 화면 px) — 줌 좌표를 화면 좌표로 되돌린다
-      const ly = oy + sy - (img ? img.height * (img.gameScale ?? 1) : 72);
+      const fallbackHeight = obj.door ? 180 : obj.puzzleId ? 154 : 72;
+      const ly = oy + sy - (img ? img.height * (img.gameScale ?? 1) : fallbackHeight);
       this.label.style.left = `${(ox + sx) * CAMERA_ZOOM}px`;
       this.label.style.top = `${ly * CAMERA_ZOOM}px`;
       this.label.hidden = false;

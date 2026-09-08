@@ -7,6 +7,8 @@ export interface MapObject {
   id: string;
   /** 상호작용 라벨에 표시되는 이름 */
   name: string;
+  /** 스프라이트가 없는 생활 미션 장치에 표시할 쉬운 상징. 글을 읽기 어려운 학습자용. */
+  icon?: string;
   /** 월드 스프라이트 — 없으면 보이지 않는 핫스팟(수색 지점·배경 모드용, 마커만 표시) */
   sprite?: string;
   tile: [number, number];
@@ -72,6 +74,9 @@ export interface WallDecorItem {
 
 export interface GameMap {
   id: string;
+  /** 학생 HUD에 표시하는 방 이름과 대표 상징 */
+  title: string;
+  icon: string;
   cols: number;
   rows: number;
   spawn: [number, number];
