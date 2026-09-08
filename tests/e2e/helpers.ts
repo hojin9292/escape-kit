@@ -83,6 +83,18 @@ export async function enterCommunicationRoom(page: Page, character: "m" | "f" = 
   await dismissDialogues(page); // #co-room-intro
 }
 
+/** 「함께 지내는 방」(social-room)으로 워프 — enterFoodRoom과 같은 이유. */
+export async function enterSocialRoom(page: Page, character: "m" | "f" = "m"): Promise<void> {
+  await enterRoom(page, character, "/?grid");
+  await page.evaluate(() =>
+    (window as never as { __qe: { warp: (id: string) => string } }).__qe.warp("social-room"),
+  );
+  await expect
+    .poll(() => page.evaluate(() => (window as never as { __qe: { map: string } }).__qe.map))
+    .toBe("social-room");
+  await dismissDialogues(page); // #so-room-intro
+}
+
 /** 타이틀 → '이어하기'로 마지막 방에 재개 (프롤로그 생략) */
 export async function continueGame(page: Page): Promise<void> {
   await page.goto("/");

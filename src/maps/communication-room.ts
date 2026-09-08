@@ -68,7 +68,7 @@ export const communicationRoom: GameMap = {
       tile: [7, 1],
       range: 1.6,
       interactAnchor: "#sys-door-locked",
-      door: { requiresEvent: "door:communication-open", ending: true },
+      door: { requiresEvent: "door:communication-open", toMap: "social-room", spawn: [2, 7] },
     },
     { id: "note-11", name: "쪽지", sprite: "note", tile: [3, 1.5], range: 1.2, noteId: "note-11" },
     { id: "note-12", name: "쪽지", sprite: "note", tile: [12, 1.5], range: 1.2, noteId: "note-12" },

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { enterCommunicationRoom, openStation, dismissDialogues } from "./helpers";
+import { enterCommunicationRoom, openStation, dismissDialogues, goDoor } from "./helpers";
 import {
   GOOD_MIN as VOICE_GOOD_MIN,
   GOOD_MAX as VOICE_GOOD_MAX,
@@ -128,4 +128,6 @@ test("「말하고 듣는 방」 완주 — 네 가지를 풀면 진열대가 �
   await expect
     .poll(() => page.evaluate(() => (window as never as { __qe: { events: string[] } }).__qe.events))
     .toContain("door:communication-open");
+
+  await goDoor(page, isMobile, 7, 1, "social-room");
 });

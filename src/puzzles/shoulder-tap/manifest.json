@@ -1,0 +1,29 @@
+{
+  "id": "shoulder-tap",
+  "title": "어깨 톡톡 — 손끝이 닿았다 바로 떨어질 만큼",
+  "act": 1,
+  "concept": "적당한 힘 판단 — 단계 선택",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "함께 지내기",
+    "성취기준": "근거 문항 SO-010(imankeum) — 사람을 부를 때 알맞은 세기로 접촉한다"
+  },
+  "narrative": {
+    "intro": "story.md#so-tap-intro",
+    "clear": "story.md#so-tap-clear",
+    "extra": { "toolow": "story.md#so-tap-toolow", "toohigh": "story.md#so-tap-toohigh" },
+    "notes": ["note-17"]
+  },
+  "trigger": { "map": "social-room", "objectId": "shoulder-tap" },
+  "reward": { "event": "code:tap-solved" },
+  "testIds": { "root": "puzzle-tap", "solveCheck": "tap-done" },
+  "principle": [
+    "사람의 몸을 만질 때는 가볍고 조심스럽게 해야 한다.",
+    "손끝이 어깨에 닿았다가 바로 떨어질 만큼이면 충분하다."
+  ],
+  "hints": [
+    "'톡톡'이라는 느낌을 떠올려 보세요.",
+    "너무 세지도 약하지도 않은 가운데 단계를 생각해봐요.",
+    "2단계를 눌러보세요."
+  ]
+}
