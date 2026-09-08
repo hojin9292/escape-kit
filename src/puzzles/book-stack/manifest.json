@@ -1,0 +1,29 @@
+{
+  "id": "book-stack",
+  "title": "책 쌓기 — 흔들리지 않는 높이까지",
+  "act": 1,
+  "concept": "적당한 개수 판단 — 쌓는 개수",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "물건 사용하기",
+    "성취기준": "근거 문항 OB-019(imankeum) — 물건을 안정적인 높이로 정리한다"
+  },
+  "narrative": {
+    "intro": "story.md#ob-book-intro",
+    "clear": "story.md#ob-book-clear",
+    "extra": { "toolow": "story.md#ob-book-toolow", "toohigh": "story.md#ob-book-toohigh" },
+    "notes": ["note-23"]
+  },
+  "trigger": { "map": "objects-room", "objectId": "book-stack" },
+  "reward": { "event": "code:book-solved" },
+  "testIds": { "root": "puzzle-book", "solveCheck": "book-done" },
+  "principle": [
+    "물건은 넘어지지 않을 정도의 높이로 안정적으로 쌓는다.",
+    "손을 떼도 흔들리지 않는 높이까지가 적당하다."
+  ],
+  "hints": [
+    "책 더미가 흔들리지 않는지 봐요.",
+    "손을 떼도 안정적인 높이를 떠올려 보세요.",
+    "지금보다 한 권만 더 올리거나 내려 보세요."
+  ]
+}

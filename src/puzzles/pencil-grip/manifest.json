@@ -1,0 +1,29 @@
+{
+  "id": "pencil-grip",
+  "title": "연필 잡기 — 살짝 당기면 빠질 만큼",
+  "act": 1,
+  "concept": "적당한 힘 판단 — 단계 선택",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "물건 사용하기",
+    "성취기준": "근거 문항 OB-001(imankeum) — 필기구를 알맞은 힘으로 잡는다"
+  },
+  "narrative": {
+    "intro": "story.md#ob-pencil-intro",
+    "clear": "story.md#ob-pencil-clear",
+    "extra": { "toolow": "story.md#ob-pencil-toolow", "toohigh": "story.md#ob-pencil-toohigh" },
+    "notes": ["note-21"]
+  },
+  "trigger": { "map": "objects-room", "objectId": "pencil-grip" },
+  "reward": { "event": "code:pencil-solved" },
+  "testIds": { "root": "puzzle-pencil", "solveCheck": "pencil-done" },
+  "principle": [
+    "연필은 떨어지지 않으면서 손이 편안한 정도로 잡는다.",
+    "다른 사람이 살짝 당기면 빠질 만큼이면 충분하다."
+  ],
+  "hints": [
+    "손가락 마디가 너무 하얗게 눌리지 않는지 봐요.",
+    "너무 세지도 약하지도 않은 가운데 단계를 생각해봐요.",
+    "2단계를 눌러보세요."
+  ]
+}

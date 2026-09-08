@@ -1,0 +1,25 @@
+.call-root { display: flex; flex-direction: column; gap: 0.9rem; }
+.call-sign { margin: 0; font-size: 1.05rem; line-height: 1.5; }
+.call-view { display: flex; justify-content: center; min-height: 60px; align-items: center; }
+.call-dots { display: flex; gap: 10px; }
+.call-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: color-mix(in srgb, var(--color-hologram) 55%, white);
+  border: 2px solid var(--color-line);
+}
+.call-btn {
+  align-self: center; min-height: 52px; min-width: 160px; padding: 0.5rem 1.4rem;
+  border-radius: var(--corner-radius); border: 2px solid var(--color-hologram);
+  background: color-mix(in srgb, var(--color-hologram) 18%, var(--color-bg-deep));
+  color: var(--color-text); font-family: inherit; font-size: 1.05rem; font-weight: 700; cursor: pointer;
+}
+.call-state { margin: 0; text-align: center; font-size: 1rem; min-height: 1.4rem; }
+.call-state[data-level="low"] { color: var(--color-hologram); }
+.call-state[data-level="good"] { color: var(--color-success); }
+.call-state[data-level="high"] { color: var(--color-danger); }
+.call-confirm-btn {
+  min-height: 44px; padding: 0.4rem 1.3rem; border-radius: var(--corner-radius);
+  border: 1px solid var(--color-success); background: color-mix(in srgb, var(--color-success) 16%, transparent);
+  color: var(--color-success); font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer;
+}
+.call-done { text-align: center; font-weight: 800; color: var(--color-success); }

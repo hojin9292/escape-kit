@@ -1,0 +1,40 @@
+{
+  "id": "water-pour",
+  "title": "물 따르기 — 손가락 한 마디만큼",
+  "act": 1,
+  "concept": "적당한 양 판단 — 따라서 채우는 양",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "먹고 마시기",
+    "성취기준": "근거 문항 FO-001(imankeum) — 컵에 물을 알맞은 높이만큼 따라 마신다"
+  },
+  "narrative": {
+    "intro": "story.md#fo-water-intro",
+    "clear": "story.md#fo-water-clear",
+    "extra": {
+      "toolow": "story.md#fo-water-toolow",
+      "toohigh": "story.md#fo-water-toohigh"
+    },
+    "notes": ["note-06"]
+  },
+  "trigger": {
+    "map": "food-room",
+    "objectId": "water-pour"
+  },
+  "reward": {
+    "event": "code:water-solved"
+  },
+  "testIds": {
+    "root": "puzzle-water",
+    "solveCheck": "water-done"
+  },
+  "principle": [
+    "컵을 가득 채우면 들고 움직일 때 넘치기 쉽다.",
+    "맨 위에서 손가락 한 마디만 남겨두면 들고 걸어가도 안심이다."
+  ],
+  "hints": [
+    "컵 위쪽에 조금의 빈 공간을 남겨봐요.",
+    "손가락 한 마디 정도를 떠올려 보세요.",
+    "지금보다 한 단계만 줄이거나 늘려 보세요."
+  ]
+}

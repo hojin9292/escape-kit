@@ -1,0 +1,29 @@
+{
+  "id": "wait-shelf-order",
+  "title": "기다림 진열대 — 짧은 것부터 긴 것 순으로",
+  "act": 1,
+  "concept": "서열 판단 — 같은 기다림, 다른 알맞은 길이(일반화)",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "시간과 횟수",
+    "성취기준": "근거 문항 TI-017·TI-011·TI-001·TI-002(imankeum) — 상황에 따라 알맞은 기다림의 길이가 다름을 서열로 안다"
+  },
+  "narrative": {
+    "intro": "story.md#ti-shelf-open",
+    "clear": "story.md#ti-shelf-clear",
+    "extra": { "wrong": "story.md#ti-shelf-wrong" },
+    "notes": ["note-30"]
+  },
+  "trigger": { "map": "time-room", "objectId": "wait-shelf-order" },
+  "reward": { "event": "door:time-open" },
+  "testIds": { "root": "puzzle-ti-shelf", "solveCheck": "ti-shelf-done" },
+  "principle": [
+    "세탁기·부탁·친구 대답·엘리베이터 — 전부 기다리는 건데도 알맞은 길이는 다 다르다.",
+    "빨리 끝나는 일일수록 짧게, 시간이 걸리는 일일수록 길게 기다린다 — 그게 '적당히'다."
+  ],
+  "hints": [
+    "세탁기 완료 알림이랑 엘리베이터, 어느 쪽이 더 빨리 반응이 올까?",
+    "제일 짧게 기다리는 건 세탁기 완료 후야.",
+    "세탁기 → 부탁 → 친구 대답 → 엘리베이터 순서예요."
+  ]
+}

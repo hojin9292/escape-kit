@@ -25,11 +25,17 @@ export default defineConfig({
   projects: [
     {
       name: "desktop-chrome",
-      use: { ...devices["Desktop Chrome"] },
+      use: {
+        ...devices["Desktop Chrome"],
+        launchOptions: { executablePath: process.env.PW_CHROMIUM_PATH },
+      },
     },
     {
       name: "mobile",
-      use: { ...devices["Pixel 7"] },
+      use: {
+        ...devices["Pixel 7"],
+        launchOptions: { executablePath: process.env.PW_CHROMIUM_PATH },
+      },
     },
   ],
   webServer: {

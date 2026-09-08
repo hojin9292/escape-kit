@@ -1,0 +1,39 @@
+{
+  "id": "pour-shelf-order",
+  "title": "식탁 정리대 — 적은 것부터 많은 것 순으로",
+  "act": 1,
+  "concept": "서열 판단 — 같은 동작, 다른 알맞은 양(일반화)",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "먹고 마시기",
+    "성취기준": "근거 문항 FO-018·FO-002·FO-001·FO-013(imankeum) — 같은 '따르기' 동작도 대상에 따라 알맞은 양이 다름을 서열로 안다"
+  },
+  "narrative": {
+    "intro": "story.md#fo-shelf-open",
+    "clear": "story.md#fo-shelf-clear",
+    "extra": {
+      "wrong": "story.md#fo-shelf-wrong"
+    },
+    "notes": ["note-10"]
+  },
+  "trigger": {
+    "map": "food-room",
+    "objectId": "pour-shelf-order"
+  },
+  "reward": {
+    "event": "door:food-open"
+  },
+  "testIds": {
+    "root": "puzzle-fo-shelf",
+    "solveCheck": "fo-shelf-done"
+  },
+  "principle": [
+    "주스잔·시리얼 그릇·물컵·물병 — 전부 따라서 채우는 건데도 알맞은 양은 다 다르다.",
+    "나눠 마실 사람이 많으면 적게, 혼자 오래 마실 거면 많이 — 그게 '적당히'다."
+  ],
+  "hints": [
+    "친구 둘이랑 나눠 마실 때랑 혼자 물병에 채울 때, 어느 쪽에 더 조심해야 할까?",
+    "제일 적게 따르는 건 셋이 나눠 마시는 주스잔이야.",
+    "주스잔 → 시리얼 우유 → 물컵 → 물병 순서예요."
+  ]
+}

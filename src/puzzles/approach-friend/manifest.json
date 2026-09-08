@@ -1,0 +1,29 @@
+{
+  "id": "approach-friend",
+  "title": "다가가기 — 그림자가 지지 않을 만큼",
+  "act": 1,
+  "concept": "적당한 거리 판단 — 자동 접근 관찰형",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "함께 지내기",
+    "성취기준": "근거 문항 SO-014(imankeum) — 활동 중인 상대에게 알맞은 거리에서 말을 건다"
+  },
+  "narrative": {
+    "intro": "story.md#so-approach-intro",
+    "clear": "story.md#so-approach-clear",
+    "extra": { "toolow": "story.md#so-approach-toolow", "toohigh": "story.md#so-approach-toohigh" },
+    "notes": ["note-18"]
+  },
+  "trigger": { "map": "social-room", "objectId": "approach-friend" },
+  "reward": { "event": "code:approach-solved" },
+  "testIds": { "root": "puzzle-approach", "solveCheck": "approach-done" },
+  "principle": [
+    "책을 보는 친구에게 다가갈 때는 그림자가 책에 지지 않을 정도의 거리가 좋다.",
+    "너무 멀면 말이 안 들리고, 너무 가까우면 친구가 놀란다."
+  ],
+  "hints": [
+    "책을 보고 있는 친구의 시야를 가리지 않게 해봐요.",
+    "조금씩 다가가는 걸 지켜보세요.",
+    "너무 가까워지기 전에 눌러야 해요."
+  ]
+}

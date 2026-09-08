@@ -1,0 +1,29 @@
+{
+  "id": "glue-spread",
+  "title": "풀칠 — 네 귀퉁이와 가운데에 닿게",
+  "act": 1,
+  "concept": "적당한 넓이 판단 — 격자 탭",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "물건 사용하기",
+    "성취기준": "근거 문항 OB-011(imankeum) — 풀을 알맞은 넓이로 바른다"
+  },
+  "narrative": {
+    "intro": "story.md#ob-glue-intro",
+    "clear": "story.md#ob-glue-clear",
+    "extra": { "toolow": "story.md#ob-glue-toolow", "toohigh": "story.md#ob-glue-toohigh" },
+    "notes": ["note-24"]
+  },
+  "trigger": { "map": "objects-room", "objectId": "glue-spread" },
+  "reward": { "event": "code:glue-solved" },
+  "testIds": { "root": "puzzle-glue", "solveCheck": "glue-done" },
+  "principle": [
+    "붙일 면에 얇고 골고루 바르면 잘 붙는다.",
+    "네 귀퉁이와 가운데에 풀이 닿으면 충분하다."
+  ],
+  "hints": [
+    "가장자리와 가운데에 고르게 묻었는지 봐요.",
+    "네 귀퉁이가 다 닿았는지 확인해봐요.",
+    "칸을 몇 개만 더 칠하거나 지워볼까요?"
+  ]
+}

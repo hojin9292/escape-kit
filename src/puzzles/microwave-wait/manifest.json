@@ -1,0 +1,29 @@
+{
+  "id": "microwave-wait",
+  "title": "전자레인지 — 띵 소리가 난 뒤에",
+  "act": 1,
+  "concept": "적당한 기다림 판단",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "시간과 횟수",
+    "성취기준": "근거 문항 TI-003(imankeum) — 기기 작동이 끝날 때까지 알맞게 기다린다"
+  },
+  "narrative": {
+    "intro": "story.md#ti-microwave-intro",
+    "clear": "story.md#ti-microwave-clear",
+    "extra": { "toolow": "story.md#ti-microwave-toolow", "toohigh": "story.md#ti-microwave-toohigh" },
+    "notes": ["note-26"]
+  },
+  "trigger": { "map": "time-room", "objectId": "microwave-wait" },
+  "reward": { "event": "code:microwave-solved" },
+  "testIds": { "root": "puzzle-microwave", "solveCheck": "microwave-done" },
+  "principle": [
+    "작동이 끝난 뒤에 문을 열어야 음식이 고르게 데워진다.",
+    "너무 일찍 열면 덜 데워지고, 너무 늦게 열면 식어버린다."
+  ],
+  "hints": [
+    "남은 시간 표시가 0이 되는지 봐요.",
+    "숫자가 몇 번 바뀌었는지 세어보세요.",
+    "너무 오래 두면 식어버려요 — 적당할 때 눌러요."
+  ]
+}

@@ -3,11 +3,10 @@ import tokens from "../design-tokens.json";
 import { showDialogue } from "./engine/narrative/dialogue";
 import { bus } from "./engine/events/EventBus";
 import { Game } from "./engine/core/Game";
-import { maps, FIRST_ROOM } from "./maps";
+import { maps, FIRST_ROOM, ROOM_INTRO_ANCHOR } from "./maps";
 import { loadProgress, hasProgress, clearProgress, saveProgress } from "./engine/core/save";
 import { Sfx } from "./engine/audio/sfx";
 import { Ambience } from "./engine/audio/ambience";
-import { initSonicRoomFx } from "./puzzles/silent-node/roomfx";
 import type { GameMap } from "./maps/types";
 import {
   TITLE_SUB,
@@ -252,29 +251,38 @@ function showCharSelect(app: HTMLElement): Promise<"m" | "f"> {
  *
  *  다만 첫 방의 인트로는 프롤로그 대사 **뒤에** 와야 순서가 맞으므로
  *  startPrologue에서 직접 재생한다 (map:enter는 start() 시점 = 튜토리얼보다 앞이다). */
-function registerRoomFx(app: HTMLElement): void {
-  // 청음실 룸 오디오(경보 간섭 음장 + 소음 미터) — 모달 없는 퍼즐 silent-node의 무대장치
-  initSonicRoomFx(app);
+/** 첫 방을 뺀 나머지 방의 입장 대사 — 한 세션에 한 번만. 첫 방은 프롤로그 대사
+ *  뒤에 와야 순서가 맞으므로 startPrologue에서 직접 재생한다(map:enter는 그보다 이르다). */
+function registerRoomIntros(): void {
+  const shown = new Set<string>();
+  for (const [mapId, anchor] of Object.entries(ROOM_INTRO_ANCHOR)) {
+    if (mapId === FIRST_ROOM.id) continue;
+    bus.on(`map:enter:${mapId}`, () => {
+      if (shown.has(mapId)) return;
+      shown.add(mapId);
+      void showDialogue(anchor, document.getElementById("app")!);
+    });
+  }
 }
 
 async function startPrologue(app: HTMLElement): Promise<void> {
   await showDialogue("#prologue-wake", app);
-  registerRoomFx(app);
+  registerRoomIntros();
 
   const game = new Game(app, FIRST_ROOM);
   await game.start();
   bus.emit("prologue:done");
 
   await showDialogue("#prologue-tutorial", app);
-  await showDialogue("#prologue-rule", app); // 시험 규칙: 네 자리 열쇠는 네 장치에 나뉘어 있다
-  await showDialogue("#sn-room-intro", app);
+  await showDialogue("#prologue-rule", app); // 규칙: 청소 네 가지를 다 마쳐야 문이 열린다
+  await showDialogue("#hy-room-intro", app);
 }
 
 /** 이어하기: 프롤로그 생략, 마지막 방에서 재개 */
 async function startContinue(app: HTMLElement): Promise<void> {
   const saved = loadProgress();
   const startMap: GameMap = (saved.lastMap && maps[saved.lastMap]) || FIRST_ROOM;
-  registerRoomFx(app);
+  registerRoomIntros();
 
   const game = new Game(app, startMap);
   await game.start();

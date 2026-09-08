@@ -1,0 +1,29 @@
+{
+  "id": "elevator-distance",
+  "title": "엘리베이터 거리 — 어깨가 닿지 않을 만큼",
+  "act": 1,
+  "concept": "적당한 거리 판단",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "함께 지내기",
+    "성취기준": "근거 문항 SO-003(imankeum) — 좁은 공간에서 다른 사람과 알맞은 거리를 둔다"
+  },
+  "narrative": {
+    "intro": "story.md#so-elevator-intro",
+    "clear": "story.md#so-elevator-clear",
+    "extra": { "toolow": "story.md#so-elevator-toolow", "toohigh": "story.md#so-elevator-toohigh" },
+    "notes": ["note-16"]
+  },
+  "trigger": { "map": "social-room", "objectId": "elevator-distance" },
+  "reward": { "event": "code:elevator-solved" },
+  "testIds": { "root": "puzzle-elevator", "solveCheck": "elevator-done" },
+  "principle": [
+    "좁은 공간에서는 서로 어깨가 닿지 않을 만큼만 거리를 두면 된다.",
+    "너무 붙으면 불편하고, 너무 멀면 다른 사람이 탈 자리가 없어진다."
+  ],
+  "hints": [
+    "빈 곳이 있는지 먼저 봐요.",
+    "서로 어깨가 닿지 않을 정도를 떠올려 보세요.",
+    "지금보다 한 단계만 가까이 가거나 멀어져 보세요."
+  ]
+}

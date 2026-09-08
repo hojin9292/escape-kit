@@ -1,0 +1,100 @@
+.ob-shelf-root {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.ob-shelf-sign {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.ob-shelf-slots {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.ob-shelf-slot {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 56px;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--corner-radius);
+  border: 2px dashed var(--color-line);
+  background: var(--color-bg-void, #101318);
+  color: var(--color-text);
+}
+
+.ob-shelf-slot.filled {
+  border-style: solid;
+  background: var(--color-bg-deep);
+}
+
+.ob-shelf-slot-index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-hologram) 25%, transparent);
+  color: var(--color-hologram);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.ob-shelf-slot-label {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.ob-shelf-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.ob-shelf-card {
+  min-height: 52px;
+  min-width: 96px;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--corner-radius);
+  border: 2px solid var(--color-line);
+  background: var(--color-bg-deep);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ob-shelf-undo-btn {
+  align-self: center;
+  min-height: 44px;
+  padding: 0.4rem 1.1rem;
+  border-radius: var(--corner-radius);
+  border: 2px solid var(--color-line);
+  background: var(--color-bg-deep);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ob-shelf-state {
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+  min-height: 1.4rem;
+  color: var(--color-danger);
+}
+
+.ob-shelf-done {
+  text-align: center;
+  font-weight: 800;
+  color: var(--color-success);
+}

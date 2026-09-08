@@ -1,0 +1,29 @@
+{
+  "id": "distance-shelf-order",
+  "title": "거리 진열대 — 가까운 것부터 먼 것 순으로",
+  "act": 1,
+  "concept": "서열 판단 — 같은 거리두기, 다른 알맞은 정도(일반화)",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "함께 지내기",
+    "성취기준": "근거 문항 SO-004·SO-002·SO-001·SO-005(imankeum) — 상황에 따라 알맞은 거리가 다름을 서열로 안다"
+  },
+  "narrative": {
+    "intro": "story.md#so-shelf-open",
+    "clear": "story.md#so-shelf-clear",
+    "extra": { "wrong": "story.md#so-shelf-wrong" },
+    "notes": ["note-20"]
+  },
+  "trigger": { "map": "social-room", "objectId": "distance-shelf-order" },
+  "reward": { "event": "door:social-open" },
+  "testIds": { "root": "puzzle-so-shelf", "solveCheck": "so-shelf-done" },
+  "principle": [
+    "사진 찍기·급식 줄·친구와 대화·모르는 사람 옆 — 전부 거리를 두는 건데도 알맞은 정도는 다 다르다.",
+    "친할수록 가깝게, 낯설수록 멀게 — 그게 '적당히'다."
+  ],
+  "hints": [
+    "사진 찍을 때랑 모르는 사람 옆에 설 때, 어느 쪽이 더 가까울까?",
+    "제일 가까운 건 사진 찍을 때야.",
+    "사진 찍기 → 급식 줄 → 친구와 이야기 → 모르는 사람 옆 순서예요."
+  ]
+}

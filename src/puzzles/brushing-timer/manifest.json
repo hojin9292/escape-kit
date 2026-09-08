@@ -1,0 +1,40 @@
+{
+  "id": "brushing-timer",
+  "title": "양치 시간 — 네 군데를 한 번씩",
+  "act": 1,
+  "concept": "적당한 지속시간 판단 — 골고루 다 됐는가 관찰하기",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "몸과 주변을 깨끗이 하기",
+    "성취기준": "근거 문항 HY-009(imankeum) — 이 닦는 시간을 알맞게 판단한다(예외: curriculum-map.md 참조 — 반응속도 요소 제거)"
+  },
+  "narrative": {
+    "intro": "story.md#hy-brush-intro",
+    "clear": "story.md#hy-brush-clear",
+    "extra": {
+      "toolow": "story.md#hy-brush-toolow",
+      "toohigh": "story.md#hy-brush-toohigh"
+    },
+    "notes": ["note-03"]
+  },
+  "trigger": {
+    "map": "hygiene-room",
+    "objectId": "brushing-timer"
+  },
+  "reward": {
+    "event": "code:brush-solved"
+  },
+  "testIds": {
+    "root": "puzzle-brush",
+    "solveCheck": "brush-done"
+  },
+  "principle": [
+    "양치는 오래 한다고 좋은 게 아니라 골고루 하는 게 중요하다.",
+    "앞니, 왼쪽·오른쪽 어금니, 안쪽 — 네 군데가 한 번씩 닦였으면 충분하다."
+  ],
+  "hints": [
+    "앞니, 옆니, 안쪽까지 돌아가며 닦았는지 떠올려봐요.",
+    "화면에서 아직 밝아지지 않은 부위가 있는지 봐요.",
+    "네 군데가 전부 한 번씩 밝아졌으면 눌러도 돼요."
+  ]
+}

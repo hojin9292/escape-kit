@@ -1,0 +1,29 @@
+{
+  "id": "bag-space",
+  "title": "가방 자리 — 무릎 위에서 벗어나지 않게",
+  "act": 1,
+  "concept": "적당한 공간 판단",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "함께 지내기",
+    "성취기준": "근거 문항 SO-015(imankeum) — 공공 좌석에서 내 물건이 차지하는 공간을 조절한다"
+  },
+  "narrative": {
+    "intro": "story.md#so-bag-intro",
+    "clear": "story.md#so-bag-clear",
+    "extra": { "toolow": "story.md#so-bag-toolow", "toohigh": "story.md#so-bag-toohigh" },
+    "notes": ["note-19"]
+  },
+  "trigger": { "map": "social-room", "objectId": "bag-space" },
+  "reward": { "event": "code:bag-solved" },
+  "testIds": { "root": "puzzle-bag", "solveCheck": "bag-done" },
+  "principle": [
+    "공공 좌석에서는 다른 사람의 자리와 통로를 막지 않게 물건을 둔다.",
+    "가방이 내 무릎 위에서 벗어나지 않으면 충분하다."
+  ],
+  "hints": [
+    "좌석 경계선과 통로를 봐요.",
+    "가방이 내 무릎 위 정도에 있는지 떠올려 보세요.",
+    "지금보다 한 단계만 줄이거나 늘려 보세요."
+  ]
+}

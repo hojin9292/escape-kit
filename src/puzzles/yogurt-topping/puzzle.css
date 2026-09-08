@@ -1,0 +1,68 @@
+.topping-root {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.topping-sign {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.topping-svg {
+  width: 100%;
+  max-width: 260px;
+  align-self: center;
+  aspect-ratio: 1 / 1;
+}
+
+.topping-bowl {
+  fill: color-mix(in srgb, #8a4a12 70%, var(--color-bg-deep));
+  stroke: var(--color-line);
+  stroke-width: 2.5;
+}
+
+.topping-white {
+  fill: var(--color-screen-bright, #e1e9f6);
+  transition: r 0.2s ease, opacity 0.2s ease;
+}
+
+.topping-state {
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+  min-height: 1.4rem;
+}
+
+.topping-state[data-level="low"] {
+  color: var(--color-hologram);
+}
+
+.topping-state[data-level="good"] {
+  color: var(--color-success);
+}
+
+.topping-state[data-level="high"] {
+  color: var(--color-danger);
+}
+
+.topping-confirm-btn {
+  min-height: 52px;
+  min-width: 120px;
+  padding: 0.5rem 1.4rem;
+  border-radius: var(--corner-radius);
+  border: 2px solid var(--color-success);
+  background: color-mix(in srgb, var(--color-success) 16%, transparent);
+  color: var(--color-success);
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.topping-done {
+  text-align: center;
+  font-weight: 800;
+  color: var(--color-success);
+}

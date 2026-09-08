@@ -1,0 +1,29 @@
+{
+  "id": "crosswalk-signal",
+  "title": "횡단보도 — 초록불에 차가 멈춘 뒤",
+  "act": 1,
+  "concept": "안전한 때 판단 — 관찰형",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "시간과 횟수",
+    "성취기준": "근거 문항 TI-014(imankeum) — 신호를 확인하고 안전한 때 건넌다"
+  },
+  "narrative": {
+    "intro": "story.md#ti-crosswalk-intro",
+    "clear": "story.md#ti-crosswalk-clear",
+    "extra": { "toolow": "story.md#ti-crosswalk-toolow", "toohigh": "story.md#ti-crosswalk-toohigh" },
+    "notes": ["note-28"]
+  },
+  "trigger": { "map": "time-room", "objectId": "crosswalk-signal" },
+  "reward": { "event": "code:crosswalk-solved" },
+  "testIds": { "root": "puzzle-crosswalk", "solveCheck": "crosswalk-done" },
+  "principle": [
+    "횡단보도에서는 초록불이 켜지고 차가 멈춘 것을 눈으로 본 뒤 건넌다.",
+    "빨간불에 건너면 위험하고, 깜빡이는 초록불에 출발하면 중간에 신호가 바뀐다."
+  ],
+  "hints": [
+    "신호등 색을 꼭 확인해봐요.",
+    "초록불이 켜지고 차가 멈췄는지 봐요.",
+    "깜빡이기 시작하면 이미 늦은 거예요."
+  ]
+}

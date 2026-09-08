@@ -1,12 +1,22 @@
 import type { GameMap } from "./types";
-import { sonicRoom } from "./sonic-room";
+import { hygieneRoom } from "./hygiene-room";
+import { foodRoom } from "./food-room";
+import { communicationRoom } from "./communication-room";
+import { socialRoom } from "./social-room";
+import { objectsRoom } from "./objects-room";
+import { timeRoom } from "./time-room";
 
 export const maps: Record<string, GameMap> = {
-  [sonicRoom.id]: sonicRoom,
+  [hygieneRoom.id]: hygieneRoom,
+  [foodRoom.id]: foodRoom,
+  [communicationRoom.id]: communicationRoom,
+  [socialRoom.id]: socialRoom,
+  [objectsRoom.id]: objectsRoom,
+  [timeRoom.id]: timeRoom,
 };
 
 /** 프롤로그 다음에 들어서는 첫 방. 이어하기 저장이 없을 때의 시작 지점이기도 하다. */
-export const FIRST_ROOM = sonicRoom;
+export const FIRST_ROOM = hygieneRoom;
 
 /**
  * 방 사슬 — 순서대로 진행되며, 각 방의 unlockEvent가 발화되면 다음 방의 문이 열린다.
@@ -18,5 +28,23 @@ export const FIRST_ROOM = sonicRoom;
  * 마지막 방의 출구는 `door: { ending: true }`로 엔딩을 담당한다.
  */
 export const ROOM_CHAIN: { id: string; unlockEvent: string }[] = [
-  { id: sonicRoom.id, unlockEvent: "door:sonic-open" },
+  { id: hygieneRoom.id, unlockEvent: "door:hygiene-open" },
+  { id: foodRoom.id, unlockEvent: "door:food-open" },
+  { id: communicationRoom.id, unlockEvent: "door:communication-open" },
+  { id: socialRoom.id, unlockEvent: "door:social-open" },
+  { id: objectsRoom.id, unlockEvent: "door:objects-open" },
+  { id: timeRoom.id, unlockEvent: "door:time-open" },
 ];
+
+/**
+ * 첫 방을 뺀 나머지 방의 입장 대사 앵커 — main.ts의 registerRoomIntros가 map:enter로
+ * 재생한다. 첫 방(FIRST_ROOM)은 프롤로그 대사 뒤에 와야 하므로 여기 넣지 않고
+ * startPrologue에서 직접 재생한다.
+ */
+export const ROOM_INTRO_ANCHOR: Record<string, string> = {
+  [foodRoom.id]: "#fo-room-intro",
+  [communicationRoom.id]: "#co-room-intro",
+  [socialRoom.id]: "#so-room-intro",
+  [objectsRoom.id]: "#ob-room-intro",
+  [timeRoom.id]: "#ti-room-intro",
+};
