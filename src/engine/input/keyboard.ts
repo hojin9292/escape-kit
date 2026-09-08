@@ -22,7 +22,7 @@ export class KeyboardInput {
         this.pressed.add(e.code);
         e.preventDefault();
       }
-      if (e.code === "KeyE" || e.code === "Space") this.onInteract?.();
+      if (!e.repeat && (e.code === "KeyE" || e.code === "Space")) this.onInteract?.();
     };
     const up = (e: KeyboardEvent) => this.pressed.delete(e.code);
     /**

@@ -10,6 +10,7 @@ const KNOB_RADIUS = 40; // 노브 최대 이동 반경(px)
 export class VirtualJoystick {
   private dir: [number, number] = [0, 0];
   private root: HTMLElement;
+  private act: HTMLButtonElement;
   private detach: (() => void)[] = [];
 
   constructor(host: HTMLElement, onInteract: () => void) {
@@ -24,6 +25,7 @@ export class VirtualJoystick {
     base.appendChild(knob);
 
     const act = document.createElement("button");
+    this.act = act;
     act.className = "act-button";
     act.dataset.testid = "act-button";
     act.textContent = "살펴보기";
@@ -51,6 +53,33 @@ export class VirtualJoystick {
     );
 
     act.addEventListener("click", onInteract);
+    const reset = () => {
+      this.dir = [0, 0];
+      knob.style.transform = "";
+    };
+    const onVisibility = () => { if (document.hidden) reset(); };
+    window.addEventListener("blur", reset);
+    document.addEventListener("visibilitychange", onVisibility);
+    base.addEventListener("lostpointercapture", reset);
+    this.detach.push(() => {
+      window.removeEventListener("blur", reset);
+      document.removeEventListener("visibilitychange", onVisibility);
+      base.removeEventListener("lostpointercapture", reset);
+      act.removeEventListener("click", onInteract);
+    });
+  }
+
+  /** 도달 가능한 대상이 있을 때만 상호작용을 켠다. */
+  setTarget(name: string | null, blocked: boolean): void {
+    const ready = !!name && !blocked;
+    if (this.act.disabled !== !ready) this.act.disabled = !ready;
+    const label = ready ? `${name} 살펴보기` : "물건 가까이 이동해요";
+    if (this.act.getAttribute("aria-label") !== label) {
+      this.act.setAttribute("aria-label", label);
+      this.act.title = label;
+      this.act.textContent = ready ? "살펴보기" : "가까이 가요";
+    }
+    if (blocked) this.dir = [0, 0];
   }
 
   /** 현재 화면 기준 방향 (정규화) */

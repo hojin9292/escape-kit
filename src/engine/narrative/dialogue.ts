@@ -55,9 +55,10 @@ function showDialogueNow(anchor: string, host: HTMLElement): Promise<void> {
     text.className = "dialogue-text";
     setInline(text, entry.text);
 
-    const hint = document.createElement("div");
+    const hint = document.createElement("button");
+    hint.type = "button";
     hint.className = "dialogue-hint";
-    hint.textContent = "▼ 계속";
+    hint.textContent = "계속 →";
 
     box.append(speaker, text, hint);
     host.appendChild(box);
@@ -84,6 +85,7 @@ function showDialogueNow(anchor: string, host: HTMLElement): Promise<void> {
         // preventDefault 없으면 브라우저 기본 동작이 포커스된 버튼(마지막으로 클릭한
         // 퍼즐 버튼 등)을 다시 눌러, 대사를 넘길 때마다 유령 클릭이 난다
         e.preventDefault();
+        if (e.repeat) return;
         advance();
       }
     };
@@ -91,7 +93,30 @@ function showDialogueNow(anchor: string, host: HTMLElement): Promise<void> {
       if (!box.isConnected) settle();
     });
     observer.observe(document.body, { childList: true, subtree: true });
-    box.addEventListener("pointerup", advance);
+    // 읽기 위한 스크롤은 대사를 넘기는 탭과 구분한다.
+    let touchStart: { id: number; x: number; y: number; scroll: number } | null = null;
+    let dragged = false;
+    box.addEventListener("pointerdown", (e) => {
+      if (touchStart || e.button !== 0) return;
+      touchStart = { id: e.pointerId, x: e.clientX, y: e.clientY, scroll: box.scrollTop };
+      dragged = false;
+    });
+    box.addEventListener("pointermove", (e) => {
+      if (touchStart?.id === e.pointerId &&
+        Math.hypot(e.clientX - touchStart.x, e.clientY - touchStart.y) > 8) dragged = true;
+    });
+    box.addEventListener("pointercancel", () => { touchStart = null; });
+    box.addEventListener("pointerleave", () => {
+      touchStart = null;
+      dragged = true;
+    });
+    box.addEventListener("pointerup", (e) => {
+      if (touchStart?.id !== e.pointerId) return;
+      const tapped = !dragged && Math.abs(box.scrollTop - touchStart.scroll) < 2;
+      touchStart = null;
+      if (tapped && !hint.contains(e.target as Node)) advance();
+    });
+    hint.addEventListener("click", () => { if (!dragged) advance(); });
     window.addEventListener("keydown", onKey);
   });
 }

@@ -327,7 +327,7 @@ export class Game {
     const roomIndex = Math.max(0, ROOM_CHAIN.findIndex((r) => r.id === this.map.id));
     const missions = this.map.objects.flatMap((o) => {
       const puzzle = o.puzzleId ? findPuzzle(o.puzzleId) : undefined;
-      return puzzle ? [{ name: o.name, event: puzzle.manifest.reward.event }] : [];
+      return puzzle ? [{ object: o, name: o.name, event: puzzle.manifest.reward.event }] : [];
     });
     const done = missions.filter((m) => this.firedEvents.has(m.event)).length;
 
@@ -342,14 +342,27 @@ export class Game {
     progress.setAttribute("aria-label", `미션 ${done}개 완료, 전체 ${missions.length}개`);
     for (let i = 0; i < missions.length; i++) {
       const dot = document.createElement("span");
-      dot.className = i < done ? "done" : "";
-      dot.textContent = i < done ? "✓" : "";
+      const mission = missions[i];
+      const complete = this.firedEvents.has(mission.event);
+      dot.className = complete ? "done" : "";
+      dot.textContent = complete ? "✓" : mission.object.icon ?? String(i + 1);
+      dot.title = `${mission.name} · ${complete ? "완료" : "아직"}`;
+      dot.setAttribute("aria-label", dot.title);
       progress.appendChild(dot);
     }
     const count = document.createElement("span");
     count.className = "room-hud-count";
     count.textContent = `미션 ${done} / ${missions.length}`;
-    this.roomHud.replaceChildren(kicker, title, progress, count);
+    const next = missions.find((m) => !this.firedEvents.has(m.event) &&
+      !this.map.sealed?.some((s) => !this.sealOpen(s) && s.area.some((a) =>
+        m.object.tile[0] >= a.x0 && m.object.tile[0] <= a.x1 &&
+        m.object.tile[1] >= a.y0 && m.object.tile[1] <= a.y1)));
+    const hint = document.createElement("span");
+    hint.className = "room-hud-next";
+    hint.textContent = done === missions.length
+      ? "🚪 문으로 이동해요"
+      : next ? `${next.object.icon ?? "👉"} ${next.name}부터 살펴봐요` : "열린 장치를 살펴봐요";
+    this.roomHud.replaceChildren(kicker, title, progress, count, hint);
   }
 
   private persist(): void {
@@ -572,6 +585,9 @@ export class Game {
       }
     }
     this.nearObject = best;
+
+    this.joystick?.setTarget(best?.name ?? null,
+      this.dialogueOpen || isDialogueBusy() || this.isJournalOpen());
 
     // 대사·퍼즐·저널 중엔 이동 정지 (스토리 진행 대사 포함 — isDialogueBusy)
     if (this.dialogueOpen || isDialogueBusy() || this.isJournalOpen()) {
@@ -1548,7 +1564,7 @@ export class Game {
     // 근접 상호작용 링 — 지금 상호작용 대상이 된 오브젝트의 발밑에 깔리는 아이소 고리.
     // 2막 레이저 벤치처럼 배경 그림에 그려져 스프라이트가 없는 장치는 라벨 말고는
     // "여기가 그 장치다"라는 신호가 전혀 없었다. 어둠 오버레이 위에 그려 암실에서도 보인다.
-    if (this.nearObject && !this.dialogueOpen) {
+    if (this.nearObject && !this.dialogueOpen && !isDialogueBusy() && !this.isJournalOpen()) {
       const obj = this.nearObject;
       const [sx, sy] = worldToScreen(obj.tile[0], obj.tile[1]);
       const img = obj.sprite ? this.sprites[obj.sprite] : undefined;

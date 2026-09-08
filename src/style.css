@@ -489,11 +489,24 @@ body {
 }
 
 .dialogue-hint {
+  display: block;
+  margin-left: auto;
+  min-height: 44px;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--color-hologram);
+  border-radius: var(--corner-radius);
+  background: var(--color-bg-deep);
+  font-family: inherit;
+  cursor: pointer;
   text-align: right;
-  color: var(--color-line);
+  color: var(--color-text);
   font-size: 0.75rem;
   margin-top: 0.5rem;
-  animation: dialogue-blink 1.2s infinite;
+}
+
+.dialogue-hint:focus-visible {
+  outline: 2px solid var(--color-success);
+  outline-offset: 3px;
 }
 
 @keyframes dialogue-blink {
@@ -942,19 +955,39 @@ mark.key-phrase {
 .room-hud-progress span {
   display: grid;
   place-items: center;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
   border: 1px solid color-mix(in srgb, var(--color-line) 72%, transparent);
   border-radius: 50%;
-  color: var(--color-bg-void);
-  font-size: 0.58rem;
+  color: var(--color-text);
+  font-size: 0.72rem;
   font-weight: 900;
 }
 
 .room-hud-progress span.done {
+  color: var(--color-bg-void);
   border-color: var(--color-success);
   background: var(--color-success);
   box-shadow: 0 0 5px color-mix(in srgb, var(--color-success) 52%, transparent);
+}
+
+.room-hud-next {
+  grid-column: 1 / -1;
+  font-size: 0.7rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  border-top: 1px solid var(--color-line);
+  padding-top: 0.3rem;
+  margin-top: 0.15rem;
+}
+
+.act-button:disabled {
+  opacity: 0.55;
+  border-color: var(--color-line);
+  color: var(--color-text);
+  cursor: default;
 }
 
 /* ── 연구노트 저널 ─────────────────────────── */
