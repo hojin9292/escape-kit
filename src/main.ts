@@ -326,8 +326,8 @@ function showHowToPlay(app: HTMLElement): void {
   close.focus();
 }
 
-/** 새 시작 시 캐릭터 선택 — 픽셀 스프라이트 2종 중 탭 */
-function showCharSelect(app: HTMLElement): Promise<"m" | "f"> {
+/** 새 시작 시 한 명의 주인공 호진티를 소개한다. */
+function showCharSelect(app: HTMLElement): Promise<"m"> {
   return new Promise((resolve) => {
     const screen = document.createElement("div");
     screen.className = "char-select";
@@ -340,23 +340,21 @@ function showCharSelect(app: HTMLElement): Promise<"m" | "f"> {
     const row = document.createElement("div");
     row.className = "char-select-row";
 
-    for (const g of ["m", "f"] as const) {
-      const btn = document.createElement("button");
-      btn.className = "char-select-btn";
-      btn.dataset.testid = `char-${g}`;
-      const img = document.createElement("img");
-      img.src = `${BASE}assets/char-${g}-se-idle.png`;
-      img.alt = g === "m" ? "남학생" : "여학생";
-      const label = document.createElement("span");
-      label.textContent = g === "m" ? "친구 하나" : "친구 두리";
-      btn.append(img, label);
-      btn.addEventListener("click", () => {
-        Sfx.confirm();
-        screen.remove();
-        resolve(g);
-      });
-      row.appendChild(btn);
-    }
+    const btn = document.createElement("button");
+    btn.className = "char-select-btn";
+    btn.dataset.testid = "char-m";
+    const img = document.createElement("img");
+    img.src = `${BASE}assets/char-m-se-idle.png`;
+    img.alt = "안경을 쓰고 주황색 가방을 멘 호진티";
+    const label = document.createElement("span");
+    label.textContent = "호진티와 출발하기";
+    btn.append(img, label);
+    btn.addEventListener("click", () => {
+      Sfx.confirm();
+      screen.remove();
+      resolve("m");
+    });
+    row.appendChild(btn);
 
     screen.append(title, row);
     app.appendChild(screen);

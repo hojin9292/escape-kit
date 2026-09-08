@@ -431,13 +431,13 @@ body {
 }
 
 .char-select-btn {
-  width: 132px;
-  height: 172px;
+  width: min(260px, calc(100vw - 48px));
+  height: 292px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
+  gap: 0.5rem;
   border: var(--stroke-outline) solid var(--color-line);
   border-radius: var(--corner-radius);
   background: color-mix(in srgb, var(--color-hologram) 6%, transparent);
@@ -450,13 +450,16 @@ body {
   box-shadow: 0 0 var(--glow-blur) color-mix(in srgb, var(--color-hologram) 50%, transparent);
 }
 .char-select-btn img {
-  width: 84px;
-  image-rendering: pixelated;
+  width: 210px;
+  max-height: 228px;
+  object-fit: contain;
+  image-rendering: auto;
 }
 .char-select-btn span {
   color: var(--color-text);
   font-family: inherit;
-  font-size: 0.82rem;
+  font-size: 1rem;
+  font-weight: 800;
 }
 
 /* ── 내러티브 대사 박스 (홀로그램 프레임) ────── */
@@ -616,6 +619,15 @@ body {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+}
+
+.puzzle-tool-art {
+  display: block;
+  width: min(300px, 72vw);
+  height: clamp(92px, 18vh, 142px);
+  margin: 0 auto 0.45rem;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.28));
 }
 
 /* "아래 더 있음" 안내 — 프레임 배경색과 같은 식이라야 이어져 보인다(.puzzle-frame과 동일).
@@ -1467,7 +1479,7 @@ mark.key-phrase {
   }
   .char-select-btn {
     min-width: 0;
-    flex: 1 1 0;
+    flex: 0 1 260px;
   }
   .room-hud {
     top: max(58px, calc(env(safe-area-inset-top) + 48px));

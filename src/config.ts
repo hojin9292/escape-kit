@@ -19,8 +19,8 @@ export const TITLE_FEATURES = [
 /** 시작 버튼 (저장된 진행이 있으면 '처음부터'가 대신 나온다) */
 export const START_LABEL = "시작하기";
 
-/** 캐릭터 선택 화면 안내문 */
-export const CHAR_SELECT_LABEL = "누구랑 함께 할까?";
+/** 주인공 소개 화면 안내문 */
+export const CHAR_SELECT_LABEL = "호진티와 함께 출발해요!";
 
 /** 타이틀 하단 제작자 표기 */
 export const CREDIT = "만든 사람: 딱! 이만큼";

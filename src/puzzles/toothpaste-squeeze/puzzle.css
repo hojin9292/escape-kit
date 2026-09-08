@@ -12,9 +12,9 @@
 
 .tooth-svg {
   width: 100%;
-  max-width: 320px;
+  max-width: 440px;
   align-self: center;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 2 / 1;
 }
 
 .tooth-brush {
@@ -27,6 +27,12 @@
   fill: color-mix(in srgb, var(--color-hologram) 25%, transparent);
   stroke: var(--color-line);
   stroke-width: 2.5;
+}
+
+.tooth-bristles rect {
+  fill: #8fd8ff;
+  stroke: var(--color-line);
+  stroke-width: 2;
 }
 
 .tooth-blob {

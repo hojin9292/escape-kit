@@ -26,16 +26,16 @@ export async function dismissDialogues(page: Page): Promise<void> {
   await expect(dialogue).toBeHidden();
 }
 
-/** 타이틀 → 캐릭터 선택 → 프롤로그 대사들을 넘겨 첫 방에 진입 (항상 새 시작) */
-export async function enterRoom(page: Page, character: "m" | "f" = "m", path = "/"): Promise<void> {
+/** 타이틀 → 호진티 소개 → 프롤로그 대사들을 넘겨 첫 방에 진입 (항상 새 시작) */
+export async function enterRoom(page: Page, path = "/"): Promise<void> {
   await page.goto(path);
   await expect(page.getByTestId("title-screen")).toBeVisible();
   // 새 시작 버튼: 진행이 없으면 config.START_LABEL, 있으면 '처음부터' — 둘 다 start-button
   await page.getByTestId("start-button").click();
 
-  // 캐릭터 선택 (새 시작 전용 단계)
+  // 단일 주인공 호진티 소개 (새 시작 전용 단계)
   await expect(page.getByTestId("char-select")).toBeVisible();
-  await page.getByTestId(`char-${character}`).click();
+  await page.getByTestId("char-m").click();
 
   // 프롤로그 첫 대사.
   // ⚠ 여기서 **화자 이름이나 대사 내용을 단언하지 않는다.** 이 헬퍼는 모든 spec이
@@ -52,8 +52,8 @@ export async function enterRoom(page: Page, character: "m" | "f" = "m", path = "
 }
 
 /** 「깨끗한 방」(hygiene-room)으로 진입. 지금은 첫 방이므로 enterRoom이 곧 이 방이다. */
-export async function enterHygieneRoom(page: Page, character: "m" | "f" = "m"): Promise<void> {
-  await enterRoom(page, character, "/?grid");
+export async function enterHygieneRoom(page: Page): Promise<void> {
+  await enterRoom(page, "/?grid");
   await expect
     .poll(() => page.evaluate(() => (window as never as { __qe: { map: string } }).__qe.map))
     .toBe("hygiene-room");
@@ -62,8 +62,8 @@ export async function enterHygieneRoom(page: Page, character: "m" | "f" = "m"): 
 /** 「먹고 마시는 방」(food-room)으로 워프 — 앞 방(hygiene-room)의 사슬 이벤트를
  *  전부 발화시키고 스폰에 놓는다. 앞 방 자체를 다시 검증할 필요가 없는 food-room
  *  전용 스펙에서 쓴다(?grid 모드 전용 디버그 훅, README "__qe.warp" 참조). */
-export async function enterFoodRoom(page: Page, character: "m" | "f" = "m"): Promise<void> {
-  await enterRoom(page, character, "/?grid");
+export async function enterFoodRoom(page: Page): Promise<void> {
+  await enterRoom(page, "/?grid");
   await page.evaluate(() => (window as never as { __qe: { warp: (id: string) => string } }).__qe.warp("food-room"));
   await expect
     .poll(() => page.evaluate(() => (window as never as { __qe: { map: string } }).__qe.map))
@@ -72,8 +72,8 @@ export async function enterFoodRoom(page: Page, character: "m" | "f" = "m"): Pro
 }
 
 /** 「말하고 듣는 방」(communication-room)으로 워프 — enterFoodRoom과 같은 이유. */
-export async function enterCommunicationRoom(page: Page, character: "m" | "f" = "m"): Promise<void> {
-  await enterRoom(page, character, "/?grid");
+export async function enterCommunicationRoom(page: Page): Promise<void> {
+  await enterRoom(page, "/?grid");
   await page.evaluate(() =>
     (window as never as { __qe: { warp: (id: string) => string } }).__qe.warp("communication-room"),
   );
@@ -84,8 +84,8 @@ export async function enterCommunicationRoom(page: Page, character: "m" | "f" = 
 }
 
 /** 「함께 지내는 방」(social-room)으로 워프 — enterFoodRoom과 같은 이유. */
-export async function enterSocialRoom(page: Page, character: "m" | "f" = "m"): Promise<void> {
-  await enterRoom(page, character, "/?grid");
+export async function enterSocialRoom(page: Page): Promise<void> {
+  await enterRoom(page, "/?grid");
   await page.evaluate(() =>
     (window as never as { __qe: { warp: (id: string) => string } }).__qe.warp("social-room"),
   );
@@ -96,8 +96,8 @@ export async function enterSocialRoom(page: Page, character: "m" | "f" = "m"): P
 }
 
 /** 「물건 쓰는 방」(objects-room)으로 워프 — enterFoodRoom과 같은 이유. */
-export async function enterObjectsRoom(page: Page, character: "m" | "f" = "m"): Promise<void> {
-  await enterRoom(page, character, "/?grid");
+export async function enterObjectsRoom(page: Page): Promise<void> {
+  await enterRoom(page, "/?grid");
   await page.evaluate(() =>
     (window as never as { __qe: { warp: (id: string) => string } }).__qe.warp("objects-room"),
   );
@@ -108,8 +108,8 @@ export async function enterObjectsRoom(page: Page, character: "m" | "f" = "m"): 
 }
 
 /** 「시간과 횟수 방」(time-room, 마지막 방)으로 워프 — enterFoodRoom과 같은 이유. */
-export async function enterTimeRoom(page: Page, character: "m" | "f" = "m"): Promise<void> {
-  await enterRoom(page, character, "/?grid");
+export async function enterTimeRoom(page: Page): Promise<void> {
+  await enterRoom(page, "/?grid");
   await page.evaluate(() =>
     (window as never as { __qe: { warp: (id: string) => string } }).__qe.warp("time-room"),
   );

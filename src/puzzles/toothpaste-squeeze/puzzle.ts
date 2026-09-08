@@ -33,40 +33,52 @@ export const toothpasteSqueeze: PuzzleModule = {
 
     // ── 그림: 칫솔 위 치약 덩어리 ────────────────────────
     const view = svgEl("svg");
-    view.setAttribute("viewBox", "0 0 100 100");
+    view.setAttribute("viewBox", "0 0 320 160");
     view.classList.add("tooth-svg");
     view.dataset.testid = "tooth-view";
 
+    const handle = svgEl("path");
+    handle.setAttribute(
+      "d",
+      "M88 91 H270 C287 91 299 102 299 116 C299 130 287 141 270 141 H101 C88 141 78 131 78 118 V105 C78 98 82 93 88 91 Z",
+    );
+    handle.classList.add("tooth-handle");
+
     const brush = svgEl("rect");
-    brush.setAttribute("x", "14");
-    brush.setAttribute("y", "62");
-    brush.setAttribute("width", "72");
-    brush.setAttribute("height", "9");
-    brush.setAttribute("rx", "4");
+    brush.setAttribute("x", "20");
+    brush.setAttribute("y", "96");
+    brush.setAttribute("width", "92");
+    brush.setAttribute("height", "39");
+    brush.setAttribute("rx", "18");
     brush.classList.add("tooth-brush");
 
-    const handle = svgEl("rect");
-    handle.setAttribute("x", "70");
-    handle.setAttribute("y", "58");
-    handle.setAttribute("width", "18");
-    handle.setAttribute("height", "17");
-    handle.setAttribute("rx", "5");
-    handle.classList.add("tooth-handle");
+    const bristles = svgEl("g");
+    bristles.classList.add("tooth-bristles");
+    for (let i = 0; i < 5; i += 1) {
+      const bristle = svgEl("rect");
+      bristle.setAttribute("x", String(31 + i * 15));
+      bristle.setAttribute("y", String(75 + (i % 2) * 3));
+      bristle.setAttribute("width", "11");
+      bristle.setAttribute("height", String(29 - (i % 2) * 3));
+      bristle.setAttribute("rx", "4");
+      bristles.appendChild(bristle);
+    }
 
     const blob = svgEl("ellipse");
     blob.classList.add("tooth-blob");
-    blob.setAttribute("cy", "62");
+    blob.setAttribute("cy", "78");
 
-    view.append(brush, handle, blob);
+    view.append(handle, brush, bristles, blob);
 
     function drawBlob(): void {
       const value = stepToValue(step);
-      const w = 2 + (value / 100) * 68;
-      const h = value <= 0 ? 0 : 4 + (value / 100) * 30;
+      const w = 2 + (value / 100) * 52;
+      const h = value <= 0 ? 0 : 3 + (value / 100) * 18;
       blob.setAttribute("rx", String(w / 2));
       blob.setAttribute("ry", String(h));
-      blob.setAttribute("cx", String(14 + w / 2));
-      blob.setAttribute("cy", String(62 - h / 2));
+      // 치약은 칫솔모 중앙(66, 78)을 기준으로만 자란다.
+      blob.setAttribute("cx", "66");
+      blob.setAttribute("cy", String(77 - h / 2));
       blob.style.opacity = value <= 0 ? "0" : "1";
     }
 

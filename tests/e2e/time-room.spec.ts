@@ -54,7 +54,7 @@ test("「시간과 횟수 방」 완주 — 네 가지를 풀고 서열을 맞�
 }) => {
   test.setTimeout(240_000);
   const isMobile = test.info().project.name === "mobile";
-  await enterTimeRoom(page, isMobile ? "f" : "m");
+  await enterTimeRoom(page);
 
   await openStation(page, isMobile, 4, 3, "puzzle-microwave");
   await page.waitForTimeout(MICROWAVE_TICK_MS * MICROWAVE_SOLVE_STEP + 200);

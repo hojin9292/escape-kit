@@ -36,6 +36,14 @@ export function openPuzzle(module: PuzzleModule, host: HTMLElement): Promise<boo
     const body = document.createElement("div");
     body.className = "puzzle-body";
 
+    // 퍼즐마다 실제 생활 도구를 먼저 보여 준다. 조작 도형만 있을 때 생기던
+    // 추상적인 인상을 줄이고, 무엇을 연습하는지 한눈에 알아보게 한다.
+    const toolArt = document.createElement("img");
+    toolArt.className = "puzzle-tool-art";
+    toolArt.src = `${import.meta.env.BASE_URL}assets/tool-${module.manifest.id}.png`;
+    toolArt.alt = "";
+    toolArt.setAttribute("aria-hidden", "true");
+
     // 스크롤은 이 래퍼만 한다 — 프레임이 직접 스크롤하던 시절엔 absolute인 닫기(✕)와
     // 제목이 콘텐츠에 딸려 위로 사라졌다(모바일에서 나가는 길이 없어졌다).
     const scroll = document.createElement("div");
@@ -48,7 +56,7 @@ export function openPuzzle(module: PuzzleModule, host: HTMLElement): Promise<boo
     scrollMore.dataset.testid = "scroll-more";
     scrollMore.setAttribute("aria-hidden", "true");
 
-    scroll.append(body, scrollMore);
+    scroll.append(toolArt, body, scrollMore);
     frame.append(title, close, scroll);
 
     // 점진 공개 힌트 (설계서 3단계) — 있는 퍼즐만.
@@ -138,6 +146,7 @@ export function openPuzzle(module: PuzzleModule, host: HTMLElement): Promise<boo
     };
     scroll.addEventListener("scroll", syncScrollMore, { passive: true });
     const scrollRo = new ResizeObserver(syncScrollMore);
+    scrollRo.observe(toolArt);
     scrollRo.observe(body);
     scrollRo.observe(scroll);
 

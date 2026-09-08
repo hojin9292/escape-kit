@@ -89,7 +89,7 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
 test("「깨끗한 방」 완주 — 청소 4개를 풀면 정리대가 열리고, 서열을 맞히면 문이 열린다", async ({ page }) => {
   test.setTimeout(240_000);
   const isMobile = test.info().project.name === "mobile";
-  await enterHygieneRoom(page, isMobile ? "f" : "m");
+  await enterHygieneRoom(page);
 
   // P1 치약 짜기 — 정답 스텝만큼 짜고 확정
   await openStation(page, isMobile, 4, 3, "puzzle-tooth");

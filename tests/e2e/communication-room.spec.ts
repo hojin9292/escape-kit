@@ -71,7 +71,7 @@ test("「말하고 듣는 방」 완주 — 네 가지를 풀면 진열대가 �
 }) => {
   test.setTimeout(240_000);
   const isMobile = test.info().project.name === "mobile";
-  await enterCommunicationRoom(page, isMobile ? "f" : "m");
+  await enterCommunicationRoom(page);
 
   await openStation(page, isMobile, 4, 3, "puzzle-voice");
   for (let i = 0; i < VOICE_SOLVE_STEP; i++) await page.getByTestId("voice-up").click();

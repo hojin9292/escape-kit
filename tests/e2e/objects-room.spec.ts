@@ -72,7 +72,7 @@ test("「물건 쓰는 방」 완주 — 네 가지를 풀면 진열대가 열�
 }) => {
   test.setTimeout(240_000);
   const isMobile = test.info().project.name === "mobile";
-  await enterObjectsRoom(page, isMobile ? "f" : "m");
+  await enterObjectsRoom(page);
 
   await openStation(page, isMobile, 4, 3, "puzzle-pencil");
   await page.getByTestId(`pencil-level-${SOLVE_LEVEL}`).click();

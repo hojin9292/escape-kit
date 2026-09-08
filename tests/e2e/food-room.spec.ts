@@ -82,7 +82,7 @@ test("「먹고 마시는 방」 완주 — 식사 준비 4개를 풀면 정리�
 }) => {
   test.setTimeout(240_000);
   const isMobile = test.info().project.name === "mobile";
-  await enterFoodRoom(page, isMobile ? "f" : "m");
+  await enterFoodRoom(page);
 
   // P1 물 따르기
   await openStation(page, isMobile, 4, 3, "puzzle-water");

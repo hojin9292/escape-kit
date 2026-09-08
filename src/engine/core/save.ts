@@ -14,7 +14,7 @@ export interface SaveData {
   searched?: string[];
   /** 마지막으로 있던 방 (이어하기 시작 지점) */
   lastMap?: string;
-  /** 선택한 캐릭터 (남/여) */
+  /** 캐릭터 슬롯. f는 이전 버전 저장을 호진티로 이전하기 위해서만 허용한다. */
   character?: "m" | "f";
 }
 
@@ -29,7 +29,8 @@ export function loadProgress(): SaveData {
       items: Array.isArray(data.items) ? data.items : [],
       searched: Array.isArray(data.searched) ? data.searched : [],
       lastMap: typeof data.lastMap === "string" ? data.lastMap : undefined,
-      character: data.character === "f" ? "f" : data.character === "m" ? "m" : undefined,
+      // 이전 버전에서 다른 캐릭터를 골랐던 저장도 새 단일 주인공 호진티로 이어간다.
+      character: data.character === "f" || data.character === "m" ? "m" : undefined,
     };
   } catch {
     return { events: [], notes: [] };
