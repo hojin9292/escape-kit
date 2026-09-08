@@ -168,3 +168,5 @@ hygiene-room과 같은 뼈대로 2번 방을 만들고, hygiene-room의 출구�
 - 원본 생성 이미지는 256색 PNG로 최적화해 여섯 장 합계 용량을 약 9.3MB에서 2.7MB로
   줄였고, 육안 품질과 픽셀 아트의 선명한 경계는 유지했다.
 - `bash scripts/verify.sh quick` — story/anchors/layout/reach/typecheck/build/assets 전부 통과.
+- 실배포 화면에서 타이틀·캐릭터 선택·첫 방을 확인하고, 좁고 낮은 휴대폰에서 긴 대사가
+  잘리지 않도록 대사창에 안전영역 여백·최대 높이·내부 스크롤을 추가했다.
