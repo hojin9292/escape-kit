@@ -1,0 +1,29 @@
+{
+  "id": "homework-check",
+  "title": "숙제 확인 — 한두 번이면 충분해요",
+  "act": 1,
+  "concept": "적당한 횟수 판단 — 확인하는 횟수",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "시간과 횟수",
+    "성취기준": "근거 문항 TI-013(imankeum) — 제출 전 알맞은 횟수만큼 확인한다"
+  },
+  "narrative": {
+    "intro": "story.md#ti-homework-intro",
+    "clear": "story.md#ti-homework-clear",
+    "extra": { "toolow": "story.md#ti-homework-toolow", "toohigh": "story.md#ti-homework-toohigh" },
+    "notes": ["note-27"]
+  },
+  "trigger": { "map": "time-room", "objectId": "homework-check" },
+  "reward": { "event": "code:homework-solved" },
+  "testIds": { "root": "puzzle-homework", "solveCheck": "homework-done" },
+  "principle": [
+    "한두 번 전체를 확인한 뒤 제출하는 습관이 도움이 된다.",
+    "너무 여러 번 확인하면 오히려 시간이 늦어진다."
+  ],
+  "hints": [
+    "이름과 빠진 문항을 확인해봐요.",
+    "한 번 확인하고 이상이 없으면 충분해요.",
+    "이미 한두 번 확인했다면 그걸로 충분할 수 있어요."
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "friend-turn-wait",
+  "title": "친구 말 끝나기 — 겹치지 않게 기다리기",
+  "act": 1,
+  "concept": "적당한 기다림 판단",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "시간과 횟수",
+    "성취기준": "근거 문항 TI-018(imankeum) — 대화에서 상대의 말이 끝나는 신호를 기다린다"
+  },
+  "narrative": {
+    "intro": "story.md#ti-friend-intro",
+    "clear": "story.md#ti-friend-clear",
+    "extra": { "toolow": "story.md#ti-friend-toolow", "toohigh": "story.md#ti-friend-toohigh" },
+    "notes": ["note-29"]
+  },
+  "trigger": { "map": "time-room", "objectId": "friend-turn-wait" },
+  "reward": { "event": "code:friend-solved" },
+  "testIds": { "root": "puzzle-friend", "solveCheck": "friend-done" },
+  "principle": [
+    "대화에서는 상대방의 말이 끝나는 신호를 보고 번갈아 말한다.",
+    "너무 빨리 끼어들면 말이 겹치고, 너무 늦으면 이야기가 다른 주제로 넘어간다."
+  ],
+  "hints": [
+    "친구 말풍선의 마지막 문장을 확인해봐요.",
+    "말풍선이 몇 번 움직였는지 세어보세요.",
+    "너무 오래 기다리면 화제가 바뀌어요 — 적당할 때 눌러요."
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "id": "voice-volume",
-  "title": "목소리 크기 — 짝꿍이 고개를 돌리지 않아도 들리게",
+  "title": "목소리 크기 — 고개 안 돌려도 듣게",
   "act": 1,
   "concept": "적당한 목소리 크기 판단",
   "curriculum": {

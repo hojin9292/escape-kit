@@ -3,6 +3,52 @@
 `audit-room`·`relayout-room` 스킬이 마무리 단계에서 여기에 기록한다.
 **찾은 것뿐 아니라 "확인했는데 문제 없던 것"까지** 적는다 — 다음 점검의 범위가 된다.
 
+## 2026-09-08(2) — 나머지 4방(3~6번) 완성, 6방 계획 전체 완주
+
+communication-room·social-room·objects-room·time-room을 연달아 만들고 전부 연결해
+"교실 문 → 6방 → 마지막 엔딩"이 실제로 한 번에 이어지는 것까지 확인했다.
+
+**찾아서 고친 것**
+- **brushing-timer(1번 방)에 잠재해 있던 dead-end 버그를 3번 방을 만들며 재발견**.
+  ice-drop 등에서 이미 고쳤던 "too-high 이후 리셋 안 됨" 패턴이 brushing-timer
+  자체에도 남아 있었다 — too-high 판정 후 step이 계속 증가하기만 해서, 한 번
+  너무 오래 기다리면 그 세션 안에서는 영영 못 풀었다. 1번 방 커밋 당시엔 테스트가
+  항상 SOLVE_STEP(이른 시점)에서만 확정했기 때문에 안 걸렸다. wait-answer를 만들며
+  같은 구조를 새로 짜다가 알아채고, brushing-timer도 함께 리셋하도록 고쳤다.
+- **voice-shelf-order 계열 신규 퍼즐의 제목 오버플로**: `puzzle-layout.spec.ts`의
+  "제목이 두 줄로 접히지 않는다" 전수 검사가 voice-volume 매니페스트 제목
+  ("목소리 크기 — 짝꿍이 고개를 돌리지 않아도 들리게", 28자)이 375px 폭에서
+  잘리는 것을 잡았다 — 기존 CSS는 21자 안팎을 가정하고 짜여 있었다. "목소리 크기 —
+  고개 안 돌려도 듣게"(20자)로 줄여 해결. 전 퍼즐 25개를 375/400/412px에서 재검사해
+  통과 확인.
+
+**새로 도입한 조작(방 3~5)**
+- 단계 선택(shoulder-tap·pencil-grip): 힘처럼 "쌓아 올리는" 은유가 안 맞는 값은
+  1~5단계 버튼 중 하나를 고르는 방식으로 — 되돌리기 개념 자체가 필요 없어서
+  이 archetype은 애초에 dead-end 버그 계열에서 자유롭다.
+- 자동 접근 관찰형(approach-friend): brushing-timer 계열을 시간이 아니라 거리에
+  적용 — 캐릭터가 다가갈수록 값이 줄어들므로 low/high 판정 방향이 다른 관찰형과
+  반대다(설계서에 명시).
+- 격자 탭 재사용(glue-spread): jam-spread와 같은 구조를 다른 문항(OB-011)에 재사용.
+
+**확인했는데 문제 없던 것**
+- 6방 전체(hygiene→food→communication→social→objects→time) 사슬이 실제 걷기로
+  끊김 없이 이어진다(각 room spec의 `goDoor` 검증 + 마지막 time-room의 엔딩 화면
+  검증까지).
+- time-room의 `GameMap.epilogue` 오버라이드(#epilogue-final-*)가 기본 엔진 앵커
+  대신 정상적으로 재생된다.
+- 거리 계열(elevator-distance·approach-friend·distance-shelf-order)의 low/high
+  의미 반전(값이 작을수록 가깝다)을 문서화하고, 대사도 원본 `outcome` 서술 기준으로
+  다시 확인해 방향이 어긋나지 않았다.
+- 6개 방 전체 서열 콘솔(soap·pour·voice·distance·force·wait-shelf-order) 모두
+  4!=24개 전 순열 검사로 정답 유일성 확인.
+- `bash scripts/verify.sh full` — 6개 방 전체(story/anchors/layout/reach/
+  typecheck/build/assets/e2e 80개, flaky 0) 그린.
+
+**의도적으로 남겨 둔 것**: 배경 아트 없음(1~5번 방과 같은 사정 — 이미지 생성
+도구가 이 세션에 없음). 6방 모두 타일 바닥 위 SVG/DOM 핫스팟만으로 완전히
+플레이 가능함을 e2e로 확인했다.
+
 ## 2026-09-07 — 「깨끗한 방」(hygiene-room) 완성 + audit-room 점검
 
 전 퍼즐(치약 짜기·손 소독제 펌프·양치 시간·화장실 휴지·정리대 서열)을 만든 뒤

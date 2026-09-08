@@ -107,6 +107,18 @@ export async function enterObjectsRoom(page: Page, character: "m" | "f" = "m"): 
   await dismissDialogues(page); // #ob-room-intro
 }
 
+/** 「시간과 횟수 방」(time-room, 마지막 방)으로 워프 — enterFoodRoom과 같은 이유. */
+export async function enterTimeRoom(page: Page, character: "m" | "f" = "m"): Promise<void> {
+  await enterRoom(page, character, "/?grid");
+  await page.evaluate(() =>
+    (window as never as { __qe: { warp: (id: string) => string } }).__qe.warp("time-room"),
+  );
+  await expect
+    .poll(() => page.evaluate(() => (window as never as { __qe: { map: string } }).__qe.map))
+    .toBe("time-room");
+  await dismissDialogues(page); // #ti-room-intro
+}
+
 /** 타이틀 → '이어하기'로 마지막 방에 재개 (프롤로그 생략) */
 export async function continueGame(page: Page): Promise<void> {
   await page.goto("/");

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { enterObjectsRoom, openStation, dismissDialogues } from "./helpers";
+import { enterObjectsRoom, openStation, dismissDialogues, goDoor } from "./helpers";
 import { LEVELS, GOOD_MIN as PENCIL_GOOD_MIN, GOOD_MAX as PENCIL_GOOD_MAX, SOLVE_LEVEL, judge as pencilJudge } from "../../src/puzzles/pencil-grip/autoplay";
 import {
   GOOD_MIN as FAUCET_GOOD_MIN,
@@ -129,4 +129,6 @@ test("「물건 쓰는 방」 완주 — 네 가지를 풀면 진열대가 열�
   await expect
     .poll(() => page.evaluate(() => (window as never as { __qe: { events: string[] } }).__qe.events))
     .toContain("door:objects-open");
+
+  await goDoor(page, isMobile, 7, 1, "time-room");
 });
