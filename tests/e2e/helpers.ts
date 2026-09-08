@@ -59,6 +59,18 @@ export async function enterHygieneRoom(page: Page, character: "m" | "f" = "m"): 
     .toBe("hygiene-room");
 }
 
+/** 「먹고 마시는 방」(food-room)으로 워프 — 앞 방(hygiene-room)의 사슬 이벤트를
+ *  전부 발화시키고 스폰에 놓는다. 앞 방 자체를 다시 검증할 필요가 없는 food-room
+ *  전용 스펙에서 쓴다(?grid 모드 전용 디버그 훅, README "__qe.warp" 참조). */
+export async function enterFoodRoom(page: Page, character: "m" | "f" = "m"): Promise<void> {
+  await enterRoom(page, character, "/?grid");
+  await page.evaluate(() => (window as never as { __qe: { warp: (id: string) => string } }).__qe.warp("food-room"));
+  await expect
+    .poll(() => page.evaluate(() => (window as never as { __qe: { map: string } }).__qe.map))
+    .toBe("food-room");
+  await dismissDialogues(page); // #fo-room-intro (map:enter로 뜨는 방 입장 대사)
+}
+
 /** 타이틀 → '이어하기'로 마지막 방에 재개 (프롤로그 생략) */
 export async function continueGame(page: Page): Promise<void> {
   await page.goto("/");

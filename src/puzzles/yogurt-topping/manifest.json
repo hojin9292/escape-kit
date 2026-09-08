@@ -1,0 +1,40 @@
+{
+  "id": "yogurt-topping",
+  "title": "요거트 토핑 — 흰 부분이 보일 때 멈추기",
+  "act": 1,
+  "concept": "관찰 후 멈추기 — 사라지기 전에 판단하기",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "먹고 마시기",
+    "성취기준": "근거 문항 FO-017(imankeum) — 요거트에 토핑을 알맞은 양만큼 올린다(예외: curriculum-map.md 참조 — 관찰형으로 변형)"
+  },
+  "narrative": {
+    "intro": "story.md#fo-topping-intro",
+    "clear": "story.md#fo-topping-clear",
+    "extra": {
+      "toolow": "story.md#fo-topping-toolow",
+      "toohigh": "story.md#fo-topping-toohigh"
+    },
+    "notes": ["note-09"]
+  },
+  "trigger": {
+    "map": "food-room",
+    "objectId": "yogurt-topping"
+  },
+  "reward": {
+    "event": "code:topping-solved"
+  },
+  "testIds": {
+    "root": "puzzle-topping",
+    "solveCheck": "topping-done"
+  },
+  "principle": [
+    "토핑은 다 덮일 때까지 올리는 게 아니라, 요거트 흰 부분이 아직 보일 때 멈추는 게 좋다.",
+    "그래야 떠먹을 때마다 요거트와 토핑을 함께 맛볼 수 있다."
+  ],
+  "hints": [
+    "요거트가 여전히 보이는지 살펴봐요.",
+    "하얀 부분이 다 사라지기 전에 눌러야 해요.",
+    "지금 하얀 부분이 조금이라도 보이면 눌러도 좋아요."
+  ]
+}

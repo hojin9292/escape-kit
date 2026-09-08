@@ -1,0 +1,40 @@
+{
+  "id": "ice-drop",
+  "title": "얼음 넣기 — 바닥에 한 겹만큼",
+  "act": 1,
+  "concept": "적당한 개수 판단 — 넣어서 채우는 개수",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "먹고 마시기",
+    "성취기준": "근거 문항 FO-008(imankeum) — 물컵에 알맞은 개수의 얼음을 넣는다"
+  },
+  "narrative": {
+    "intro": "story.md#fo-ice-intro",
+    "clear": "story.md#fo-ice-clear",
+    "extra": {
+      "toolow": "story.md#fo-ice-toolow",
+      "toohigh": "story.md#fo-ice-toohigh"
+    },
+    "notes": ["note-07"]
+  },
+  "trigger": {
+    "map": "food-room",
+    "objectId": "ice-drop"
+  },
+  "reward": {
+    "event": "code:ice-solved"
+  },
+  "testIds": {
+    "root": "puzzle-ice",
+    "solveCheck": "ice-done"
+  },
+  "principle": [
+    "얼음은 많이 넣을수록 시원한 게 아니다.",
+    "컵 바닥에 한 겹만 깔려도 물을 넣을 자리가 남고 충분히 시원해진다."
+  ],
+  "hints": [
+    "얼음만으로 컵을 가득 채우지 않아도 돼요.",
+    "컵 바닥에 한 겹 깔릴 만큼을 떠올려 보세요.",
+    "이미 몇 개 넣었다면 그걸로 충분할 수 있어요."
+  ]
+}

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { enterHygieneRoom, openStation, dismissDialogues } from "./helpers";
+import { enterHygieneRoom, openStation, dismissDialogues, goDoor } from "./helpers";
 import {
   GOOD_MIN as TOOTH_GOOD_MIN,
   GOOD_MAX as TOOTH_GOOD_MAX,
@@ -151,10 +151,12 @@ test("「깨끗한 방」 완주 — 청소 4개를 풀면 정리대가 열리�
   await dismissDialogues(page); // #hy-shelf-clear
   await expect(page.getByTestId("puzzle-shelf")).toBeHidden();
 
-  // 문이 열렸다 — 걸어가서 통과하면 엔딩(같은 방 id로 남되 door.ending이 처리)
+  // 문이 열렸다 — 걸어가서 통과하면 다음 방(food-room)으로 이어진다
   await expect
     .poll(() =>
       page.evaluate(() => (window as never as { __qe: { events: string[] } }).__qe.events),
     )
     .toContain("door:hygiene-open");
+
+  await goDoor(page, isMobile, 7, 1, "food-room");
 });

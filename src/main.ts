@@ -3,7 +3,7 @@ import tokens from "../design-tokens.json";
 import { showDialogue } from "./engine/narrative/dialogue";
 import { bus } from "./engine/events/EventBus";
 import { Game } from "./engine/core/Game";
-import { maps, FIRST_ROOM } from "./maps";
+import { maps, FIRST_ROOM, ROOM_INTRO_ANCHOR } from "./maps";
 import { loadProgress, hasProgress, clearProgress, saveProgress } from "./engine/core/save";
 import { Sfx } from "./engine/audio/sfx";
 import { Ambience } from "./engine/audio/ambience";
@@ -251,8 +251,23 @@ function showCharSelect(app: HTMLElement): Promise<"m" | "f"> {
  *
  *  다만 첫 방의 인트로는 프롤로그 대사 **뒤에** 와야 순서가 맞으므로
  *  startPrologue에서 직접 재생한다 (map:enter는 start() 시점 = 튜토리얼보다 앞이다). */
+/** 첫 방을 뺀 나머지 방의 입장 대사 — 한 세션에 한 번만. 첫 방은 프롤로그 대사
+ *  뒤에 와야 순서가 맞으므로 startPrologue에서 직접 재생한다(map:enter는 그보다 이르다). */
+function registerRoomIntros(): void {
+  const shown = new Set<string>();
+  for (const [mapId, anchor] of Object.entries(ROOM_INTRO_ANCHOR)) {
+    if (mapId === FIRST_ROOM.id) continue;
+    bus.on(`map:enter:${mapId}`, () => {
+      if (shown.has(mapId)) return;
+      shown.add(mapId);
+      void showDialogue(anchor, document.getElementById("app")!);
+    });
+  }
+}
+
 async function startPrologue(app: HTMLElement): Promise<void> {
   await showDialogue("#prologue-wake", app);
+  registerRoomIntros();
 
   const game = new Game(app, FIRST_ROOM);
   await game.start();
@@ -267,6 +282,7 @@ async function startPrologue(app: HTMLElement): Promise<void> {
 async function startContinue(app: HTMLElement): Promise<void> {
   const saved = loadProgress();
   const startMap: GameMap = (saved.lastMap && maps[saved.lastMap]) || FIRST_ROOM;
+  registerRoomIntros();
 
   const game = new Game(app, startMap);
   await game.start();

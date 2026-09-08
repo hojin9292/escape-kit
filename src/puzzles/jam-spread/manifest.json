@@ -1,0 +1,40 @@
+{
+  "id": "jam-spread",
+  "title": "잼 바르기 — 빵 색이 살짝 비칠 만큼",
+  "act": 1,
+  "concept": "적당한 넓이 판단 — 펴 바르는 넓이",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "먹고 마시기",
+    "성취기준": "근거 문항 FO-005(imankeum) — 식빵에 잼을 알맞은 넓이로 펴 바른다"
+  },
+  "narrative": {
+    "intro": "story.md#fo-jam-intro",
+    "clear": "story.md#fo-jam-clear",
+    "extra": {
+      "toolow": "story.md#fo-jam-toolow",
+      "toohigh": "story.md#fo-jam-toohigh"
+    },
+    "notes": ["note-08"]
+  },
+  "trigger": {
+    "map": "food-room",
+    "objectId": "jam-spread"
+  },
+  "reward": {
+    "event": "code:jam-solved"
+  },
+  "testIds": {
+    "root": "puzzle-jam",
+    "solveCheck": "jam-done"
+  },
+  "principle": [
+    "잼은 두껍게 한곳에 올리기보다 얇고 고르게 펴 바르는 게 좋다.",
+    "빵 색이 살짝 비칠 만큼이면 어느 쪽을 베어 물어도 잼 맛이 난다."
+  ],
+  "hints": [
+    "빈 부분과 너무 두꺼운 부분을 함께 살펴봐요.",
+    "빵 색이 살짝 비치는 정도를 떠올려 보세요.",
+    "칸을 몇 개만 더 칠하거나 지워볼까요?"
+  ]
+}

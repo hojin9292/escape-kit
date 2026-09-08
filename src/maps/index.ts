@@ -1,8 +1,10 @@
 import type { GameMap } from "./types";
 import { hygieneRoom } from "./hygiene-room";
+import { foodRoom } from "./food-room";
 
 export const maps: Record<string, GameMap> = {
   [hygieneRoom.id]: hygieneRoom,
+  [foodRoom.id]: foodRoom,
 };
 
 /** 프롤로그 다음에 들어서는 첫 방. 이어하기 저장이 없을 때의 시작 지점이기도 하다. */
@@ -19,4 +21,14 @@ export const FIRST_ROOM = hygieneRoom;
  */
 export const ROOM_CHAIN: { id: string; unlockEvent: string }[] = [
   { id: hygieneRoom.id, unlockEvent: "door:hygiene-open" },
+  { id: foodRoom.id, unlockEvent: "door:food-open" },
 ];
+
+/**
+ * 첫 방을 뺀 나머지 방의 입장 대사 앵커 — main.ts의 registerRoomIntros가 map:enter로
+ * 재생한다. 첫 방(FIRST_ROOM)은 프롤로그 대사 뒤에 와야 하므로 여기 넣지 않고
+ * startPrologue에서 직접 재생한다.
+ */
+export const ROOM_INTRO_ANCHOR: Record<string, string> = {
+  [foodRoom.id]: "#fo-room-intro",
+};
