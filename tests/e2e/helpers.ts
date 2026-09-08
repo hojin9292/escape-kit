@@ -71,6 +71,18 @@ export async function enterFoodRoom(page: Page, character: "m" | "f" = "m"): Pro
   await dismissDialogues(page); // #fo-room-intro (map:enter로 뜨는 방 입장 대사)
 }
 
+/** 「말하고 듣는 방」(communication-room)으로 워프 — enterFoodRoom과 같은 이유. */
+export async function enterCommunicationRoom(page: Page, character: "m" | "f" = "m"): Promise<void> {
+  await enterRoom(page, character, "/?grid");
+  await page.evaluate(() =>
+    (window as never as { __qe: { warp: (id: string) => string } }).__qe.warp("communication-room"),
+  );
+  await expect
+    .poll(() => page.evaluate(() => (window as never as { __qe: { map: string } }).__qe.map))
+    .toBe("communication-room");
+  await dismissDialogues(page); // #co-room-intro
+}
+
 /** 타이틀 → '이어하기'로 마지막 방에 재개 (프롤로그 생략) */
 export async function continueGame(page: Page): Promise<void> {
   await page.goto("/");

@@ -1,0 +1,29 @@
+{
+  "id": "story-turn",
+  "title": "내 이야기 길이 — 친구에게 차례 넘기기",
+  "act": 1,
+  "concept": "관찰 후 멈추기 — 너무 많아지기 전에 넘기기",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "말하고 듣기",
+    "성취기준": "근거 문항 CO-014(imankeum) — 대화에서 내 이야기 차례를 알맞은 길이로 마친다"
+  },
+  "narrative": {
+    "intro": "story.md#co-story-intro",
+    "clear": "story.md#co-story-clear",
+    "extra": { "toolow": "story.md#co-story-toolow", "toohigh": "story.md#co-story-toohigh" },
+    "notes": ["note-14"]
+  },
+  "trigger": { "map": "communication-room", "objectId": "story-turn" },
+  "reward": { "event": "code:story-solved" },
+  "testIds": { "root": "puzzle-story", "solveCheck": "story-done" },
+  "principle": [
+    "대화는 한 사람이 계속 말하기보다 서로 번갈아 하는 것이 좋다.",
+    "이야기 카드가 세 장쯤 쌓이면 친구에게 차례를 넘긴다."
+  ],
+  "hints": [
+    "친구에게도 말할 차례가 남아 있는지 봐요.",
+    "카드가 몇 장 쌓였는지 세어보세요.",
+    "카드가 너무 많이 쌓이기 전에 눌러야 해요."
+  ]
+}

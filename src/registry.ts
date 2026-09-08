@@ -14,9 +14,14 @@ import { iceDrop } from "./puzzles/ice-drop/puzzle";
 import { jamSpread } from "./puzzles/jam-spread/puzzle";
 import { yogurtTopping } from "./puzzles/yogurt-topping/puzzle";
 import { pourShelfOrder } from "./puzzles/pour-shelf-order/puzzle";
+import { voiceVolume } from "./puzzles/voice-volume/puzzle";
+import { callName } from "./puzzles/call-name/puzzle";
+import { waitAnswer } from "./puzzles/wait-answer/puzzle";
+import { storyTurn } from "./puzzles/story-turn/puzzle";
+import { voiceShelfOrder } from "./puzzles/voice-shelf-order/puzzle";
 
 // 배열 순서 = 저널의 원리 카드 나열 순서. 관례상 방 안 배치 동선 순서 + 콘솔은 마지막,
-// 방 순서(hygiene → food → …)대로 이어 붙인다.
+// 방 순서(hygiene → food → communication → …)대로 이어 붙인다.
 export const puzzles: PuzzleModule[] = [
   toothpasteSqueeze,
   handSanitizerPump,
@@ -28,6 +33,11 @@ export const puzzles: PuzzleModule[] = [
   jamSpread,
   yogurtTopping,
   pourShelfOrder,
+  voiceVolume,
+  callName,
+  waitAnswer,
+  storyTurn,
+  voiceShelfOrder,
 ];
 
 export function findPuzzle(id: string): PuzzleModule | undefined {

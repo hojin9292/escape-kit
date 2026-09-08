@@ -1,0 +1,29 @@
+{
+  "id": "wait-answer",
+  "title": "질문 후 기다리기 — 생각할 시간 주기",
+  "act": 1,
+  "concept": "적당한 기다림 판단 — 관찰 후 멈추기",
+  "curriculum": {
+    "과목": "특수교육 기본 교육과정 — 생활 기능",
+    "단원": "말하고 듣기",
+    "성취기준": "근거 문항 CO-008(imankeum) — 질문 후 상대가 답할 시간을 알맞게 기다린다"
+  },
+  "narrative": {
+    "intro": "story.md#co-wait-intro",
+    "clear": "story.md#co-wait-clear",
+    "extra": { "toolow": "story.md#co-wait-toolow", "toohigh": "story.md#co-wait-toohigh" },
+    "notes": ["note-13"]
+  },
+  "trigger": { "map": "communication-room", "objectId": "wait-answer" },
+  "reward": { "event": "code:wait-solved" },
+  "testIds": { "root": "puzzle-wait", "solveCheck": "wait-done" },
+  "principle": [
+    "질문한 뒤에는 상대가 듣고 생각하고 답할 시간이 필요하다.",
+    "너무 빨리 재촉하면 답을 못 듣고, 너무 오래 기다리면 다른 일이 시작된다."
+  ],
+  "hints": [
+    "상대방의 표정이 생각 중인지 살펴봐요.",
+    "'생각 중…' 표시가 몇 번 깜빡였는지 세어보세요.",
+    "너무 오래 기다리면 선생님이 다른 일을 시작해요 — 적당할 때 눌러요."
+  ]
+}

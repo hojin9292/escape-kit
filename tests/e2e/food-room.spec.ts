@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { enterFoodRoom, openStation, dismissDialogues } from "./helpers";
+import { enterFoodRoom, openStation, dismissDialogues, goDoor } from "./helpers";
 import {
   GOOD_MIN as WATER_GOOD_MIN,
   GOOD_MAX as WATER_GOOD_MAX,
@@ -148,4 +148,6 @@ test("「먹고 마시는 방」 완주 — 식사 준비 4개를 풀면 정리�
       page.evaluate(() => (window as never as { __qe: { events: string[] } }).__qe.events),
     )
     .toContain("door:food-open");
+
+  await goDoor(page, isMobile, 7, 1, "communication-room");
 });

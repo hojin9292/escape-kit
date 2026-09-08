@@ -73,14 +73,14 @@ export const foodRoom: GameMap = {
       puzzleId: "pour-shelf-order",
       interactAnchor: "#fo-shelf-sealed",
     },
-    // ── 출구 (다음 방 연결 전까지는 임시 엔딩) ──────────
+    // ── 출구 — 「말하고 듣는 방」으로 연결 ───────────────
     {
       id: "exit-door",
-      name: "급식실 문 — 출구",
+      name: "급식실 문 — 다음 방으로",
       tile: [7, 1],
       range: 1.6,
       interactAnchor: "#sys-door-locked",
-      door: { requiresEvent: "door:food-open", ending: true },
+      door: { requiresEvent: "door:food-open", toMap: "communication-room", spawn: [2, 7] },
     },
     // ── 연구노트 5개 ────────────────────────────────────
     { id: "note-06", name: "쪽지", sprite: "note", tile: [3, 1.5], range: 1.2, noteId: "note-06" },

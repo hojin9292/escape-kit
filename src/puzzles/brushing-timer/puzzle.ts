@@ -93,6 +93,9 @@ export const brushingTimer: PuzzleModule = {
           void api.say(manifest.narrative.extra!["toohigh"]);
         }
         api.fail();
+        // 이미 다 닦인 뒤엔 저절로 되돌아오지 않으니 처음부터 다시 지켜보게 한다.
+        step = 0;
+        highlight();
       }
     });
 
