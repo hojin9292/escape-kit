@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "dev:test": "vite --port 5399 --strictPort",
-    "build": "vite build",
+    "build": "node scripts/build-assets.mjs && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "assets": "node scripts/build-assets.mjs",
