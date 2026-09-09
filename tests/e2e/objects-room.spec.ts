@@ -12,9 +12,8 @@ import { GOOD_MIN as BOOK_GOOD_MIN, GOOD_MAX as BOOK_GOOD_MAX, SOLVE_STEP as BOO
 import {
   GOOD_MIN as GLUE_GOOD_MIN,
   GOOD_MAX as GLUE_GOOD_MAX,
-  SOLVE_CELLS as GLUE_SOLVE_CELLS,
-  cellsToPercent as glueCellsToPercent,
-  judge as glueJudge,
+  SOLVE_CELL_IDS as GLUE_SOLVE_CELL_IDS,
+  judgeSpread as glueJudgeSpread,
 } from "../../src/puzzles/glue-spread/autoplay";
 import { RECAP_IDS, isRecapComplete } from "../../src/puzzles/force-shelf-order/autoplay";
 
@@ -43,12 +42,12 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
     expect(bookJudge(9)).toBe("high");
   });
 
-  test("glue-spread: OB-011 넓이 구간(55~82%)과 격자 칸 수가 일치한다", () => {
+  test("glue-spread: 네 귀퉁이와 가운데가 모두 닿아야 한다", () => {
     expect(GLUE_GOOD_MIN).toBe(55);
     expect(GLUE_GOOD_MAX).toBe(82);
-    expect(glueJudge(glueCellsToPercent(GLUE_SOLVE_CELLS))).toBe("good");
-    expect(glueJudge(glueCellsToPercent(0))).toBe("low");
-    expect(glueJudge(glueCellsToPercent(24))).toBe("high");
+    expect(glueJudgeSpread(GLUE_SOLVE_CELL_IDS)).toBe("good");
+    expect(glueJudgeSpread(GLUE_SOLVE_CELL_IDS.slice(0, -1))).toBe("low");
+    expect(glueJudgeSpread(Array.from({ length: 24 }, (_, id) => id))).toBe("high");
   });
 
   test("force-shelf-order: 네 활동을 어떤 순서로 확인해도 완료된다", () => {
@@ -88,7 +87,15 @@ test("「물건 쓰는 방」 완주 — 네 가지를 풀고 복습 카드를 �
   await expect(page.getByTestId("puzzle-book")).toBeHidden();
 
   await openStation(page, isMobile, 11, 6.5, "puzzle-glue");
-  for (let i = 0; i < GLUE_SOLVE_CELLS; i++) await page.getByTestId(`glue-cell-${i}`).click();
+  const glueBox = await page.getByTestId("glue-surface").boundingBox();
+  if (!glueBox) throw new Error("glue surface not found");
+  for (const id of GLUE_SOLVE_CELL_IDS) {
+    const x = glueBox.x + ((id % 6) + 0.5) * (glueBox.width / 6);
+    const y = glueBox.y + (Math.floor(id / 6) + 0.5) * (glueBox.height / 4);
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.up();
+  }
   await page.getByTestId("glue-confirm").click();
   await expect(page.getByTestId("glue-done")).toBeVisible();
   await dismissDialogues(page);

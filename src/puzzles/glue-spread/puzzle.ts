@@ -1,11 +1,9 @@
-/**
- * 물건 퍼즐 P4: 풀칠 (OB-011). jam-spread와 같은 격자 탭 구조 —
- * 칸을 눌러 풀을 바르고(다시 누르면 지움), [됐어요]로 확정한다.
- */
+/** 물건 퍼즐 P4: 종이 위를 직접 문질러 네 귀퉁이와 가운데에 풀을 바른다. */
 import "./puzzle.css";
-import type { PuzzleApi, PuzzleModule, PuzzleManifest } from "../../engine/puzzle-host/types";
+import type { PuzzleApi, PuzzleManifest, PuzzleModule } from "../../engine/puzzle-host/types";
+import { onDrag } from "../../engine/input/pointer";
 import manifestJson from "./manifest.json";
-import { COLS, TOTAL_CELLS, cellsToPercent, judge } from "./autoplay";
+import { COLS, ROWS, REQUIRED_ZONES, judgeSpread } from "./autoplay";
 
 const manifest = manifestJson as PuzzleManifest;
 
@@ -13,104 +11,135 @@ export const glueSpread: PuzzleModule = {
   manifest,
   mount(api: PuzzleApi): () => void {
     let solved = false;
-    let saidToolow = false;
-    let saidToohigh = false;
-    const spread = new Array<boolean>(TOTAL_CELLS).fill(false);
+    let saidLow = false;
+    let saidHigh = false;
+    const painted = new Set<number>();
 
     api.root.classList.add("glue-root");
     const sign = document.createElement("p");
     sign.className = "glue-sign";
-    sign.textContent = "칸을 눌러 풀을 발라 보세요 — 네 귀퉁이와 가운데에 닿을 만큼. 다시 누르면 지워져요.";
+    sign.textContent = "풀 막대를 움직여 네 귀퉁이와 가운데에 얇게 발라요.";
 
-    const grid = document.createElement("div");
-    grid.className = "glue-grid";
-    grid.dataset.testid = "glue-grid";
-    grid.style.gridTemplateColumns = `repeat(${COLS}, 1fr)`;
-
-    for (let i = 0; i < TOTAL_CELLS; i++) {
-      const cell = document.createElement("button");
-      cell.type = "button";
-      cell.className = "glue-cell";
-      cell.dataset.testid = `glue-cell-${i}`;
-      cell.addEventListener("click", () => {
-        if (solved) return;
-        spread[i] = !spread[i];
-        cell.classList.toggle("on", spread[i]);
-        sync();
-      });
-      grid.appendChild(cell);
-    }
+    const surface = document.createElement("div");
+    surface.className = "glue-surface";
+    surface.dataset.testid = "glue-surface";
+    surface.setAttribute("role", "img");
+    surface.setAttribute("aria-label", "풀을 문질러 바르는 종이");
+    const guide = document.createElement("div");
+    guide.className = "glue-guide";
+    for (let i = 0; i < REQUIRED_ZONES.length; i += 1) guide.appendChild(document.createElement("i"));
+    const spreadLayer = document.createElement("div");
+    spreadLayer.className = "glue-spread-layer";
+    const stick = document.createElement("span");
+    stick.className = "glue-stick";
+    stick.textContent = "▰";
+    surface.append(guide, spreadLayer, stick);
 
     const state = document.createElement("p");
     state.className = "glue-state";
     state.dataset.testid = "glue-state";
-    state.textContent = "아직 안 발랐어요.";
     const done = document.createElement("div");
     done.className = "glue-done";
     done.dataset.testid = manifest.testIds["solveCheck"];
-    done.textContent = "딱 좋게 발랐어요!";
+    done.textContent = "네 귀퉁이와 가운데에 잘 발랐어요!";
     done.hidden = true;
 
-    function coveredCount(): number {
-      return spread.filter(Boolean).length;
+    function renderCell(id: number): void {
+      const row = Math.floor(id / COLS);
+      const col = id % COLS;
+      const stroke = document.createElement("i");
+      stroke.style.left = `${((col + 0.5) / COLS) * 100}%`;
+      stroke.style.top = `${((row + 0.5) / ROWS) * 100}%`;
+      spreadLayer.appendChild(stroke);
     }
+
+    function paint(x: number, y: number): void {
+      if (solved) return;
+      const rect = surface.getBoundingClientRect();
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) return;
+      const col = Math.min(COLS - 1, Math.floor((x / rect.width) * COLS));
+      const row = Math.min(ROWS - 1, Math.floor((y / rect.height) * ROWS));
+      const id = row * COLS + col;
+      stick.style.left = `${x}px`;
+      stick.style.top = `${y}px`;
+      stick.classList.add("active");
+      if (!painted.has(id)) {
+        painted.add(id);
+        renderCell(id);
+        sync();
+      }
+    }
+
     function sync(): void {
-      const covered = coveredCount();
-      const percent = cellsToPercent(covered);
-      if (covered <= 0) {
-        state.textContent = "아직 안 발랐어요.";
+      if (painted.size === 0) {
+        state.textContent = "점선으로 표시된 곳을 따라 발라보세요.";
         delete state.dataset.level;
         return;
       }
-      const j = judge(percent);
-      if (j === "low") {
-        state.textContent = "조금 더 넓게 발라도 괜찮아요.";
-        state.dataset.level = "low";
-      } else if (j === "high") {
-        state.textContent = "조금 많아요. 줄여볼까요?";
+      const missing = REQUIRED_ZONES.filter((id) => !painted.has(id)).length;
+      const result = judgeSpread(painted);
+      if (result === "high") {
+        state.textContent = "풀이 너무 넓게 묻었어요. 새 종이로 다시 해봐요.";
         state.dataset.level = "high";
-      } else {
-        state.textContent = "네 귀퉁이까지 잘 발랐어요!";
+      } else if (result === "good") {
+        state.textContent = "귀퉁이와 가운데가 모두 반짝여요!";
         state.dataset.level = "good";
+      } else {
+        state.textContent = `아직 ${missing}곳이 남았어요.`;
+        state.dataset.level = "low";
       }
     }
 
-    const confirmBtn = document.createElement("button");
-    confirmBtn.type = "button";
-    confirmBtn.className = "glue-confirm-btn";
-    confirmBtn.dataset.testid = "glue-confirm";
-    confirmBtn.textContent = "됐어요";
-    confirmBtn.addEventListener("click", () => {
+    const releaseDrag = onDrag(surface, {
+      onStart: ({ x, y }) => paint(x, y),
+      onMove: ({ x, y }) => paint(x, y),
+      onEnd: () => stick.classList.remove("active"),
+    });
+
+    const reset = document.createElement("button");
+    reset.type = "button";
+    reset.className = "glue-reset-btn";
+    reset.dataset.testid = "glue-reset";
+    reset.textContent = "↺ 새 종이로 다시";
+    reset.addEventListener("click", () => {
       if (solved) return;
-      const covered = coveredCount();
-      if (covered <= 0) return;
-      const percent = cellsToPercent(covered);
-      const j = judge(percent);
-      if (j === "good") {
+      painted.clear();
+      spreadLayer.replaceChildren();
+      stick.classList.remove("active");
+      sync();
+    });
+
+    const confirm = document.createElement("button");
+    confirm.type = "button";
+    confirm.className = "glue-confirm-btn";
+    confirm.dataset.testid = "glue-confirm";
+    confirm.textContent = "다 발랐어요";
+    confirm.addEventListener("click", () => {
+      if (solved || painted.size === 0) return;
+      const result = judgeSpread(painted);
+      if (result === "good") {
         solved = true;
         done.hidden = false;
         state.dataset.level = "good";
         api.solve();
-      } else if (j === "low") {
-        state.dataset.level = "low";
-        if (!saidToolow) {
-          saidToolow = true;
-          void api.say(manifest.narrative.extra!["toolow"]);
+      } else if (result === "high") {
+        if (!saidHigh) {
+          saidHigh = true;
+          void api.say(manifest.narrative.extra!["toohigh"]);
         }
         api.fail();
       } else {
-        state.dataset.level = "high";
-        if (!saidToohigh) {
-          saidToohigh = true;
-          void api.say(manifest.narrative.extra!["toohigh"]);
+        if (!saidLow) {
+          saidLow = true;
+          void api.say(manifest.narrative.extra!["toolow"]);
         }
         api.fail();
       }
     });
 
-    api.actions.appendChild(confirmBtn);
+    api.actions.append(reset, confirm);
     sync();
-    api.root.append(sign, grid, state, done);
-    return () => {};
+    api.root.append(sign, surface, state, done);
+    return releaseDrag;
   },
 };

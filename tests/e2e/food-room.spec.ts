@@ -16,9 +16,10 @@ import {
 import {
   GOOD_MIN as JAM_GOOD_MIN,
   GOOD_MAX as JAM_GOOD_MAX,
-  SOLVE_CELLS as JAM_SOLVE_CELLS,
+  SOLVE_CELL_IDS as JAM_SOLVE_CELL_IDS,
   cellsToPercent,
   judge as jamJudge,
+  judgeSpread as jamJudgeSpread,
 } from "../../src/puzzles/jam-spread/autoplay";
 import { SOLVE_CHOICE as TOPPING_SOLVE_CHOICE, isCorrect as toppingIsCorrect } from "../../src/puzzles/yogurt-topping/autoplay";
 import { RECAP_IDS, isRecapComplete } from "../../src/puzzles/pour-shelf-order/autoplay";
@@ -46,10 +47,11 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
     expect(iceJudge(7)).toBe("high");
   });
 
-  test("jam-spread: FO-005 넓이 구간(45~72%)과 격자 칸 수가 일치한다", () => {
+  test("jam-spread: 알맞은 면적이 여러 행과 열에 고르게 퍼져야 한다", () => {
     expect(JAM_GOOD_MIN).toBe(45);
     expect(JAM_GOOD_MAX).toBe(72);
-    expect(jamJudge(cellsToPercent(JAM_SOLVE_CELLS))).toBe("good");
+    expect(jamJudgeSpread(JAM_SOLVE_CELL_IDS)).toBe("good");
+    expect(jamJudgeSpread([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])).toBe("low");
     expect(jamJudge(cellsToPercent(0))).toBe("low");
     expect(jamJudge(cellsToPercent(24))).toBe("high");
   });
@@ -91,9 +93,17 @@ test("「먹고 마시는 방」 완주 — 식사 준비 4개를 풀고 복습 
   await dismissDialogues(page); // #fo-ice-clear
   await expect(page.getByTestId("puzzle-ice")).toBeHidden();
 
-  // P3 잼 바르기 — 격자 칸을 정답 개수만큼 채운다
+  // P3 잼 바르기 — 빵 위를 문질러 여러 방향에 고르게 편다
   await openStation(page, isMobile, 4, 6.5, "puzzle-jam");
-  for (let i = 0; i < JAM_SOLVE_CELLS; i++) await page.getByTestId(`jam-cell-${i}`).click();
+  const jamBox = await page.getByTestId("jam-surface").boundingBox();
+  if (!jamBox) throw new Error("jam surface not found");
+  for (const id of JAM_SOLVE_CELL_IDS) {
+    const x = jamBox.x + ((id % 6) + 0.5) * (jamBox.width / 6);
+    const y = jamBox.y + (Math.floor(id / 6) + 0.5) * (jamBox.height / 4);
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.up();
+  }
   await page.getByTestId("jam-confirm").click();
   await expect(page.getByTestId("jam-done")).toBeVisible();
   await dismissDialogues(page); // #fo-jam-clear

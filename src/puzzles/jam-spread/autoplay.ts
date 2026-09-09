@@ -2,9 +2,8 @@
  * jam-spread 정답 상수 — e2e spec은 여기서만 답을 가져온다.
  *
  * 근거: imankeum FO-005(식빵 잼, `spread_area`). 정답 구간은 원본 그대로(면적
- * 45~72%). imankeum은 드래그로 표면을 문질러 넓이를 바꾸지만, 이 방탈출에서는
- * **격자 칸을 하나씩 탭**하는 이산 조작으로 옮긴다(1번 방에 없던 새 조작 — 넓이 격자).
- * 칸 개수만으로 판정이 결정되는 순수 함수라 몇 칸을 칠하든 유일해 검산이 가능하다.
+ * 45~72%). 화면에는 격자를 보이지 않고 빵 위를 문질러 바른다. 내부의 거친 셀은
+ * 면적과 분포를 안정적으로 판정하기 위한 용도다.
  */
 
 export const COLS = 6;
@@ -27,6 +26,16 @@ export function judge(percent: number): Judgment {
   return "good";
 }
 
+/** 면적뿐 아니라 최소 3개 행·5개 열에 퍼져야 '고르게' 바른 것으로 본다. */
+export function judgeSpread(cellIds: Iterable<number>): Judgment {
+  const cells = [...new Set(cellIds)].filter((id) => id >= 0 && id < TOTAL_CELLS);
+  const amount = judge(cellsToPercent(cells.length));
+  if (amount !== "good") return amount;
+  const rows = new Set(cells.map((id) => Math.floor(id / COLS))).size;
+  const cols = new Set(cells.map((id) => id % COLS)).size;
+  return rows >= 3 && cols >= 5 ? "good" : "low";
+}
+
 /** 정답으로 인정되는 칸 수 목록 — 전수 열거로 유일해 구간을 확인한다 */
 export const SOLUTION_CELL_COUNTS: readonly number[] = Array.from(
   { length: TOTAL_CELLS + 1 },
@@ -34,3 +43,6 @@ export const SOLUTION_CELL_COUNTS: readonly number[] = Array.from(
 ).filter((n) => judge(cellsToPercent(n)) === "good");
 
 export const SOLVE_CELLS = SOLUTION_CELL_COUNTS[0];
+
+/** 고른 분포를 이루는 대표 드래그 경로용 셀. */
+export const SOLVE_CELL_IDS = [0, 1, 2, 3, 4, 6, 8, 10, 12, 14, 16, 17] as const;

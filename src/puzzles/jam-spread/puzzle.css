@@ -1,78 +1,16 @@
-.jam-root {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-}
-
-.jam-sign {
-  margin: 0;
-  font-size: 1.05rem;
-  line-height: 1.5;
-}
-
-.jam-grid {
-  display: grid;
-  gap: 3px;
-  width: min(100%, 440px);
-  align-self: center;
-  padding: 13px;
-  border: 9px solid #b66d2f;
-  border-radius: 72px 72px 24px 24px;
-  background: #e9b765;
-  box-shadow: inset 0 0 0 3px #ffd995, 0 10px 24px rgb(0 0 0 / 24%);
-  overflow: hidden;
-}
-
-.jam-cell {
-  aspect-ratio: 4 / 3;
-  border-radius: 5px;
-  border: none;
-  background: #f5d99f;
-  cursor: pointer;
-  padding: 0;
-  min-height: 28px;
-  transition: background-color 0.1s ease;
-}
-
-.jam-cell.on {
-  background: linear-gradient(145deg, #dc5164, #9f2338);
-  box-shadow: inset 0 0 0 1px rgb(255 190 199 / 45%);
-}
-
-.jam-state {
-  margin: 0;
-  text-align: center;
-  font-size: 1rem;
-  min-height: 1.4rem;
-}
-
-.jam-state[data-level="low"] {
-  color: var(--color-hologram);
-}
-
-.jam-state[data-level="good"] {
-  color: var(--color-success);
-}
-
-.jam-state[data-level="high"] {
-  color: var(--color-danger);
-}
-
-.jam-confirm-btn {
-  min-height: 44px;
-  padding: 0.4rem 1.3rem;
-  border-radius: var(--corner-radius);
-  border: 1px solid var(--color-success);
-  background: color-mix(in srgb, var(--color-success) 16%, transparent);
-  color: var(--color-success);
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.jam-done {
-  text-align: center;
-  font-weight: 800;
-  color: var(--color-success);
-}
+.jam-root { display: flex; flex-direction: column; gap: .9rem; }
+.jam-sign { margin: 0; font-size: 1.05rem; line-height: 1.5; }
+.jam-surface { position: relative; isolation: isolate; width: min(100%, 460px); aspect-ratio: 1.55; align-self: center; overflow: hidden; border: 10px solid #b96e2f; border-radius: 82px 82px 28px 28px; background: radial-gradient(ellipse at 48% 42%, #ffe2a3 0 58%, #edbd72 82%); box-shadow: inset 0 0 0 4px #fff0c5, 0 12px 26px rgb(0 0 0 / 26%); cursor: grab; user-select: none; }
+.jam-surface:active { cursor: grabbing; }
+.jam-spread-layer { position: absolute; inset: 8%; filter: url("#none"); }
+.jam-spread-layer i { position: absolute; width: 24%; aspect-ratio: 1.25; translate: -50% -50%; border-radius: 48% 52% 45% 55%; background: radial-gradient(ellipse at 38% 28%, #ef7682, #b62f47 68%, #8e1f34); box-shadow: 0 0 9px #a8213f, inset 0 2px 4px rgb(255 211 216 / 50%); opacity: .93; }
+.jam-knife { position: absolute; z-index: 2; translate: -12% -72%; font-size: 2.4rem; opacity: .55; pointer-events: none; transition: opacity .12s; filter: drop-shadow(0 3px 3px rgb(0 0 0 / 40%)); }
+.jam-knife.active { opacity: 1; }
+.jam-state { margin: 0; text-align: center; font-size: 1rem; min-height: 1.4rem; }
+.jam-state[data-level="low"] { color: var(--color-hologram); }
+.jam-state[data-level="good"] { color: var(--color-success); }
+.jam-state[data-level="high"] { color: var(--color-danger); }
+.jam-reset-btn, .jam-confirm-btn { min-height: 48px; padding: .5rem 1rem; border-radius: var(--corner-radius); font: 700 1rem/1.2 inherit; cursor: pointer; }
+.jam-reset-btn { border: 1px solid var(--color-line); background: transparent; color: var(--color-text); }
+.jam-confirm-btn { border: 2px solid var(--color-success); background: color-mix(in srgb, var(--color-success) 16%, transparent); color: var(--color-success); }
+.jam-done { text-align: center; font-weight: 800; color: var(--color-success); }

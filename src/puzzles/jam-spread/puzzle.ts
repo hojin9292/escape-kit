@@ -1,13 +1,9 @@
-/**
- * 식사 퍼즐 P3: 잼 바르기 (FO-005).
- *
- * 조작: 6×4 격자 칸을 탭하면 잼이 발리고(다시 탭하면 지워짐 — 확정 전 자유 수정),
- * [됐어요]로 확정하면 칠해진 칸 비율(%)을 정답 구간과 비교한다.
- */
+/** 식사 퍼즐 P3: 빵 위를 직접 문질러 잼을 얇고 고르게 편다. */
 import "./puzzle.css";
-import type { PuzzleApi, PuzzleModule, PuzzleManifest } from "../../engine/puzzle-host/types";
+import type { PuzzleApi, PuzzleManifest, PuzzleModule } from "../../engine/puzzle-host/types";
+import { onDrag } from "../../engine/input/pointer";
 import manifestJson from "./manifest.json";
-import { COLS, TOTAL_CELLS, cellsToPercent, judge } from "./autoplay";
+import { COLS, ROWS, cellsToPercent, judge, judgeSpread } from "./autoplay";
 
 const manifest = manifestJson as PuzzleManifest;
 
@@ -15,110 +11,135 @@ export const jamSpread: PuzzleModule = {
   manifest,
   mount(api: PuzzleApi): () => void {
     let solved = false;
-    let saidToolow = false;
-    let saidToohigh = false;
-    const spread = new Array<boolean>(TOTAL_CELLS).fill(false);
+    let saidLow = false;
+    let saidHigh = false;
+    const painted = new Set<number>();
 
     api.root.classList.add("jam-root");
-
     const sign = document.createElement("p");
     sign.className = "jam-sign";
-    sign.textContent =
-      "칸을 눌러 잼을 발라 보세요 — 빵 색이 살짝 비칠 만큼 얇고 고르게. 잘못 눌렀으면 다시 눌러 지워요.";
+    sign.textContent = "손가락이나 마우스로 빵 위를 문질러 잼을 얇고 고르게 펴 발라요.";
 
-    const grid = document.createElement("div");
-    grid.className = "jam-grid";
-    grid.dataset.testid = "jam-grid";
-    grid.style.gridTemplateColumns = `repeat(${COLS}, 1fr)`;
-
-    for (let i = 0; i < TOTAL_CELLS; i++) {
-      const cell = document.createElement("button");
-      cell.type = "button";
-      cell.className = "jam-cell";
-      cell.dataset.testid = `jam-cell-${i}`;
-      cell.addEventListener("click", () => {
-        if (solved) return;
-        spread[i] = !spread[i];
-        cell.classList.toggle("on", spread[i]);
-        sync();
-      });
-      grid.appendChild(cell);
-    }
+    const surface = document.createElement("div");
+    surface.className = "jam-surface";
+    surface.dataset.testid = "jam-surface";
+    surface.setAttribute("role", "img");
+    surface.setAttribute("aria-label", "잼을 문질러 바르는 식빵");
+    const spreadLayer = document.createElement("div");
+    spreadLayer.className = "jam-spread-layer";
+    const knife = document.createElement("span");
+    knife.className = "jam-knife";
+    knife.textContent = "🥄";
+    surface.append(spreadLayer, knife);
 
     const state = document.createElement("p");
     state.className = "jam-state";
     state.dataset.testid = "jam-state";
-    state.textContent = "아직 바르지 않았어요.";
-
     const done = document.createElement("div");
     done.className = "jam-done";
     done.dataset.testid = manifest.testIds["solveCheck"];
-    done.textContent = "딱 좋게 발랐어요!";
+    done.textContent = "얇고 고르게 발랐어요!";
     done.hidden = true;
 
-    function coveredCount(): number {
-      return spread.filter(Boolean).length;
+    function renderCell(id: number): void {
+      const row = Math.floor(id / COLS);
+      const col = id % COLS;
+      const stamp = document.createElement("i");
+      stamp.style.left = `${((col + 0.5) / COLS) * 100}%`;
+      stamp.style.top = `${((row + 0.5) / ROWS) * 100}%`;
+      spreadLayer.appendChild(stamp);
+    }
+
+    function paint(x: number, y: number): void {
+      if (solved) return;
+      const rect = surface.getBoundingClientRect();
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) return;
+      const col = Math.min(COLS - 1, Math.floor((x / rect.width) * COLS));
+      const row = Math.min(ROWS - 1, Math.floor((y / rect.height) * ROWS));
+      const id = row * COLS + col;
+      knife.style.left = `${x}px`;
+      knife.style.top = `${y}px`;
+      knife.classList.add("active");
+      if (!painted.has(id)) {
+        painted.add(id);
+        renderCell(id);
+        sync();
+      }
     }
 
     function sync(): void {
-      const covered = coveredCount();
-      const percent = cellsToPercent(covered);
-      if (covered <= 0) {
+      if (painted.size === 0) {
         state.textContent = "아직 바르지 않았어요.";
         delete state.dataset.level;
         return;
       }
-      const j = judge(percent);
-      if (j === "low") {
-        state.textContent = "조금 더 넓게 펴도 괜찮아요.";
-        state.dataset.level = "low";
-      } else if (j === "high") {
-        state.textContent = "조금 두꺼워요. 줄여볼까요?";
+      const amount = judge(cellsToPercent(painted.size));
+      const result = judgeSpread(painted);
+      if (amount === "high") {
+        state.textContent = "조금 두꺼워요. 다시 얇게 발라볼까요?";
         state.dataset.level = "high";
-      } else {
-        state.textContent = "빵 색이 살짝 비쳐요!";
+      } else if (result === "good") {
+        state.textContent = "빵 전체에 얇고 고르게 퍼졌어요!";
         state.dataset.level = "good";
+      } else if (amount === "good") {
+        state.textContent = "한쪽에 몰렸어요. 빈 쪽으로 더 펴봐요.";
+        state.dataset.level = "low";
+      } else {
+        state.textContent = "마른 부분이 남아 있어요. 조금 더 펴봐요.";
+        state.dataset.level = "low";
       }
     }
 
-    const confirmBtn = document.createElement("button");
-    confirmBtn.type = "button";
-    confirmBtn.className = "jam-confirm-btn";
-    confirmBtn.dataset.testid = "jam-confirm";
-    confirmBtn.textContent = "됐어요";
-    confirmBtn.addEventListener("click", () => {
+    const releaseDrag = onDrag(surface, {
+      onStart: ({ x, y }) => paint(x, y),
+      onMove: ({ x, y }) => paint(x, y),
+      onEnd: () => knife.classList.remove("active"),
+    });
+
+    const reset = document.createElement("button");
+    reset.type = "button";
+    reset.className = "jam-reset-btn";
+    reset.dataset.testid = "jam-reset";
+    reset.textContent = "↺ 새 빵으로 다시";
+    reset.addEventListener("click", () => {
       if (solved) return;
-      const covered = coveredCount();
-      if (covered <= 0) return;
-      const percent = cellsToPercent(covered);
-      const j = judge(percent);
-      if (j === "good") {
+      painted.clear();
+      spreadLayer.replaceChildren();
+      knife.classList.remove("active");
+      sync();
+    });
+
+    const confirm = document.createElement("button");
+    confirm.type = "button";
+    confirm.className = "jam-confirm-btn";
+    confirm.dataset.testid = "jam-confirm";
+    confirm.textContent = "다 발랐어요";
+    confirm.addEventListener("click", () => {
+      if (solved || painted.size === 0) return;
+      const result = judgeSpread(painted);
+      if (result === "good") {
         solved = true;
         done.hidden = false;
-        state.textContent = "빵 색이 살짝 비쳐요!";
         state.dataset.level = "good";
         api.solve();
-      } else if (j === "low") {
-        state.dataset.level = "low";
-        if (!saidToolow) {
-          saidToolow = true;
-          void api.say(manifest.narrative.extra!["toolow"]);
+      } else if (result === "high") {
+        if (!saidHigh) {
+          saidHigh = true;
+          void api.say(manifest.narrative.extra!["toohigh"]);
         }
         api.fail();
       } else {
-        state.dataset.level = "high";
-        if (!saidToohigh) {
-          saidToohigh = true;
-          void api.say(manifest.narrative.extra!["toohigh"]);
+        if (!saidLow) {
+          saidLow = true;
+          void api.say(manifest.narrative.extra!["toolow"]);
         }
         api.fail();
       }
     });
 
-    api.actions.appendChild(confirmBtn);
+    api.actions.append(reset, confirm);
     sync();
-    api.root.append(sign, grid, state, done);
-
-    return () => {};
+    api.root.append(sign, surface, state, done);
+    return releaseDrag;
   },
 };

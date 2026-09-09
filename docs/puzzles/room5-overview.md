@@ -17,7 +17,7 @@
 | P1 pencil-grip | OB-001 | 단계 선택(shoulder-tap 계열) | 힘 구간 | `code:pencil-solved` |
 | P2 faucet-turn | OB-004 | 이산 탭+되돌리기 | 정도 구간 | `code:faucet-solved` |
 | P3 book-stack | OB-019 | 이산 탭+되돌리기(1권 단위) | 권수 구간 | `code:book-solved` |
-| P4 glue-spread | OB-011 | 격자 탭(jam-spread 계열) | 넓이 구간 | `code:glue-solved` |
+| P4 glue-spread | OB-011 | 종이 위를 직접 문질러 바르기 | 네 귀퉁이·가운데 확인 | `code:glue-solved` |
 | 최종 force-shelf-order | OB-001·004·019·011 | 활동 카드 확인(순서 없음) | 네 장 모두 확인 | `door:objects-open` |
 
 ## 최종 `force-shelf-order`
