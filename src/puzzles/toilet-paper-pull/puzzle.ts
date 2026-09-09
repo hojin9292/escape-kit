@@ -28,7 +28,7 @@ export const toiletPaperPull: PuzzleModule = {
 
     const sign = document.createElement("p");
     sign.className = "paper-sign";
-    sign.textContent = "휴지를 당겨 보세요 — 손바닥 위에 서너 번 접어 올릴 수 있는 길이면 충분해요.";
+    sign.textContent = "이번 활동에서는 휴지 세 칸을 접어 사용해요. 점선을 보며 세 칸 정도 당겨요.";
 
     const view = svgEl("svg");
     view.setAttribute("viewBox", "0 0 100 100");

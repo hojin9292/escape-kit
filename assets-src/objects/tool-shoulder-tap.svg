@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="360" viewBox="0 0 512 360">
+  <defs>
+    <linearGradient id="path-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#17283c"/><stop offset="1" stop-color="#0d1725"/>
+    </linearGradient>
+    <filter id="soft"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#000" flood-opacity=".32"/></filter>
+  </defs>
+  <rect x="18" y="24" width="476" height="312" rx="42" fill="url(#path-bg)" stroke="#58d8ff" stroke-width="5"/>
+  <path d="M128 265H389" stroke="#466078" stroke-width="34" stroke-linecap="round"/>
+  <path d="M150 265H364" stroke="#7ee7ff" stroke-width="3" stroke-dasharray="12 13"/>
+  <g filter="url(#soft)">
+    <circle cx="145" cy="132" r="47" fill="#ffd8ad" stroke="#162033" stroke-width="7"/>
+    <path d="M100 130c4-59 89-68 94-3-20-19-64-17-94 3Z" fill="#263448"/>
+    <rect x="100" y="176" width="92" height="104" rx="38" fill="#195f83" stroke="#162033" stroke-width="7"/>
+    <path d="M188 205c48-5 65-29 75-54" fill="none" stroke="#ffd8ad" stroke-width="24" stroke-linecap="round"/>
+    <path d="m251 153 10-20m-1 20 23-7m-26 22 19 10" stroke="#ffbf32" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="142" cy="136" r="5" fill="#17202d"/><circle cx="168" cy="136" r="5" fill="#17202d"/>
+    <path d="M143 156q13 11 26 0" fill="none" stroke="#17202d" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g filter="url(#soft)">
+    <circle cx="365" cy="136" r="47" fill="#f2c18e" stroke="#162033" stroke-width="7"/>
+    <path d="M320 128c8-53 83-59 91 1-23-14-59-15-91-1Z" fill="#8f4f2d"/>
+    <rect x="320" y="180" width="92" height="100" rx="38" fill="#e1a622" stroke="#162033" stroke-width="7"/>
+    <circle cx="351" cy="140" r="5" fill="#17202d"/><circle cx="378" cy="140" r="5" fill="#17202d"/>
+    <path d="M350 159q14 9 27 0" fill="none" stroke="#17202d" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <path d="M231 69h118a22 22 0 0 1 22 22v35a22 22 0 0 1-22 22h-48l-27 25 4-25h-47a22 22 0 0 1-22-22V91a22 22 0 0 1 22-22Z" fill="#fff" stroke="#ffba24" stroke-width="6"/>
+  <circle cx="265" cy="109" r="7" fill="#ffad15"/><circle cx="291" cy="109" r="7" fill="#ffad15"/><circle cx="317" cy="109" r="7" fill="#ffad15"/>
+</svg>

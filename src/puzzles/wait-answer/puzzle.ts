@@ -5,7 +5,7 @@
 import "./puzzle.css";
 import type { PuzzleApi, PuzzleModule, PuzzleManifest } from "../../engine/puzzle-host/types";
 import manifestJson from "./manifest.json";
-import { TICK_MS, judgeAtStep } from "./autoplay";
+import { TICK_MS, GOOD_START, GOOD_END, judgeAtStep } from "./autoplay";
 
 const manifest = manifestJson as PuzzleManifest;
 
@@ -20,7 +20,7 @@ export const waitAnswer: PuzzleModule = {
     api.root.classList.add("wait-root");
     const sign = document.createElement("p");
     sign.className = "wait-sign";
-    sign.textContent = "선생님이 생각하는 동안 지켜보다, 적당할 때 [지금!]을 눌러요.";
+    sign.textContent = "질문한 뒤 선생님의 표정을 살펴봐요. 생각을 마치고 나를 보면 [대답 듣기]를 눌러요.";
 
     const bubble = document.createElement("div");
     bubble.className = "wait-bubble";
@@ -42,13 +42,14 @@ export const waitAnswer: PuzzleModule = {
       if (solved) return;
       step += 1;
       bubble.classList.toggle("blink");
+      bubble.textContent = step < GOOD_START ? "생각 중…" : step <= GOOD_END ? "고개를 들고 나를 봐요" : "다른 일을 시작했어요";
     }, TICK_MS);
 
     const confirmBtn = document.createElement("button");
     confirmBtn.type = "button";
     confirmBtn.className = "wait-confirm-btn";
     confirmBtn.dataset.testid = "wait-confirm";
-    confirmBtn.textContent = "지금!";
+    confirmBtn.textContent = "대답 듣기";
     confirmBtn.addEventListener("click", () => {
       if (solved) return;
       const j = judgeAtStep(step);

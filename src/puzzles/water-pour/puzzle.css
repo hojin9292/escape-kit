@@ -32,6 +32,7 @@
   fill: color-mix(in srgb, var(--color-hologram) 55%, white);
   transition: y 0.15s ease, height 0.15s ease, opacity 0.15s ease;
 }
+.water-safe-line { stroke: var(--color-success); stroke-width: 2; stroke-dasharray: 4 3; }
 
 .water-button-row {
   display: flex;

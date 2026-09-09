@@ -1,23 +1,14 @@
 .bag-root { display: flex; flex-direction: column; gap: 0.9rem; }
 .bag-sign { margin: 0; font-size: 1.05rem; line-height: 1.5; }
-.bag-svg { width: 100%; max-width: 280px; align-self: center; aspect-ratio: 1/1; }
-.bag-knee { fill: color-mix(in srgb, var(--color-char-skin, #ecbd9b) 55%, var(--color-screen-bright, #e1e9f6)); stroke: var(--color-line); stroke-width: 2.5; }
-.bag-bag { fill: var(--color-hologram); stroke: var(--color-line); stroke-width: 2.5; transition: width 0.15s ease, x 0.15s ease, opacity 0.15s ease; }
-.bag-button-row { display: flex; gap: 0.7rem; justify-content: center; }
-.bag-btn {
-  min-height: 52px; min-width: 96px; padding: 0.5rem 1.2rem;
-  border-radius: var(--corner-radius); border: 2px solid var(--color-line);
-  background: var(--color-bg-deep); color: var(--color-text);
-  font-family: inherit; font-size: 1.05rem; font-weight: 700; cursor: pointer;
-}
-.bag-btn-up { border-color: var(--color-hologram); background: color-mix(in srgb, var(--color-hologram) 18%, var(--color-bg-deep)); }
+.bag-choice-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.65rem; }
+.bag-choice-btn { min-height: 150px; padding: 0.75rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; border-radius: var(--corner-radius); border: 2px solid var(--color-line); background: var(--color-bg-deep); color: var(--color-text); font-family: inherit; cursor: pointer; }
+.bag-choice-btn > span { font-size: 2rem; }
+.bag-choice-btn strong { font-size: 1rem; }
+.bag-choice-btn small { color: var(--color-text-muted); font-size: 0.82rem; line-height: 1.35; }
+.bag-choice-btn.selected { border-color: var(--color-hologram); background: color-mix(in srgb, var(--color-hologram) 20%, var(--color-bg-deep)); }
 .bag-state { margin: 0; text-align: center; font-size: 1rem; min-height: 1.4rem; }
-.bag-state[data-level="low"] { color: var(--color-hologram); }
 .bag-state[data-level="good"] { color: var(--color-success); }
-.bag-state[data-level="high"] { color: var(--color-danger); }
-.bag-confirm-btn {
-  min-height: 44px; padding: 0.4rem 1.3rem; border-radius: var(--corner-radius);
-  border: 1px solid var(--color-success); background: color-mix(in srgb, var(--color-success) 16%, transparent);
-  color: var(--color-success); font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer;
-}
+.bag-state[data-level="high"] { color: var(--color-warning, #ffd166); }
+.bag-confirm-btn { min-height: 52px; padding: 0.5rem 1.3rem; border-radius: var(--corner-radius); border: 2px solid var(--color-success); background: color-mix(in srgb, var(--color-success) 16%, transparent); color: var(--color-success); font-family: inherit; font-size: 1.05rem; font-weight: 800; cursor: pointer; }
 .bag-done { text-align: center; font-weight: 800; color: var(--color-success); }
+@media (max-width: 620px) { .bag-choice-row { grid-template-columns: 1fr; } .bag-choice-btn { min-height: 98px; } }

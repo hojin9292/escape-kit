@@ -28,7 +28,7 @@ export const waterPour: PuzzleModule = {
 
     const sign = document.createElement("p");
     sign.className = "water-sign";
-    sign.textContent = "컵에 물을 따라 보세요 — 맨 위에서 손가락 한 마디 아래까지면 충분해요.";
+    sign.textContent = "물을 들고 자리까지 이동해야 해요. 컵에 표시된 안전선까지 따라요.";
 
     const view = svgEl("svg");
     view.setAttribute("viewBox", "0 0 100 100");
@@ -55,7 +55,14 @@ export const waterPour: PuzzleModule = {
     fill.classList.add("water-fill");
     fill.setAttribute("x", "30.5");
 
-    view.append(cup, fill, rim);
+    const safeLine = svgEl("line");
+    safeLine.setAttribute("x1", "29");
+    safeLine.setAttribute("x2", "71");
+    safeLine.setAttribute("y1", "42");
+    safeLine.setAttribute("y2", "42");
+    safeLine.classList.add("water-safe-line");
+
+    view.append(cup, fill, safeLine, rim);
 
     const fullH = 52;
 
@@ -76,7 +83,7 @@ export const waterPour: PuzzleModule = {
     const done = document.createElement("div");
     done.className = "water-done";
     done.dataset.testid = manifest.testIds["solveCheck"];
-    done.textContent = "손가락 한 마디만큼 따랐어요!";
+    done.textContent = "안전선까지 알맞게 따랐어요!";
     done.hidden = true;
 
     function sync(): void {

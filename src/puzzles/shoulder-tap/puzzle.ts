@@ -1,107 +1,81 @@
-/**
- * 사회성 퍼즐 P2: 어깨 톡톡 (SO-010). 이 방에서 처음 쓰는 **단계 선택** 조작 —
- * 1~5단계 버튼 중 하나를 탭해 고르고(자유롭게 바꿀 수 있음) [톡톡]으로 확정한다.
- */
+/** 사회성 퍼즐 P2: 좁은 길에서 부탁하기. */
 import "./puzzle.css";
 import type { PuzzleApi, PuzzleModule, PuzzleManifest } from "../../engine/puzzle-host/types";
 import manifestJson from "./manifest.json";
-import { LEVELS, judge } from "./autoplay";
+import { CHOICES, judge } from "./autoplay";
 
 const manifest = manifestJson as PuzzleManifest;
+const LABELS = [
+  { icon: "✋", title: "말없이 밀고 지나가기", detail: "친구 몸을 밀어요." },
+  { icon: "💬", title: "“잠깐 지나갈게” 말하기", detail: "말한 뒤 친구가 움직일 때까지 기다려요." },
+  { icon: "📣", title: "큰 소리로 비키라고 하기", detail: "친구에게 계속 크게 말해요." },
+] as const;
 
 export const shoulderTap: PuzzleModule = {
   manifest,
   mount(api: PuzzleApi): () => void {
     let selected: number | null = null;
     let solved = false;
-    let saidToolow = false;
-    let saidToohigh = false;
-
+    let saidLow = false;
+    let saidHigh = false;
     api.root.classList.add("tap-root");
+
     const sign = document.createElement("p");
     sign.className = "tap-sign";
-    sign.textContent = "친구 어깨를 두드릴 세기를 골라 보세요 — 1단계가 가장 약해요.";
-
-    const levelRow = document.createElement("div");
-    levelRow.className = "tap-level-row";
-    levelRow.dataset.testid = "tap-levels";
-    const levelBtns = LEVELS.map((_, i) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "tap-level-btn";
-      btn.dataset.testid = `tap-level-${i}`;
-      btn.textContent = String(i + 1);
-      btn.addEventListener("click", () => {
-        if (solved) return;
-        selected = i;
-        levelBtns.forEach((b, j) => b.classList.toggle("selected", j === i));
-        sync();
-      });
-      levelRow.appendChild(btn);
-      return btn;
-    });
-
+    sign.textContent = "교실 통로를 친구가 막고 있어요. 안전하고 기분 좋게 지나가는 방법을 골라요.";
+    const scene = document.createElement("div");
+    scene.className = "tap-scene";
+    scene.innerHTML = '<span aria-hidden="true">🚶</span><span class="tap-path">통로</span><span aria-hidden="true">🧍</span>';
     const state = document.createElement("p");
     state.className = "tap-state";
     state.dataset.testid = "tap-state";
-    state.textContent = "세기를 골라 보세요.";
+    state.textContent = "한 가지 방법을 골라 보세요.";
+
+    const choiceRow = document.createElement("div");
+    choiceRow.className = "tap-choice-row";
+    choiceRow.dataset.testid = "tap-choices";
+    const buttons = LABELS.map((label, i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "tap-choice-btn";
+      btn.dataset.testid = `tap-choice-${i}`;
+      btn.innerHTML = `<span class="tap-choice-icon" aria-hidden="true">${label.icon}</span><strong>${label.title}</strong><small>${label.detail}</small>`;
+      btn.addEventListener("click", () => {
+        if (solved) return;
+        selected = i;
+        buttons.forEach((b, j) => b.classList.toggle("selected", j === i));
+        state.textContent = i === 1 ? "말하고 기다리는 방법을 골랐어요." : "친구의 몸과 기분도 생각해 볼까요?";
+        state.dataset.level = i === 1 ? "good" : "high";
+      });
+      choiceRow.appendChild(btn);
+      return btn;
+    });
+
     const done = document.createElement("div");
     done.className = "tap-done";
     done.dataset.testid = manifest.testIds["solveCheck"];
-    done.textContent = "친구가 자연스럽게 돌아봤어요!";
+    done.textContent = "친구가 길을 비켜 주었어요. “고마워!”";
     done.hidden = true;
-
-    function sync(): void {
-      if (selected === null) {
-        state.textContent = "세기를 골라 보세요.";
-        delete state.dataset.level;
-        return;
-      }
-      const j = judge(LEVELS[selected]);
-      if (j === "low") {
-        state.textContent = "이 정도면 친구가 못 느낄 수도 있어요.";
-        state.dataset.level = "low";
-      } else if (j === "high") {
-        state.textContent = "이 정도면 친구가 아플 수도 있어요.";
-        state.dataset.level = "high";
-      } else {
-        state.textContent = "딱 좋은 세기 같아요!";
-        state.dataset.level = "good";
-      }
-    }
-
     const confirmBtn = document.createElement("button");
     confirmBtn.type = "button";
     confirmBtn.className = "tap-confirm-btn";
     confirmBtn.dataset.testid = "tap-confirm";
-    confirmBtn.textContent = "톡톡";
+    confirmBtn.textContent = "이렇게 할래요";
     confirmBtn.addEventListener("click", () => {
       if (solved || selected === null) return;
-      const j = judge(LEVELS[selected]);
-      if (j === "good") {
-        solved = true;
-        done.hidden = false;
-        state.dataset.level = "good";
-        api.solve();
-      } else if (j === "low") {
-        state.dataset.level = "low";
-        if (!saidToolow) {
-          saidToolow = true;
-          void api.say(manifest.narrative.extra!["toolow"]);
-        }
+      const result = judge(CHOICES[selected]);
+      if (result === "good") {
+        solved = true; done.hidden = false; state.dataset.level = "good"; api.solve();
+      } else if (result === "low") {
+        if (!saidLow) { saidLow = true; void api.say(manifest.narrative.extra!["toolow"]); }
         api.fail();
       } else {
-        state.dataset.level = "high";
-        if (!saidToohigh) {
-          saidToohigh = true;
-          void api.say(manifest.narrative.extra!["toohigh"]);
-        }
+        if (!saidHigh) { saidHigh = true; void api.say(manifest.narrative.extra!["toohigh"]); }
         api.fail();
       }
     });
-
     api.actions.appendChild(confirmBtn);
-    api.root.append(sign, levelRow, state, done);
+    api.root.append(sign, scene, choiceRow, state, done);
     return () => {};
   },
 };

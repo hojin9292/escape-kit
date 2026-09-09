@@ -1,6 +1,6 @@
 /**
  * 사회성 퍼즐 P3: 다가가기 (SO-014). brushing-timer 계열 관찰형을 거리에 적용 —
- * 캐릭터가 자동으로 다가가고, 알맞은 거리일 때 [말 걸기!]를 누른다.
+ * 캐릭터가 옆쪽으로 다가가고, 친구가 고개를 들었을 때 [인사하기]를 누른다.
  */
 import "./puzzle.css";
 import type { PuzzleApi, PuzzleModule, PuzzleManifest } from "../../engine/puzzle-host/types";
@@ -25,7 +25,7 @@ export const approachFriend: PuzzleModule = {
     api.root.classList.add("approach-root");
     const sign = document.createElement("p");
     sign.className = "approach-sign";
-    sign.textContent = "친구에게 조금씩 다가가요 — 알맞은 거리다 싶으면 [말 걸기!]를 눌러요.";
+    sign.textContent = "책 읽는 친구의 앞을 가리지 않게 옆쪽으로 다가가요. 친구가 고개를 들면 인사해요.";
 
     const view = svgEl("svg");
     view.setAttribute("viewBox", "0 0 100 100");
@@ -69,7 +69,7 @@ export const approachFriend: PuzzleModule = {
     confirmBtn.type = "button";
     confirmBtn.className = "approach-confirm-btn";
     confirmBtn.dataset.testid = "approach-confirm";
-    confirmBtn.textContent = "말 걸기!";
+    confirmBtn.textContent = "인사하기";
     confirmBtn.addEventListener("click", () => {
       if (solved) return;
       const j = judgeAtStep(step);

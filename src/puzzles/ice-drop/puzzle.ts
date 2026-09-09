@@ -28,7 +28,7 @@ export const iceDrop: PuzzleModule = {
 
     const sign = document.createElement("p");
     sign.className = "ice-sign";
-    sign.textContent = "얼음을 넣어 보세요 — 컵 바닥에 한 겹 깔릴 만큼이면 충분해요.";
+    sign.textContent = "주문표에 ‘얼음 두세 개’라고 적혀 있어요. 하나씩 세어 넣어요.";
 
     const view = svgEl("svg");
     view.setAttribute("viewBox", "0 0 100 100");
@@ -87,7 +87,7 @@ export const iceDrop: PuzzleModule = {
         state.textContent = "얼음이 컵 위로 솟았어요.";
         state.dataset.level = "high";
       } else {
-        state.textContent = "바닥에 한 겹 깔렸어요!";
+        state.textContent = "주문표의 두세 개를 넣었어요!";
         state.dataset.level = "good";
       }
     }

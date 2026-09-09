@@ -5,7 +5,7 @@
 import "./puzzle.css";
 import type { PuzzleApi, PuzzleModule, PuzzleManifest } from "../../engine/puzzle-host/types";
 import manifestJson from "./manifest.json";
-import { TICK_MS, judgeAtStep } from "./autoplay";
+import { TICK_MS, GOOD_START, GOOD_END, judgeAtStep } from "./autoplay";
 
 const manifest = manifestJson as PuzzleManifest;
 
@@ -20,7 +20,7 @@ export const microwaveWait: PuzzleModule = {
     api.root.classList.add("microwave-root");
     const sign = document.createElement("p");
     sign.className = "microwave-sign";
-    sign.textContent = "전자레인지가 돌아가는 동안 지켜보다, 적당할 때 [지금!]을 눌러요.";
+    sign.textContent = "전자레인지가 멈추고 ‘띵!’ 소리가 난 뒤 [꺼내기]를 눌러요.";
 
     const display = document.createElement("div");
     display.className = "microwave-display";
@@ -41,13 +41,14 @@ export const microwaveWait: PuzzleModule = {
       if (solved) return;
       step += 1;
       display.classList.toggle("tick");
+      display.textContent = step < GOOD_START ? "데우는 중…" : step <= GOOD_END ? "띵! 작동이 끝났어요" : "작동 완료 — 음식이 기다리고 있어요";
     }, TICK_MS);
 
     const confirmBtn = document.createElement("button");
     confirmBtn.type = "button";
     confirmBtn.className = "microwave-confirm-btn";
     confirmBtn.dataset.testid = "microwave-confirm";
-    confirmBtn.textContent = "지금!";
+    confirmBtn.textContent = "꺼내기";
     confirmBtn.addEventListener("click", () => {
       if (solved) return;
       const j = judgeAtStep(step);

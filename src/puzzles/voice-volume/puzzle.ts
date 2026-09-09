@@ -24,7 +24,7 @@ export const voiceVolume: PuzzleModule = {
     api.root.classList.add("voice-root");
     const sign = document.createElement("p");
     sign.className = "voice-sign";
-    sign.textContent = "짝꿍에게 말해 보세요 — 고개를 돌리지 않아도 들릴 만큼이면 충분해요.";
+    sign.textContent = "조용한 도서관에서 바로 옆 짝꿍에게 말해요. 주변을 방해하지 않는 작은 목소리를 골라요.";
 
     const view = svgEl("svg");
     view.setAttribute("viewBox", "0 0 100 100");

@@ -20,7 +20,7 @@ export const storyTurn: PuzzleModule = {
     api.root.classList.add("story-root");
     const sign = document.createElement("p");
     sign.className = "story-sign";
-    sign.textContent = "이야기 카드가 저절로 쌓여요 — 너무 많이 쌓이기 전에 [차례 넘기기!]를 눌러요.";
+    sign.textContent = "내 이야기를 두세 문장 말한 뒤 친구의 표정을 보고 [친구 이야기 듣기]를 눌러요.";
 
     const stack = document.createElement("div");
     stack.className = "story-stack";
@@ -57,7 +57,7 @@ export const storyTurn: PuzzleModule = {
     confirmBtn.type = "button";
     confirmBtn.className = "story-confirm-btn";
     confirmBtn.dataset.testid = "story-confirm";
-    confirmBtn.textContent = "차례 넘기기!";
+    confirmBtn.textContent = "친구 이야기 듣기";
     confirmBtn.addEventListener("click", () => {
       if (solved) return;
       const j = judgeAtStep(step);

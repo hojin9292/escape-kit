@@ -6,7 +6,7 @@
 ## 방 구조
 
 ```
-입장 (spawn) ─ P1 엘리베이터 거리 / P2 어깨 톡톡 / P3 다가가기 / P4 가방 자리
+입장 (spawn) ─ P1 엘리베이터 거리 / P2 좁은 길 부탁하기 / P3 다가가기 / P4 버스 가방 자리
 거리 진열대 코너 [sealed shelf-corner, opensWhen: 4개 code:*-solved 전부]
   ─ 최종 콘솔 distance-shelf-order(복습 보드, gate 없음) → door:social-open → 출구
 ```
@@ -16,9 +16,9 @@
 | 퍼즐 | 근거 문항 | 조작 | 판정 핵심 | 보상(이벤트) |
 |---|---|---|---|---|
 | P1 elevator-distance | SO-003 | 탭으로 가까이/멀리(이산+되돌리기) | 거리 구간(low=너무 가까움) | `code:elevator-solved` |
-| P2 shoulder-tap | SO-010 | **단계 선택**(신규 — 1~5단계 중 하나) | 세기 구간 | `code:tap-solved` |
+| P2 shoulder-tap | 재구성 | **상황 카드 선택** | 밀지 않고 말로 부탁한 뒤 기다리기 | `code:tap-solved` |
 | P3 approach-friend | SO-014 | 자동 접근 관찰형(brushing-timer 계열, 방향 반전) | 거리 구간 | `code:approach-solved` |
-| P4 bag-space | SO-015 | 탭으로 올리기/줄이기(이산+되돌리기) | 공간 구간 | `code:bag-solved` |
+| P4 bag-space | SO-015 재구성 | **놓을 곳 카드 선택** | 좌석·통로를 막지 않는 위치 | `code:bag-solved` |
 | 최종 distance-shelf-order | SO-003·010·014·015 | 활동 카드 확인(순서 없음) | 네 장 모두 확인 | `door:social-open` |
 
 **주의(값 의미 반전)**: 거리 계열 문항은 "값이 작다=가깝다"이므로 `low` 판정이

@@ -20,7 +20,7 @@ export const callName: PuzzleModule = {
     api.root.classList.add("call-root");
     const sign = document.createElement("p");
     sign.className = "call-sign";
-    sign.textContent = "선생님을 불러 보세요 — 한 번 부르고 선생님이 고개를 돌릴 때까지 기다리면 충분해요.";
+    sign.textContent = "도움이 필요해요. 선생님을 한 번 부른 뒤 반응을 기다리고, 못 들었을 때만 한 번 더 불러요.";
 
     const view = document.createElement("div");
     view.className = "call-view";

@@ -29,7 +29,7 @@ export const handSanitizerPump: PuzzleModule = {
 
     const sign = document.createElement("p");
     sign.className = "sani-sign";
-    sign.textContent = "손 소독제를 펌프해 보세요 — 손바닥 가운데 동그랗게 고이는 한 번이면 충분해요.";
+    sign.textContent = "이 디스펜서는 한 번 누르면 두 손에 바를 양이 나와요. 한 번 누른 뒤 손 전체에 펴 발라요.";
 
     const view = svgEl("svg");
     view.setAttribute("viewBox", "0 0 100 100");

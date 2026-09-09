@@ -20,7 +20,7 @@ import {
   cellsToPercent,
   judge as jamJudge,
 } from "../../src/puzzles/jam-spread/autoplay";
-import { TICK_MS, SOLVE_STEP as TOPPING_SOLVE_STEP, judgeAtStep } from "../../src/puzzles/yogurt-topping/autoplay";
+import { SOLVE_CHOICE as TOPPING_SOLVE_CHOICE, isCorrect as toppingIsCorrect } from "../../src/puzzles/yogurt-topping/autoplay";
 import { RECAP_IDS, isRecapComplete } from "../../src/puzzles/pour-shelf-order/autoplay";
 
 /**
@@ -38,9 +38,9 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
     expect(waterJudge(waterStepToValue(12))).toBe("high");
   });
 
-  test("ice-drop: FO-008 구간(2~5개)과 일치한다", () => {
+  test("ice-drop: 화면 주문 카드의 2~3개와 일치한다", () => {
     expect(ICE_GOOD_MIN).toBe(2);
-    expect(ICE_GOOD_MAX).toBe(5);
+    expect(ICE_GOOD_MAX).toBe(3);
     expect(iceJudge(ICE_SOLVE_COUNT)).toBe("good");
     expect(iceJudge(0)).toBe("low");
     expect(iceJudge(7)).toBe("high");
@@ -54,11 +54,10 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
     expect(jamJudge(cellsToPercent(24))).toBe("high");
   });
 
-  test("yogurt-topping: 하나도 안 올리면 low, 부분적으로 덮이면 good, 다 덮이면 high", () => {
-    expect(judgeAtStep(0)).toBe("low");
-    expect(judgeAtStep(TOPPING_SOLVE_STEP)).toBe("good");
-    expect(judgeAtStep(3)).toBe("good");
-    expect(judgeAtStep(4)).toBe("high");
+  test("yogurt-topping: 주문 카드와 같은 한 숟가락만 정답이다", () => {
+    expect(toppingIsCorrect("none")).toBe(false);
+    expect(toppingIsCorrect(TOPPING_SOLVE_CHOICE)).toBe(true);
+    expect(toppingIsCorrect("covered")).toBe(false);
   });
 
   test("pour-shelf-order: 네 활동을 어떤 순서로 확인해도 완료된다", () => {
@@ -100,9 +99,9 @@ test("「먹고 마시는 방」 완주 — 식사 준비 4개를 풀고 복습 
   await dismissDialogues(page); // #fo-jam-clear
   await expect(page.getByTestId("puzzle-jam")).toBeHidden();
 
-  // P4 요거트 토핑 — 흰 부분이 아직 보이는 동안 그만!
+  // P4 요거트 토핑 — 주문 카드와 같은 한 숟가락 그릇 선택
   await openStation(page, isMobile, 11, 6.5, "puzzle-topping");
-  await page.waitForTimeout(TICK_MS * TOPPING_SOLVE_STEP + 200);
+  await page.getByTestId(`topping-choice-${TOPPING_SOLVE_CHOICE}`).click();
   await page.getByTestId("topping-confirm").click();
   await expect(page.getByTestId("topping-done")).toBeVisible();
   await dismissDialogues(page); // #fo-topping-clear

@@ -41,8 +41,8 @@ export const socialRoom: GameMap = {
     },
     {
       id: "shoulder-tap",
-      name: "짝꿍",
-      icon: "👆",
+      name: "좁은 통로",
+      icon: "🙋",
       tile: [11, 3],
       range: 1.6,
       puzzleId: "shoulder-tap",
@@ -59,7 +59,7 @@ export const socialRoom: GameMap = {
     },
     {
       id: "bag-space",
-      name: "버스 좌석",
+      name: "버스 가방 자리",
       icon: "👜",
       tile: [11, 6.5],
       range: 1.6,

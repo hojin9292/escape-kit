@@ -34,9 +34,9 @@
 | 퍼즐 | 근거 문항 | 조작 | 판정 핵심 | 보상(이벤트) |
 |---|---|---|---|---|
 | P1 toothpaste-squeeze | HY-001 | **탭으로 짜기**(누를 때마다 덩어리 증가, "그만" 확정) | 완두콩 크기 구간 | `code:tooth-solved` |
-| P2 hand-sanitizer-pump | HY-004 | **탭으로 펌프 횟수 세기** | 1~2회 | `code:sani-solved` |
-| P3 brushing-timer | HY-009 | **관찰 후 "지금!" 탭**(4부위 순환 애니메이션) | 4부위 각 1회 이상 노출 후 | `code:brush-solved` |
-| P4 toilet-paper-pull | HY-005 | **탭으로 당기기**(누를 때마다 길이 증가, "끊기" 확정) | 손바닥 길이 구간 | `code:paper-solved` |
+| P2 hand-sanitizer-pump | HY-004 | **탭으로 펌프 횟수 세기** | 화면 제품 안내량 | `code:sani-solved` |
+| P3 brushing-timer | HY-009 | **관찰 후 완료 탭**(4부위 순환 애니메이션) | 빠진 부위 없이 모두 확인 | `code:brush-solved` |
+| P4 toilet-paper-pull | HY-005 | **탭으로 당기기**(누를 때마다 길이 증가, "끊기" 확정) | 이번 연습의 세 칸 | `code:paper-solved` |
 | 최종 soap-shelf-order | HY-001·004·009·005 | **활동 카드 확인**(순서 없음) | 네 장 모두 확인 | `door:hygiene-open` |
 
 조작 4종 중복 없음: 짜서 채우기(누적 후 확정) / 횟수 세기(1탭=1펌프) / 관찰 후

@@ -7,15 +7,9 @@ import {
   stepToValue as elevStepToValue,
   judge as elevJudge,
 } from "../../src/puzzles/elevator-distance/autoplay";
-import { LEVELS, GOOD_MIN as TAP_GOOD_MIN, GOOD_MAX as TAP_GOOD_MAX, SOLVE_LEVEL, judge as tapJudge } from "../../src/puzzles/shoulder-tap/autoplay";
+import { CHOICES as PATH_CHOICES, SOLVE_CHOICE as PATH_SOLVE_CHOICE, judge as pathJudge } from "../../src/puzzles/shoulder-tap/autoplay";
 import { TICK_MS as APPROACH_TICK_MS, SOLVE_STEP as APPROACH_SOLVE_STEP, judgeAtStep as approachJudgeAtStep } from "../../src/puzzles/approach-friend/autoplay";
-import {
-  GOOD_MIN as BAG_GOOD_MIN,
-  GOOD_MAX as BAG_GOOD_MAX,
-  SOLVE_STEP as BAG_SOLVE_STEP,
-  stepToValue as bagStepToValue,
-  judge as bagJudge,
-} from "../../src/puzzles/bag-space/autoplay";
+import { CHOICES as BAG_CHOICES, SOLVE_CHOICE as BAG_SOLVE_CHOICE, judge as bagJudge } from "../../src/puzzles/bag-space/autoplay";
 import { RECAP_IDS, isRecapComplete } from "../../src/puzzles/distance-shelf-order/autoplay";
 
 test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
@@ -27,12 +21,9 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
     expect(elevJudge(elevStepToValue(12))).toBe("high");
   });
 
-  test("shoulder-tap: SO-010 구간(18~38)과 일치하고 정답 단계가 유일하다", () => {
-    expect(TAP_GOOD_MIN).toBe(18);
-    expect(TAP_GOOD_MAX).toBe(38);
-    expect(tapJudge(LEVELS[SOLVE_LEVEL])).toBe("good");
-    const goodLevels = LEVELS.map((v) => tapJudge(v)).filter((j) => j === "good");
-    expect(goodLevels.length).toBe(1);
+  test("좁은 길: 말로 부탁하고 기다리는 선택만 적절하다", () => {
+    expect(pathJudge(PATH_CHOICES[PATH_SOLVE_CHOICE])).toBe("good");
+    expect(PATH_CHOICES.map(pathJudge).filter((j) => j === "good")).toHaveLength(1);
   });
 
   test("approach-friend: 이르면 high(너무 멂), 적당하면 good, 늦으면 low(너무 가까움)", () => {
@@ -41,12 +32,9 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
     expect(approachJudgeAtStep(20)).toBe("low");
   });
 
-  test("bag-space: SO-015 구간(10~28)과 일치한다", () => {
-    expect(BAG_GOOD_MIN).toBe(10);
-    expect(BAG_GOOD_MAX).toBe(28);
-    expect(bagJudge(bagStepToValue(BAG_SOLVE_STEP))).toBe("good");
-    expect(bagJudge(bagStepToValue(0))).toBe("low");
-    expect(bagJudge(bagStepToValue(16))).toBe("high");
+  test("버스 가방 자리: 내 발 사이 선택만 좌석과 통로를 비운다", () => {
+    expect(bagJudge(BAG_CHOICES[BAG_SOLVE_CHOICE])).toBe("good");
+    expect(BAG_CHOICES.map(bagJudge).filter((j) => j === "good")).toHaveLength(1);
   });
 
   test("distance-shelf-order: 네 활동을 어떤 순서로 확인해도 완료된다", () => {
@@ -72,7 +60,7 @@ test("「함께 지내는 방」 완주 — 네 가지를 풀고 복습 카드�
   await expect(page.getByTestId("puzzle-elevator")).toBeHidden();
 
   await openStation(page, isMobile, 11, 3, "puzzle-tap");
-  await page.getByTestId(`tap-level-${SOLVE_LEVEL}`).click();
+  await page.getByTestId(`tap-choice-${PATH_SOLVE_CHOICE}`).click();
   await page.getByTestId("tap-confirm").click();
   await expect(page.getByTestId("tap-done")).toBeVisible();
   await dismissDialogues(page);
@@ -86,7 +74,7 @@ test("「함께 지내는 방」 완주 — 네 가지를 풀고 복습 카드�
   await expect(page.getByTestId("puzzle-approach")).toBeHidden();
 
   await openStation(page, isMobile, 11, 6.5, "puzzle-bag");
-  for (let i = 0; i < BAG_SOLVE_STEP; i++) await page.getByTestId("bag-up").click();
+  await page.getByTestId(`bag-choice-${BAG_SOLVE_CHOICE}`).click();
   await page.getByTestId("bag-confirm").click();
   await expect(page.getByTestId("bag-done")).toBeVisible();
   await dismissDialogues(page);

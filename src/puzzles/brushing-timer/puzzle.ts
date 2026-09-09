@@ -24,7 +24,7 @@ export const brushingTimer: PuzzleModule = {
 
     const sign = document.createElement("p");
     sign.className = "brush-sign";
-    sign.textContent = "네 군데가 한 번씩 밝아지는 걸 지켜보다, 다 됐다 싶으면 [지금!]을 눌러요.";
+    sign.textContent = "앞니·양쪽 어금니·안쪽 표시가 모두 켜지는지 보고 [골고루 닦았어요]를 눌러요.";
 
     const zoneRow = document.createElement("div");
     zoneRow.className = "brush-zone-row";
@@ -68,7 +68,7 @@ export const brushingTimer: PuzzleModule = {
     confirmBtn.type = "button";
     confirmBtn.className = "brush-confirm-btn";
     confirmBtn.dataset.testid = "brush-confirm";
-    confirmBtn.textContent = "지금!";
+    confirmBtn.textContent = "골고루 닦았어요";
     confirmBtn.addEventListener("click", () => {
       if (solved) return;
       const j = judgeAtStep(step);
