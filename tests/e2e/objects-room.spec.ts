@@ -16,7 +16,7 @@ import {
   cellsToPercent as glueCellsToPercent,
   judge as glueJudge,
 } from "../../src/puzzles/glue-spread/autoplay";
-import { ITEMS, CORRECT_ORDER, isUniqueSolution, judgeOrder } from "../../src/puzzles/force-shelf-order/autoplay";
+import { RECAP_IDS, isRecapComplete } from "../../src/puzzles/force-shelf-order/autoplay";
 
 test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
   test("pencil-grip: OB-001 구간(28~52)과 일치하고 정답 단계가 유일하다", () => {
@@ -51,23 +51,15 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
     expect(glueJudge(glueCellsToPercent(24))).toBe("high");
   });
 
-  test("force-shelf-order: 네 물건의 중앙값이 전부 달라 정답 순열이 유일하다", () => {
-    expect(isUniqueSolution()).toBe(true);
-    expect(ITEMS.length).toBe(4);
-    expect(CORRECT_ORDER).toEqual(["tablet", "sticker", "pencil", "snack-bag"]);
-    expect(judgeOrder(CORRECT_ORDER)).toBe(true);
-    expect(judgeOrder([...CORRECT_ORDER].reverse())).toBe(false);
-    const permute = (arr: string[]): string[][] =>
-      arr.length <= 1
-        ? [arr]
-        : arr.flatMap((x, i) => permute([...arr.slice(0, i), ...arr.slice(i + 1)]).map((p) => [x, ...p]));
-    const all = permute(ITEMS.map((it) => it.id));
-    expect(all.length).toBe(24);
-    expect(all.filter((p) => judgeOrder(p)).length).toBe(1);
+  test("force-shelf-order: 네 활동을 어떤 순서로 확인해도 완료된다", () => {
+    expect(RECAP_IDS).toHaveLength(4);
+    expect(isRecapComplete(RECAP_IDS)).toBe(true);
+    expect(isRecapComplete([...RECAP_IDS].reverse())).toBe(true);
+    expect(isRecapComplete(RECAP_IDS.slice(0, 3))).toBe(false);
   });
 });
 
-test("「물건 쓰는 방」 완주 — 네 가지를 풀면 진열대가 열리고, 서열을 맞히면 문이 열린다", async ({
+test("「물건 쓰는 방」 완주 — 네 가지를 풀고 복습 카드를 확인하면 문이 열린다", async ({
   page,
 }) => {
   test.setTimeout(240_000);
@@ -113,13 +105,7 @@ test("「물건 쓰는 방」 완주 — 네 가지를 풀면 진열대가 열�
     .toBe(0);
 
   await openStation(page, isMobile, 9, 11.5, "puzzle-ob-shelf");
-  for (let i = 0; i < 4; i++) {
-    await page.locator('[data-testid="ob-shelf-pool"] button').first().click();
-  }
-  await dismissDialogues(page);
-  await expect(page.getByTestId("puzzle-ob-shelf")).toBeVisible();
-
-  for (const id of CORRECT_ORDER) {
+  for (const id of [...RECAP_IDS].reverse()) {
     await page.getByTestId(`ob-shelf-card-${id}`).click();
   }
   await expect(page.getByTestId("ob-shelf-done")).toBeVisible();

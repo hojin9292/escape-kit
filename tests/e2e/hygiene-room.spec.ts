@@ -27,12 +27,12 @@ import {
   stepToValue as paperStepToValue,
   judge as paperJudge,
 } from "../../src/puzzles/toilet-paper-pull/autoplay";
-import { ITEMS, CORRECT_ORDER, isUniqueSolution, judgeOrder } from "../../src/puzzles/soap-shelf-order/autoplay";
+import { RECAP_IDS, isRecapComplete } from "../../src/puzzles/soap-shelf-order/autoplay";
 
 /**
  * 「깨끗한 방」 — 순수 함수 검산(정답 상수는 각 autoplay.ts에서만 가져온다) +
- * 방 전체를 실제로 걸어서 완주하는 e2e. 최종 콘솔(soap-shelf-order)은 서열 퍼즐이라
- * 정답 순열이 유일해인지까지 검산한다(전 순열 4! = 24개 중 하나).
+ * 방 전체를 실제로 걸어서 완주하는 e2e. 최종 복습 보드(soap-shelf-order)는
+ * 네 활동을 어떤 순서로 확인해도 완료되는지 검산한다.
  */
 
 test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
@@ -69,24 +69,15 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
     expect(paperJudge(paperStepToValue(8))).toBe("high");
   });
 
-  test("soap-shelf-order: 네 물건의 중앙값이 전부 달라 정답 순열이 유일하다", () => {
-    expect(isUniqueSolution()).toBe(true);
-    expect(ITEMS.length).toBe(4);
-    expect(CORRECT_ORDER).toEqual(["dish-soap", "lotion", "toothpaste", "shampoo"]);
-    expect(judgeOrder(CORRECT_ORDER)).toBe(true);
-    expect(judgeOrder([...CORRECT_ORDER].reverse())).toBe(false);
-    // 24개 순열 중 정답은 정확히 1개뿐이어야 한다(전 순열 유일해 검산)
-    const permute = (arr: string[]): string[][] =>
-      arr.length <= 1
-        ? [arr]
-        : arr.flatMap((x, i) => permute([...arr.slice(0, i), ...arr.slice(i + 1)]).map((p) => [x, ...p]));
-    const all = permute(ITEMS.map((it) => it.id));
-    expect(all.length).toBe(24);
-    expect(all.filter((p) => judgeOrder(p)).length).toBe(1);
+  test("soap-shelf-order: 네 활동을 어떤 순서로 확인해도 완료된다", () => {
+    expect(RECAP_IDS).toHaveLength(4);
+    expect(isRecapComplete(RECAP_IDS)).toBe(true);
+    expect(isRecapComplete([...RECAP_IDS].reverse())).toBe(true);
+    expect(isRecapComplete(RECAP_IDS.slice(0, 3))).toBe(false);
   });
 });
 
-test("「깨끗한 방」 완주 — 청소 4개를 풀면 정리대가 열리고, 서열을 맞히면 문이 열린다", async ({ page }) => {
+test("「깨끗한 방」 완주 — 청소 4개를 풀고 복습 카드를 확인하면 문이 열린다", async ({ page }) => {
   test.setTimeout(240_000);
   const isMobile = test.info().project.name === "mobile";
   await enterHygieneRoom(page);
@@ -134,17 +125,9 @@ test("「깨끗한 방」 완주 — 청소 4개를 풀면 정리대가 열리�
     )
     .toBe(0);
 
-  // 최종 콘솔 — 먼저 화면에 뒤섞여 나온 순서(정답의 역순, DISPLAY_ORDER)를 그대로
-  // 눌러 오답 반응을 확인한다
+  // 최종 복습 보드 — 순서 없이 네 활동을 모두 확인한다
   await openStation(page, isMobile, 9, 11.5, "puzzle-shelf");
-  for (let i = 0; i < 4; i++) {
-    await page.locator('[data-testid="shelf-pool"] button').first().click();
-  }
-  await dismissDialogues(page); // #hy-shelf-wrong
-  await expect(page.getByTestId("puzzle-shelf")).toBeVisible(); // 오답이면 열린 채로 재시도
-
-  // 정답 순서대로 다시 놓는다
-  for (const id of CORRECT_ORDER) {
+  for (const id of [...RECAP_IDS].reverse()) {
     await page.getByTestId(`shelf-card-${id}`).click();
   }
   await expect(page.getByTestId("shelf-done")).toBeVisible();

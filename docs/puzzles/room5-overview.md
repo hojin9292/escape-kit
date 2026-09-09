@@ -7,7 +7,7 @@
 ```
 입장 (spawn) ─ P1 연필 잡기 / P2 수도꼭지 / P3 책 쌓기 / P4 풀칠
 힘 진열대 코너 [sealed shelf-corner, opensWhen: 4개 code:*-solved 전부]
-  ─ 최종 콘솔 force-shelf-order(서열 퍼즐, gate 없음) → door:objects-open → 출구
+  ─ 최종 콘솔 force-shelf-order(복습 보드, gate 없음) → door:objects-open → 출구
 ```
 
 ## 정보 배정표
@@ -18,10 +18,9 @@
 | P2 faucet-turn | OB-004 | 이산 탭+되돌리기 | 정도 구간 | `code:faucet-solved` |
 | P3 book-stack | OB-019 | 이산 탭+되돌리기(1권 단위) | 권수 구간 | `code:book-solved` |
 | P4 glue-spread | OB-011 | 격자 탭(jam-spread 계열) | 넓이 구간 | `code:glue-solved` |
-| 최종 force-shelf-order | OB-005·013·001·009 | 탭으로 순서 배치 | 정답 순열 유일 | `door:objects-open` |
+| 최종 force-shelf-order | OB-001·004·019·011 | 활동 카드 확인(순서 없음) | 네 장 모두 확인 | `door:objects-open` |
 
 ## 최종 `force-shelf-order`
 
 - 4개 퍼즐을 모두 풀면 진열대 봉인이 걷히고 열린다.
-- 물건 카드 4개(태블릿·스티커·연필·과자 봉지)를 적은 힘부터 큰 힘 순서로 놓는다.
-- 정답 순서(중앙값 오름차순): 태블릿(16.5) → 스티커(29) → 연필(40) → 과자 봉지(55).
+- 앞에서 연습한 네 활동 카드를 어떤 순서로든 눌러 모두 확인한다. 오답은 없다.

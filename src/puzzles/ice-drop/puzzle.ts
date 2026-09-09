@@ -35,12 +35,8 @@ export const iceDrop: PuzzleModule = {
     view.classList.add("ice-svg");
     view.dataset.testid = "ice-view";
 
-    const cup = svgEl("rect");
-    cup.setAttribute("x", "28");
-    cup.setAttribute("y", "30");
-    cup.setAttribute("width", "44");
-    cup.setAttribute("height", "48");
-    cup.setAttribute("rx", "6");
+    const cup = svgEl("path");
+    cup.setAttribute("d", "M25 22 H75 L69 82 Q68 88 61 88 H39 Q32 88 31 82 Z");
     cup.classList.add("ice-cup");
     view.appendChild(cup);
 
@@ -54,11 +50,12 @@ export const iceDrop: PuzzleModule = {
         const row = Math.floor(i / cols);
         const col = i % cols;
         const cube = svgEl("rect");
-        cube.setAttribute("x", String(31 + col * 13));
-        cube.setAttribute("y", String(72 - row * 12));
-        cube.setAttribute("width", "11");
-        cube.setAttribute("height", "11");
-        cube.setAttribute("rx", "2");
+        cube.setAttribute("x", String(34 + col * 11));
+        cube.setAttribute("y", String(73 - row * 11));
+        cube.setAttribute("width", "10");
+        cube.setAttribute("height", "10");
+        cube.setAttribute("rx", "2.5");
+        cube.setAttribute("transform", `rotate(${col === 1 ? -5 : 5} ${39 + col * 11} ${78 - row * 11})`);
         cube.classList.add("ice-cube");
         cubesGroup.appendChild(cube);
       }

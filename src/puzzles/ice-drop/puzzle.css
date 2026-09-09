@@ -18,16 +18,16 @@
 }
 
 .ice-cup {
-  fill: var(--color-screen-bright, #e1e9f6);
-  fill-opacity: 0.12;
-  stroke: var(--color-line);
-  stroke-width: 2.5;
+  fill: color-mix(in srgb, var(--color-hologram) 10%, transparent);
+  stroke: color-mix(in srgb, var(--color-hologram) 70%, white);
+  stroke-width: 3;
+  stroke-linejoin: round;
 }
 
 .ice-cube {
-  fill: color-mix(in srgb, var(--color-hologram) 35%, white);
-  stroke: var(--color-line);
-  stroke-width: 1.5;
+  fill: color-mix(in srgb, var(--color-hologram) 38%, white);
+  stroke: color-mix(in srgb, var(--color-hologram) 78%, white);
+  stroke-width: 1.2;
 }
 
 .ice-btn {

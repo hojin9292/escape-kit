@@ -121,7 +121,7 @@ export interface GameMap {
    */
   epilogue?: { open: string; notesComplete: string; notesIncomplete: string };
   /** 봉인 구역 — 방탈출의 "풀다 보면 숨은 방이 나온다".
-   *  이벤트 발화 전까지 칠흑으로 덮이고 통행·상호작용·수색 마커가 전부 막힌다.
+   *  이벤트 발화 전까지 푸른 반투명 장막으로 덮이고 통행·상호작용·수색 마커가 전부 막힌다.
    *  배경은 통짜 그림 한 장이므로 구역을 **덮어서** 가린다(그림을 자르지 않는다). */
   sealed?: SealedArea[];
 }
