@@ -1,0 +1,103 @@
+.recap-root {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.recap-sign {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.recap-progress {
+  align-self: center;
+  margin: 0;
+  padding: 0.45rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-success) 60%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-success) 14%, transparent);
+  color: var(--color-success);
+  font-weight: 800;
+}
+
+.recap-board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.recap-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3rem 1fr 1.8rem;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 92px;
+  padding: 0.75rem;
+  border: 2px solid color-mix(in srgb, var(--color-line) 78%, transparent);
+  border-radius: 16px;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--color-screen-bright, #e1e9f6) 12%, var(--color-bg-deep)), color-mix(in srgb, var(--color-bg-deep) 92%, black));
+  color: var(--color-text);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.recap-card:hover,
+.recap-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--color-hologram);
+  outline: none;
+}
+
+.recap-card.checked {
+  border-color: var(--color-success);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--color-success) 19%, var(--color-bg-deep)), color-mix(in srgb, var(--color-success) 8%, var(--color-bg-deep)));
+}
+
+.recap-card-icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--color-hologram) 16%, transparent);
+  font-size: 1.65rem;
+}
+
+.recap-card-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.22rem;
+}
+
+.recap-card-copy strong { font-size: 1rem; }
+.recap-card-copy small { color: var(--color-text-muted); font-size: 0.82rem; line-height: 1.35; }
+
+.recap-stamp {
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  font-weight: 900;
+}
+
+.recap-card.checked .recap-stamp { color: var(--color-success); }
+
+.recap-done {
+  text-align: center;
+  color: var(--color-success);
+  font-weight: 900;
+}
+
+@media (max-width: 620px) {
+  .recap-board { grid-template-columns: 1fr; }
+  .recap-card { min-height: 78px; }
+}

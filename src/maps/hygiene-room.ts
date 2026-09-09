@@ -3,7 +3,7 @@
  *
  * 배경 아트 없음(뼈대 단계) — 기본 타일 바닥 위에 스프라이트 없는 핫스팟으로 구성.
  * 구조: 4개 청소 퍼즐(순서 자유, 봉인 밖) → 전부 풀면 정리대 코너 봉인이 걷힌다 →
- * 정리대의 서열 퍼즐(soap-shelf-order)이 `door:hygiene-open`을 발화 → 출구 개방.
+ * 정리대의 복습 보드(soap-shelf-order)가 `door:hygiene-open`을 발화 → 출구 개방.
  *
  * docs/curriculum-map.md·docs/puzzles/room1-overview.md 참조.
  */
