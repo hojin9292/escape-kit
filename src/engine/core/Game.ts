@@ -75,7 +75,7 @@ export class Game {
   /** 어둠 알파: 1=칠흑, 0=점등. dark 맵에서 시작 시 1, 해제 이벤트 후 서서히 0 */
   private darkness = 0;
   private lit = false;
-  /** 봉인 구역 알파: 1=칠흑(닫힘), 0=완전 개방. 해제 이벤트 후 1.5초에 걸쳐 0으로.
+  /** 봉인 구역 강도: 1=닫힘, 0=완전 개방. 해제 이벤트 후 1.5초에 걸쳐 0으로.
    *  0보다 크면 '닫힘'으로 보고 통행·상호작용을 막는다 — 페이드 도중 들어가지 못하게. */
   private sealAlpha = new Map<string, number>();
   /** 발화된 진행 이벤트 (문 해금·점등 조건 판정) */
@@ -405,7 +405,7 @@ export class Game {
     return s.opensWhen.every((e) => this.firedEvents.has(e));
   }
 
-  /** 방 진입 시 봉인 알파 초기화 — 이미 열린 구역은 0, 아직이면 1(칠흑) */
+  /** 방 진입 시 봉인 강도 초기화 — 이미 열린 구역은 0, 아직이면 1 */
   private syncSeals(map: GameMap): void {
     this.sealAlpha.clear();
     for (const s of map.sealed ?? []) {
@@ -1230,10 +1230,9 @@ export class Game {
     // 어둠 전체 → 경계선 전체 **2패스**. 한 패스로 구역을 하나씩 끝내면 뒤 구역의 어둠이
     // 앞 구역 경계선 위를 덮어 이음매에 톤 차이가 생긴다(청음실 부스+앞마당 실측).
     //
-    // ⚠ **반투명 장막을 쓰지 않는다** — 그림이 비쳐 보이면 "덜 그려진 방"으로 읽힌다
-    //   (2026-08-14 제보). 바닥은 완전히 덮고, 위쪽 lift 구간에서만 짧게 페이드해
-    //   딱딱한 윗변을 없앤다. 차단 신호도 회색 격벽+빨강 줄무늬(SF 화풍이라 그림과 따로 놀았다)
-    //   대신 **경계에 놓인 호박색 등불선** 하나로 줄였다.
+    // 바닥 무늬가 사라질 만큼 불투명하면 방 밖의 검은 여백과 이어져 구역 자체가
+    // 잘린 화면처럼 보인다(2026-09-09 모바일 제보). 푸른 반투명 장막으로 바닥 구조를
+    // 남기고, **경계의 호박색 등불선**으로 통행 불가 상태를 분명히 한다.
     if (!this.debugGrid) {
       for (const pass of ["dark", "edge"] as const)
         for (const s of this.map.sealed ?? []) {
@@ -1271,17 +1270,18 @@ export class Game {
             ];
 
             if (pass === "dark") {
-              // ② 어둠 — 바닥부터 위로 **불투명**하게 채우고, 맨 위 lift 구간만 페이드.
-              //    균일 검정 + 딱딱한 윗변이 "상자"로 읽히던 원인이라 윗변을 없앤다.
+              // ② 장막 — 바닥 타일이 읽히는 최대 68% 불투명도. 푸른 톤을 섞어
+              //    방 밖의 순검정 여백과 시각적으로 분리하고, 맨 위 lift만 페이드한다.
               const top = Math.min(n[1], e[1], w[1]) - lift;
               const bottom = sth[1];
               const span = Math.max(1, bottom - top);
-              // 페이드가 끝나는 지점 = lift 띠의 아래쪽. 바닥 쪽은 전부 불투명이다.
+              // 페이드가 끝나는 지점 = lift 띠의 아래쪽.
               const fade = Math.min(0.6, (lift / span) * 0.95);
+              const veil = 0.68 * a;
               const g = ctx.createLinearGradient(0, oy + top, 0, oy + bottom);
-              g.addColorStop(0, "rgba(6, 9, 15, 0)");
-              g.addColorStop(fade, `rgba(6, 9, 15, ${a})`);
-              g.addColorStop(1, `rgba(6, 9, 15, ${a})`);
+              g.addColorStop(0, "rgba(10, 26, 46, 0)");
+              g.addColorStop(fade, `rgba(10, 26, 46, ${veil})`);
+              g.addColorStop(1, `rgba(7, 18, 34, ${veil})`);
               ctx.fillStyle = g;
               // 다각형은 아이소 기둥 **실루엣(6점)** — 화면 꼭대기까지 수직 기둥으로 채우면
               // 좌우에 긴 수직 절단선이 생겨 열린 구역 장치를 자른다(모바일 실측).
