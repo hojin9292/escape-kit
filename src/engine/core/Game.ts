@@ -93,8 +93,8 @@ export class Game {
   private static readonly OCTANTS = [
     "e", "se", "s", "sw", "w", "nw", "n", "ne",
   ] as const;
-  /** 선택한 캐릭터 (남/여) — 저장에서 복원 */
-  private gender: "m" | "f" = loadProgress().character ?? "m";
+  /** 단일 주인공 호진티. 파일명의 기존 m 슬롯을 호환용으로 유지한다. */
+  private gender: "m" = "m";
   /** 전정 감각 배려: 모션 최소화 선호 시 보빙·기울임 생략 */
   private reduceMotion =
     typeof matchMedia !== "undefined" &&

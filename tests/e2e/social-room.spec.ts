@@ -70,7 +70,7 @@ test("「함께 지내는 방」 완주 — 네 가지를 풀면 진열대가 �
 }) => {
   test.setTimeout(240_000);
   const isMobile = test.info().project.name === "mobile";
-  await enterSocialRoom(page, isMobile ? "f" : "m");
+  await enterSocialRoom(page);
 
   await openStation(page, isMobile, 4, 3, "puzzle-elevator");
   for (let i = 0; i < ELEV_SOLVE_STEP; i++) await page.getByTestId("elevator-far").click();

@@ -44,13 +44,12 @@
 
 - 2.5D 아이소메트릭, 타일 2:1 비율 (`tile.w`=128 × `tile.h`=64 px)
 - 바닥은 **윤곽선 없는 두 톤 체커**(tile-a/tile-b 교대) — 타일에 스트로크 금지
-- 캐릭터: **사용자 제작 원본(assets-src/char_asset/, 1024px 3뷰 시트 2장 — 남/여)** →
-  `node scripts/import-char.mjs`가 배경(흰색·체커보드) 플러드필 제거·갇힌 포켓/얼룩 정리·
-  디프린지·3뷰 자동 분할·48px 다운스케일·걷기 프레임
-  생성(다리 픽셀 수술)·그림자 합성·미러를 거쳐 assets-src/ext-char/ 36프레임
-  (남/여 × se/sw/ne/nw/e/w × idle/a/b, ×5 스케일 = 화면 240px)으로 산출.
-  원본 교체 시 스크립트만 재실행.
-  ext-char가 .pix 폴백(assets-src/char/)보다 우선. 검수는 `scripts/char-sheet.mjs`
+- 캐릭터: **호진티 단일 주인공 원본(`assets-src/gen-src/hojinti-turnaround.png`)** →
+  `node scripts/import-char.mjs`가 자홍 키잉·외곽 페더링·5뷰 분할·좌우 미러와
+  걷기 스웨이를 거쳐 `assets-src/ext-char/` 24프레임
+  (호진티 × s/se/e/ne/n/nw/w/sw × idle/a/b, 배율 1)으로 산출한다.
+  원본 교체 시 스크립트만 재실행한다.
+  ext-char가 .pix 폴백(assets-src/char/)보다 우선한다.
 - 오브젝트 원점: 타일 마름모의 바닥 중심점 기준으로 정렬
 - 밝음의 위계: screen-bright > hologram > text > 환경. 글로우는 스크린·UI에만
 
