@@ -24,6 +24,16 @@ export function openPuzzle(module: PuzzleModule, host: HTMLElement): Promise<boo
     const frame = document.createElement("div");
     frame.className = "puzzle-frame";
 
+    const successFx = document.createElement("div");
+    successFx.className = "puzzle-success-fx";
+    successFx.setAttribute("aria-hidden", "true");
+    successFx.innerHTML = `
+      <span class="puzzle-success-ring"></span>
+      <span class="puzzle-success-mark">✓</span>
+      <strong>미션 완료!</strong>
+      <i></i><i></i><i></i><i></i><i></i><i></i>
+    `;
+
     const title = document.createElement("div");
     title.className = "puzzle-title";
     title.textContent = module.manifest.title;
@@ -132,7 +142,7 @@ export function openPuzzle(module: PuzzleModule, host: HTMLElement): Promise<boo
       hintBar.appendChild(hintList);
     }
 
-    overlay.appendChild(frame);
+    overlay.append(frame, successFx);
     host.appendChild(overlay);
 
     // 스크롤 안내 토글. 스크롤 이벤트만 듣는 구현은 **높이가 나중에 자라는 경우를 놓친다** —

@@ -5,9 +5,9 @@ import manifestJson from "./manifest.json";
 import { CHECK_IDS, type CheckId, isComplete } from "./autoplay";
 
 const manifest = manifestJson as PuzzleManifest;
-const ITEMS: Record<CheckId, { icon: string; label: string; detail: string }> = {
-  name: { icon: "✍️", label: "이름 확인", detail: "이름 칸에 내 이름이 있어요." },
-  blank: { icon: "🔎", label: "빠진 칸 확인", detail: "비어 있는 답 칸이 없어요." },
+const ITEMS: Record<CheckId, { asset: string; label: string; detail: string }> = {
+  name: { asset: "ui-name-check", label: "이름 확인", detail: "이름 칸에 내 이름이 있어요." },
+  blank: { asset: "ui-blank-check", label: "빠진 칸 확인", detail: "비어 있는 답 칸이 없어요." },
 };
 
 export const homeworkCheck: PuzzleModule = {
@@ -31,7 +31,7 @@ export const homeworkCheck: PuzzleModule = {
       btn.type = "button";
       btn.className = "homework-check-item";
       btn.dataset.testid = `homework-check-${id}`;
-      btn.innerHTML = `<span aria-hidden="true">${item.icon}</span><strong>${item.label}</strong><small>${item.detail}</small>`;
+      btn.innerHTML = `<img src="./assets/${item.asset}.png" alt="" aria-hidden="true"><strong>${item.label}</strong><small>${item.detail}</small>`;
       btn.addEventListener("click", () => {
         if (solved) return;
         checked.add(id);

@@ -30,9 +30,10 @@ export const glueSpread: PuzzleModule = {
     for (let i = 0; i < REQUIRED_ZONES.length; i += 1) guide.appendChild(document.createElement("i"));
     const spreadLayer = document.createElement("div");
     spreadLayer.className = "glue-spread-layer";
-    const stick = document.createElement("span");
+    const stick = document.createElement("img");
     stick.className = "glue-stick";
-    stick.textContent = "▰";
+    stick.src = "./assets/ui-glue-stick.png";
+    stick.alt = "";
     surface.append(guide, spreadLayer, stick);
 
     const state = document.createElement("p");

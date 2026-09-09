@@ -27,9 +27,10 @@ export const jamSpread: PuzzleModule = {
     surface.setAttribute("aria-label", "잼을 문질러 바르는 식빵");
     const spreadLayer = document.createElement("div");
     spreadLayer.className = "jam-spread-layer";
-    const knife = document.createElement("span");
+    const knife = document.createElement("img");
     knife.className = "jam-knife";
-    knife.textContent = "🥄";
+    knife.src = "./assets/ui-spoon.png";
+    knife.alt = "";
     surface.append(spreadLayer, knife);
 
     const state = document.createElement("p");

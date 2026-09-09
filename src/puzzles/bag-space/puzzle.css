@@ -2,7 +2,7 @@
 .bag-sign { margin: 0; font-size: 1.05rem; line-height: 1.5; }
 .bag-choice-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.65rem; }
 .bag-choice-btn { min-height: 150px; padding: 0.75rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; border-radius: var(--corner-radius); border: 2px solid var(--color-line); background: var(--color-bg-deep); color: var(--color-text); font-family: inherit; cursor: pointer; }
-.bag-choice-btn > span { font-size: 2rem; }
+.bag-choice-btn > img { width: min(100%, 150px); height: 74px; object-fit: contain; filter: drop-shadow(0 5px 8px rgb(0 0 0 / 30%)); }
 .bag-choice-btn strong { font-size: 1rem; }
 .bag-choice-btn small { color: var(--color-text-muted); font-size: 0.82rem; line-height: 1.35; }
 .bag-choice-btn.selected { border-color: var(--color-hologram); background: color-mix(in srgb, var(--color-hologram) 20%, var(--color-bg-deep)); }

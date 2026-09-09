@@ -4,7 +4,7 @@ import { isRecapComplete } from "./recap";
 
 export interface RecapCard {
   id: string;
-  icon: string;
+  asset: string;
   name: string;
   recap: string;
 }
@@ -51,7 +51,7 @@ export function mountRecapBoard(api: PuzzleApi, config: RecapBoardConfig): () =>
     button.className = "recap-card";
     button.dataset.testid = `${config.testIdPrefix}-card-${card.id}`;
     button.innerHTML = `
-      <span class="recap-card-icon" aria-hidden="true">${card.icon}</span>
+      <span class="recap-card-icon" aria-hidden="true"><img src="./assets/${card.asset}.png" alt=""></span>
       <span class="recap-card-copy">
         <strong>${card.name}</strong>
         <small>${card.recap}</small>

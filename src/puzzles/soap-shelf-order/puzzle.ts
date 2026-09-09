@@ -9,10 +9,10 @@ export const soapShelfOrder: PuzzleModule = {
     className: "hy-recap-root", testIdPrefix: "shelf", solveTestId: manifest.testIds.solveCheck,
     doneText: "네 가지를 모두 기억했어요! 문이 열렸어요.",
     cards: [
-      { id: "toothpaste-squeeze", icon: "🪥", name: "치약 짜기", recap: "완두콩 한 알만큼" },
-      { id: "hand-sanitizer-pump", icon: "🧴", name: "손 소독제", recap: "제품 안내량 확인" },
-      { id: "brushing-timer", icon: "⏱️", name: "양치하기", recap: "빠진 곳 없이 골고루" },
-      { id: "toilet-paper-pull", icon: "🧻", name: "휴지 사용", recap: "이번 연습은 세 칸" },
+      { id: "toothpaste-squeeze", asset: "tool-toothpaste-squeeze", name: "치약 짜기", recap: "완두콩 한 알만큼" },
+      { id: "hand-sanitizer-pump", asset: "tool-hand-sanitizer-pump", name: "손 소독제", recap: "제품 안내량 확인" },
+      { id: "brushing-timer", asset: "tool-brushing-timer", name: "양치하기", recap: "빠진 곳 없이 골고루" },
+      { id: "toilet-paper-pull", asset: "tool-toilet-paper-pull", name: "휴지 사용", recap: "이번 연습은 세 칸" },
     ],
   }),
 };

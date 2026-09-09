@@ -6,9 +6,9 @@ import { CHOICES, judge } from "./autoplay";
 
 const manifest = manifestJson as PuzzleManifest;
 const OPTIONS = [
-  { icon: "💺🎒", title: "옆 빈 좌석", detail: "가방이 한 자리를 차지해요." },
-  { icon: "🚶🎒", title: "통로 가운데", detail: "지나가는 사람이 걸릴 수 있어요." },
-  { icon: "🦶🎒🦶", title: "내 발 사이", detail: "가방을 세워 통로를 비워요." },
+  { asset: "ui-bag-seat", title: "옆 빈 좌석", detail: "가방이 한 자리를 차지해요." },
+  { asset: "ui-bag-aisle", title: "통로 가운데", detail: "지나가는 사람이 걸릴 수 있어요." },
+  { asset: "ui-bag-feet", title: "내 발 사이", detail: "가방을 세워 통로를 비워요." },
 ] as const;
 
 export const bagSpace: PuzzleModule = {
@@ -33,7 +33,7 @@ export const bagSpace: PuzzleModule = {
       btn.type = "button";
       btn.className = "bag-choice-btn";
       btn.dataset.testid = `bag-choice-${i}`;
-      btn.innerHTML = `<span aria-hidden="true">${option.icon}</span><strong>${option.title}</strong><small>${option.detail}</small>`;
+      btn.innerHTML = `<img src="./assets/${option.asset}.png" alt="" aria-hidden="true"><strong>${option.title}</strong><small>${option.detail}</small>`;
       btn.addEventListener("click", () => {
         if (solved) return;
         selected = i;
