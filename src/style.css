@@ -448,7 +448,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(in srgb, var(--color-bg-deep) 55%, transparent);
+  background:
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--color-hologram) 13%, transparent), transparent 48%),
+    linear-gradient(135deg, rgb(2 8 18 / 78%), rgb(8 18 34 / 66%));
+  backdrop-filter: blur(5px) saturate(1.12);
   pointer-events: auto;
   z-index: 50;
 }
@@ -463,11 +466,30 @@ body {
   width: min(760px, calc(100% - 24px));
   max-height: calc(100% - 24px);
   overflow: hidden;
-  border: var(--stroke-outline) solid var(--color-hologram);
-  border-radius: var(--corner-radius);
-  background: color-mix(in srgb, var(--color-bg-deep) 92%, var(--color-hologram));
-  box-shadow: 0 0 calc(var(--glow-blur) * 2) color-mix(in srgb, var(--color-hologram) 45%, transparent);
-  padding: 0.9rem 1rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-hologram) 88%, white);
+  border-radius: 22px;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 7%), transparent 26%),
+    radial-gradient(circle at 86% 8%, color-mix(in srgb, var(--color-hologram) 15%, transparent), transparent 34%),
+    color-mix(in srgb, var(--color-bg-deep) 94%, #17304a);
+  box-shadow:
+    0 26px 75px rgb(0 0 0 / 56%),
+    0 0 0 1px rgb(255 255 255 / 7%) inset,
+    0 0 34px color-mix(in srgb, var(--color-hologram) 35%, transparent);
+  padding: 1rem 1.1rem 1.05rem;
+  isolation: isolate;
+}
+
+.puzzle-frame::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgb(255 255 255 / 18%), transparent) 0 0 / 45% 1px no-repeat,
+    repeating-linear-gradient(0deg, transparent 0 31px, rgb(105 219 255 / 2.8%) 32px);
 }
 
 /* 해결 직후 자동 닫힘 대기 동안 추가 조작 차단 + 완료 강조 */
@@ -476,7 +498,85 @@ body {
 }
 .puzzle-overlay.solved .puzzle-frame {
   border-color: var(--color-success);
-  box-shadow: 0 0 calc(var(--glow-blur) * 2) color-mix(in srgb, var(--color-success) 55%, transparent);
+  filter: saturate(.72) brightness(.72);
+  transform: scale(.985);
+  box-shadow: 0 0 58px color-mix(in srgb, var(--color-success) 58%, transparent);
+  transition: filter 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.puzzle-success-fx {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  width: 230px;
+  height: 230px;
+  place-items: center;
+  translate: -50% -50%;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(.55);
+  color: #effff8;
+}
+
+.puzzle-overlay.solved .puzzle-success-fx {
+  opacity: 1;
+  transform: scale(1);
+  animation: puzzle-success-pop 700ms cubic-bezier(.2,.9,.25,1.2) both;
+}
+
+.puzzle-success-ring {
+  position: absolute;
+  inset: 24px;
+  border: 3px solid var(--color-success);
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-success) 28%, #08131e), rgb(5 16 28 / 92%) 68%);
+  box-shadow: 0 0 18px var(--color-success), 0 0 56px color-mix(in srgb, var(--color-success) 58%, transparent), inset 0 0 28px color-mix(in srgb, var(--color-success) 20%, transparent);
+}
+
+.puzzle-success-mark {
+  position: relative;
+  margin-top: -34px;
+  display: grid;
+  width: 76px;
+  height: 76px;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #caffea, var(--color-success));
+  color: #092318;
+  font-size: 3rem;
+  font-weight: 1000;
+  box-shadow: 0 8px 22px rgb(0 0 0 / 36%), 0 0 25px var(--color-success);
+}
+
+.puzzle-success-fx strong {
+  position: absolute;
+  top: 143px;
+  font-size: 1.2rem;
+  letter-spacing: .08em;
+  text-shadow: 0 2px 9px #000;
+}
+
+.puzzle-success-fx i {
+  position: absolute;
+  width: 9px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--color-hologram);
+  box-shadow: 0 0 10px currentColor;
+}
+.puzzle-success-fx i:nth-of-type(1) { translate: -98px -65px; rotate: -52deg; }
+.puzzle-success-fx i:nth-of-type(2) { translate: 96px -62px; rotate: 48deg; background: #ffd166; }
+.puzzle-success-fx i:nth-of-type(3) { translate: -112px 25px; rotate: -92deg; background: #ff7b86; }
+.puzzle-success-fx i:nth-of-type(4) { translate: 111px 28px; rotate: 92deg; }
+.puzzle-success-fx i:nth-of-type(5) { translate: -69px 102px; rotate: 25deg; background: #ffd166; }
+.puzzle-success-fx i:nth-of-type(6) { translate: 72px 101px; rotate: -28deg; background: #ff7b86; }
+
+@keyframes puzzle-success-pop {
+  0% { opacity: 0; transform: scale(.5) rotate(-8deg); }
+  58% { opacity: 1; transform: scale(1.08) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
 }
 
 .puzzle-frame.danger-flash {
@@ -568,13 +668,16 @@ body {
   right: 8px;
   width: 44px;
   height: 44px;
-  border: var(--stroke-outline) solid var(--color-line);
-  border-radius: var(--corner-radius);
-  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--color-hologram) 50%, var(--color-line));
+  border-radius: 13px;
+  background: linear-gradient(145deg, rgb(255 255 255 / 10%), rgb(28 48 70 / 45%));
   color: var(--color-text);
-  font-size: 1rem;
+  font-size: 1.08rem;
   cursor: pointer;
+  box-shadow: 0 7px 18px rgb(0 0 0 / 24%), inset 0 1px 0 rgb(255 255 255 / 14%);
+  transition: transform 130ms ease, border-color 130ms ease, background 130ms ease;
 }
+.puzzle-close:hover, .puzzle-close:focus-visible { transform: translateY(-1px); border-color: var(--color-hologram); background: color-mix(in srgb, var(--color-hologram) 18%, var(--color-bg-deep)); outline: none; }
 
 /* 퍼즐의 상태 한 줄(경보·판정 문구)을 스크롤 바닥에 붙든다.
    조작부가 커서 상태 문구가 화면 밖으로 밀리는 퍼즐이 다섯 있었다(실플레이 제보) —
@@ -649,6 +752,30 @@ body {
 .puzzle-hint-button:disabled {
   opacity: 0.5;
   cursor: default;
+}
+
+/* 모든 방의 퍼즐 버튼을 같은 입체 홀로그램 부품으로 통일한다. 기존 퍼즐의 의미색
+   (성공·경고·일반)은 currentColor로 보존한다. */
+.puzzle-frame :where(.puzzle-body, .puzzle-actions, .puzzle-hint-bar) button {
+  border-color: color-mix(in srgb, currentColor 64%, var(--color-line));
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 11%), transparent 58%),
+    color-mix(in srgb, currentColor 9%, var(--color-bg-deep));
+  box-shadow: 0 7px 16px rgb(0 0 0 / 22%), inset 0 1px 0 rgb(255 255 255 / 13%);
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+}
+
+.puzzle-frame :where(.puzzle-body, .puzzle-actions, .puzzle-hint-bar) button:not(:disabled):hover,
+.puzzle-frame :where(.puzzle-body, .puzzle-actions, .puzzle-hint-bar) button:not(:disabled):focus-visible {
+  transform: translateY(-2px);
+  filter: brightness(1.12) saturate(1.1);
+  box-shadow: 0 11px 23px rgb(0 0 0 / 30%), 0 0 15px color-mix(in srgb, currentColor 22%, transparent), inset 0 1px 0 rgb(255 255 255 / 18%);
+  outline: none;
+}
+
+.puzzle-frame :where(.puzzle-body, .puzzle-actions, .puzzle-hint-bar) button:not(:disabled):active {
+  transform: translateY(1px) scale(.985);
+  box-shadow: 0 3px 9px rgb(0 0 0 / 24%), inset 0 2px 6px rgb(0 0 0 / 18%);
 }
 
 .puzzle-hint-list {
