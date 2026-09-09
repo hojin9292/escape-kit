@@ -4,7 +4,7 @@
 .jam-surface:active { cursor: grabbing; }
 .jam-spread-layer { position: absolute; inset: 8%; filter: url("#none"); }
 .jam-spread-layer i { position: absolute; width: 24%; aspect-ratio: 1.25; translate: -50% -50%; border-radius: 48% 52% 45% 55%; background: radial-gradient(ellipse at 38% 28%, #ef7682, #b62f47 68%, #8e1f34); box-shadow: 0 0 9px #a8213f, inset 0 2px 4px rgb(255 211 216 / 50%); opacity: .93; }
-.jam-knife { position: absolute; z-index: 2; translate: -12% -72%; font-size: 2.4rem; opacity: .55; pointer-events: none; transition: opacity .12s; filter: drop-shadow(0 3px 3px rgb(0 0 0 / 40%)); }
+.jam-knife { position: absolute; z-index: 2; width: 68px; height: 68px; translate: -18% -74%; object-fit: contain; opacity: .55; pointer-events: none; transition: opacity .12s; filter: drop-shadow(0 4px 4px rgb(0 0 0 / 45%)); }
 .jam-knife.active { opacity: 1; }
 .jam-state { margin: 0; text-align: center; font-size: 1rem; min-height: 1.4rem; }
 .jam-state[data-level="low"] { color: var(--color-hologram); }

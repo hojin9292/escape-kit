@@ -8,7 +8,7 @@
 .glue-guide i:nth-child(3) { left: 58%; top: 38%; } .glue-guide i:nth-child(4) { left: 42%; top: 63%; }
 .glue-guide i:nth-child(5) { left: 8%; top: 90%; } .glue-guide i:nth-child(6) { left: 92%; top: 90%; }
 .glue-spread-layer i { position: absolute; width: 24%; aspect-ratio: 1.6; translate: -50% -50%; border-radius: 50%; background: radial-gradient(ellipse, rgb(113 224 255 / 72%), rgb(77 178 221 / 34%) 64%, transparent 72%); box-shadow: 0 0 12px rgb(88 210 255 / 55%); }
-.glue-stick { position: absolute; z-index: 2; translate: -10% -76%; rotate: -18deg; padding: .1rem .28rem; border-radius: 5px; background: #ffbd2f; color: #fff; font-size: 2rem; line-height: 1; opacity: .55; pointer-events: none; box-shadow: 0 4px 7px rgb(0 0 0 / 35%); transition: opacity .12s; }
+.glue-stick { position: absolute; z-index: 2; width: 66px; height: 66px; translate: -14% -76%; object-fit: contain; opacity: .55; pointer-events: none; filter: drop-shadow(0 4px 4px rgb(0 0 0 / 45%)); transition: opacity .12s; }
 .glue-stick.active { opacity: 1; }
 .glue-state { margin: 0; text-align: center; font-size: 1rem; min-height: 1.4rem; }
 .glue-state[data-level="low"] { color: var(--color-hologram); }
