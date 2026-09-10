@@ -49,6 +49,18 @@ function showTitle(app: HTMLElement): void {
   const content = document.createElement("main");
   content.className = "title-content";
 
+  const stage = document.createElement("section");
+  stage.className = "title-stage";
+
+  const mascot = document.createElement("figure");
+  mascot.className = "title-mascot";
+  const mascotImg = document.createElement("img");
+  mascotImg.src = `${BASE}assets/char-m-se-idle.png`;
+  mascotImg.alt = "생활연구소 탐험을 안내하는 호진티";
+  const mascotLabel = document.createElement("figcaption");
+  mascotLabel.textContent = "생활 탐험 안내자 · HOJIN-T";
+  mascot.append(mascotImg, mascotLabel);
+
   const sub = document.createElement("div");
   sub.className = "title-sub";
   sub.textContent = TITLE_SUB;
@@ -83,7 +95,7 @@ function showTitle(app: HTMLElement): void {
   // 저장된 진행이 있으면 '이어하기'를 먼저 노출
   if (hasProgress()) {
     const cont = document.createElement("button");
-    cont.className = "title-start";
+    cont.className = "title-start primary";
     cont.dataset.testid = "continue-button";
     cont.textContent = "이어하기";
     cont.addEventListener("click", () => {
@@ -96,7 +108,7 @@ function showTitle(app: HTMLElement): void {
   }
 
   const start = document.createElement("button");
-  start.className = "title-start";
+  start.className = `title-start ${hasProgress() ? "secondary" : "primary"}`;
   start.dataset.testid = "start-button";
   start.textContent = hasProgress() ? "처음부터" : START_LABEL;
   const beginNewGame = () => {
@@ -134,7 +146,8 @@ function showTitle(app: HTMLElement): void {
   footer.appendChild(credit);
 
   content.append(sub, main, tagline, features, buttons);
-  screen.append(art, shade, content, footer);
+  stage.append(content, mascot);
+  screen.append(art, shade, stage, footer);
   app.appendChild(screen);
 }
 

@@ -466,6 +466,24 @@ export class Game {
     const screen = document.createElement("div");
     screen.className = "ending-screen";
     screen.dataset.testid = "ending-screen";
+    const art = document.createElement("img");
+    art.className = "ending-art";
+    art.src = `${import.meta.env.BASE_URL}assets/title-life-lab.png`;
+    art.alt = "";
+    art.setAttribute("aria-hidden", "true");
+    const shade = document.createElement("div");
+    shade.className = "ending-shade";
+    const celebration = document.createElement("div");
+    celebration.className = "ending-celebration";
+    celebration.setAttribute("aria-hidden", "true");
+    for (let i = 0; i < 12; i += 1) celebration.appendChild(document.createElement("i"));
+
+    const panel = document.createElement("main");
+    panel.className = "ending-panel";
+    const medal = document.createElement("div");
+    medal.className = "ending-medal";
+    medal.setAttribute("aria-hidden", "true");
+    medal.textContent = "✓";
     const sub = document.createElement("div");
     sub.className = "title-sub";
     sub.textContent = ENDING_SUB;
@@ -489,6 +507,16 @@ export class Game {
     statPlay.textContent = `힌트 ${sessionStats.hintsUsed}회 · 오답 ${sessionStats.fails}회 · 이번 플레이 ${mm}:${ss}`;
     stats.append(statNotes, statPlay);
 
+    const rooms = document.createElement("div");
+    rooms.className = "ending-rooms";
+    rooms.setAttribute("aria-label", "완주한 여섯 개의 방");
+    for (const { id: roomId } of ROOM_CHAIN) {
+      const room = maps[roomId];
+      const badge = document.createElement("span");
+      badge.textContent = `${room.icon} ${room.title}`;
+      rooms.appendChild(badge);
+    }
+
     const actions = document.createElement("div");
     actions.className = "ending-actions";
     if (!complete) {
@@ -509,7 +537,13 @@ export class Game {
     toTitle.addEventListener("click", () => location.reload());
     actions.appendChild(toTitle);
 
-    screen.append(sub, main, hint, stats, actions);
+    const mascot = document.createElement("img");
+    mascot.className = "ending-mascot";
+    mascot.src = `${import.meta.env.BASE_URL}assets/char-m-se-idle.png`;
+    mascot.alt = "완주를 축하하는 호진티";
+
+    panel.append(medal, sub, main, hint, rooms, stats, actions);
+    screen.append(art, shade, celebration, panel, mascot);
     this.ui.appendChild(screen);
     bus.emit("game:ending");
     // dialogueOpen을 유지해 조작 잠금 (엔딩 화면) — '돌아가서'는 화면 제거와 함께 해제
