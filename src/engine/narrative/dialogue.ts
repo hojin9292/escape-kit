@@ -116,7 +116,11 @@ function showDialogueNow(anchor: string, host: HTMLElement): Promise<void> {
       touchStart = null;
       if (tapped && !hint.contains(e.target as Node)) advance();
     });
-    hint.addEventListener("click", () => { if (!dragged) advance(); });
+    // 버튼의 native click은 언제나 진행으로 인정한다. 태블릿에서는 손가락의 미세한
+    // 흔들림도 pointermove 8px을 넘길 수 있는데, 여기서 dragged를 다시 검사하면
+    // 버튼만 눌렀을 때는 무시되고 박스 본문을 눌러야 넘어가는 것처럼 보였다.
+    // 실제 스크롤 제스처 뒤의 click 취소는 브라우저가 담당한다.
+    hint.addEventListener("click", advance);
     window.addEventListener("keydown", onKey);
   });
 }

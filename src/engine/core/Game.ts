@@ -57,6 +57,14 @@ const OCCLUDER_ALPHA = 0.68;
 // UI(HUD·대사)는 DOM이라 영향 없고, 스파클·암막 반경은 화면 기준을 유지한다.
 const CAMERA_ZOOM = 0.5;
 
+// 태블릿은 CSS 픽셀 수가 큰 데다 DPR이 2~3인 경우가 많다. DPR을 그대로 쓰면
+// 3~6백만 픽셀짜리 캔버스를 60fps로 다시 그려 저사양 기기에서 조작 자체가 어려워진다.
+// 터치 우선 기기는 체감 선명도를 지키는 1.25배/30fps로 제한하고, 데스크톱도 과도한
+// 레티나 배율만 막는다.
+const TOUCH_MAX_DPR = 1.25;
+const DESKTOP_MAX_DPR = 2;
+const TOUCH_FRAME_INTERVAL = 1000 / 30;
+
 const PLAYER_SPEED = 3.2; // 타일/초
 
 export class Game {
@@ -65,6 +73,7 @@ export class Game {
   private ui: HTMLElement;
   private label: HTMLElement;
   private sprites: Sprites = {};
+  private readonly touchDevice = isTouchDevice();
   private keyboard = new KeyboardInput();
   private joystick: VirtualJoystick | null = null;
   private player: { x: number; y: number };
@@ -138,7 +147,7 @@ export class Game {
     this.keyboard.onInteract = () => this.tryInteract();
     // 입력은 스프라이트 로드를 기다리지 않고 즉시 활성화 (로드 중 눌린 키 유실 방지)
     this.detachers.push(this.keyboard.attach());
-    if (isTouchDevice()) {
+    if (this.touchDevice) {
       this.joystick = new VirtualJoystick(this.ui, () => this.tryInteract());
     }
 
@@ -279,8 +288,7 @@ export class Game {
       /** 디버그·캘리브레이션 전용 방 이동 (?grid 모드에서만) */
       goto(mapId: string, x = 6, y = 5) {
         if (!self.debugGrid) return "?grid 모드에서만 사용 가능";
-        self.switchMap(mapId, [x, y]);
-        return mapId;
+        return self.switchMap(mapId, [x, y]).then(() => mapId);
       },
       /** e2e·디버그 전용 워프 — 대상 방 '이전'의 층 사슬 이벤트를 전부 발화시키고 이동.
        *  사슬은 maps/index.ts의 ROOM_CHAIN 데이터에서 온다 (방 추가 시 여기 수정 불필요).
@@ -290,8 +298,7 @@ export class Game {
         const idx = ROOM_CHAIN.findIndex((r) => r.id === mapId);
         if (idx < 0) return `알 수 없는 맵: ${mapId}`;
         for (let i = 0; i < idx; i++) bus.emit(ROOM_CHAIN[i].unlockEvent);
-        self.switchMap(mapId, maps[mapId].spawn);
-        return mapId;
+        return self.switchMap(mapId, maps[mapId].spawn).then(() => mapId);
       },
     };
   }
@@ -376,13 +383,37 @@ export class Game {
     });
   }
 
-  private switchMap(toMap: string, spawn: [number, number]): void {
+  /** 현재 방 렌더에 실제로 쓰이는 에셋만 고른다. 퍼즐 도구 그림은 모달이 직접 로드한다. */
+  private spriteNamesFor(map: GameMap): string[] {
+    const names = new Set<string>(["tile-a", "tile-b", "wall-ne", "wall-nw"]);
+    if (map.background) names.add(map.background.sprite);
+    for (const object of map.objects) if (object.sprite) names.add(object.sprite);
+    for (const decor of map.decor ?? []) names.add(decor.sprite);
+    for (const decor of map.wallDecor ?? []) names.add(decor.sprite);
+    for (const direction of Game.OCTANTS) {
+      for (const frame of ["idle", "a", "b", "c", "d"])
+        names.add(`char-${this.gender}-${direction}-${frame}`);
+    }
+    return [...names];
+  }
+
+  private async loadMapSprites(map: GameMap): Promise<void> {
+    const missing = this.spriteNamesFor(map).filter((name) => !this.sprites[name]);
+    Object.assign(this.sprites, await loadSprites(missing));
+  }
+
+  private async switchMap(toMap: string, spawn: [number, number]): Promise<void> {
     const next = maps[toMap];
     if (!next) {
       console.warn(`[game] 알 수 없는 맵: ${toMap}`);
       return;
     }
+    const previousBackground = this.map.background?.sprite;
+    await this.loadMapSprites(next);
     this.map = next;
+    // 지나온 고해상도 방 배경의 강한 참조를 끊어 태블릿 메모리를 회수할 수 있게 한다.
+    if (previousBackground && previousBackground !== next.background?.sprite)
+      delete this.sprites[previousBackground];
     this.player.x = spawn[0];
     this.player.y = spawn[1];
     this.nearObject = null;
@@ -550,13 +581,17 @@ export class Game {
   }
 
   async start(): Promise<void> {
-    this.sprites = await loadSprites();
+    this.sprites = await loadSprites(this.spriteNamesFor(this.map));
     const onResize = () => this.resize();
     window.addEventListener("resize", onResize);
     this.detachers.push(() => window.removeEventListener("resize", onResize));
     this.resize();
     this.lastT = performance.now();
     const loop = (t: number) => {
+      if (this.touchDevice && t - this.lastT < TOUCH_FRAME_INTERVAL) {
+        this.raf = requestAnimationFrame(loop);
+        return;
+      }
       const dt = Math.min((t - this.lastT) / 1000, 0.05);
       this.lastT = t;
       this.update(dt);
@@ -581,9 +616,10 @@ export class Game {
   }
 
   private resize(): void {
-    const dpr = window.devicePixelRatio || 1;
-    this.canvas.width = this.host.clientWidth * dpr;
-    this.canvas.height = this.host.clientHeight * dpr;
+    const maxDpr = this.touchDevice ? TOUCH_MAX_DPR : DESKTOP_MAX_DPR;
+    const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+    this.canvas.width = Math.ceil(this.host.clientWidth * dpr);
+    this.canvas.height = Math.ceil(this.host.clientHeight * dpr);
     // 줌을 좌표계에 녹여 넣는다 — 이후 렌더 코드는 "줌 좌표"(뷰포트 = clientW/ZOOM)로 그린다
     this.ctx.setTransform(dpr * CAMERA_ZOOM, 0, 0, dpr * CAMERA_ZOOM, 0, 0);
     // 픽셀아트 크리스프 렌더 — 캔버스 리사이즈마다 리셋되므로 매번 재설정
@@ -751,8 +787,9 @@ export class Game {
         void this.playEnding();
       } else if (obj.door.toMap && obj.door.spawn) {
         Sfx.door();
-        this.switchMap(obj.door.toMap, obj.door.spawn);
-        this.dialogueOpen = false;
+        void this.switchMap(obj.door.toMap, obj.door.spawn).finally(() => {
+          this.dialogueOpen = false;
+        });
       }
       return;
     }

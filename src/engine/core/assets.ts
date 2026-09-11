@@ -19,15 +19,30 @@ export type Sprites = Record<string, GameSprite>;
 const BASE = import.meta.env.BASE_URL;
 const asset = (p: string) => `${BASE}${p.replace(/^\//, "")}`;
 
-export async function loadSprites(): Promise<Sprites> {
-  const atlas: Record<string, AtlasEntry> = await fetch(asset("assets/atlas.json")).then((r) => {
+let atlasPromise: Promise<Record<string, AtlasEntry>> | null = null;
+
+function loadAtlas(): Promise<Record<string, AtlasEntry>> {
+  atlasPromise ??= fetch(asset("assets/atlas.json")).then((r) => {
     if (!r.ok) throw new Error("atlas.json 로드 실패 — `npm run assets` 먼저 실행하세요");
     return r.json();
   });
+  return atlasPromise;
+}
+
+/**
+ * 요청한 스프라이트만 디코딩한다. 이름을 생략하면 전체를 읽는 기존 동작을 유지한다.
+ * 방 배경과 퍼즐 도구 그림을 한꺼번에 디코딩하면 태블릿에서 수십 MB의 이미지 메모리를
+ * 시작부터 점유하므로, 게임은 현재 방에 필요한 이름만 넘긴다.
+ */
+export async function loadSprites(names?: Iterable<string>): Promise<Sprites> {
+  const atlas = await loadAtlas();
+  const entries = names
+    ? [...new Set(names)].flatMap((name) => atlas[name] ? [[name, atlas[name]] as const] : [])
+    : Object.entries(atlas);
 
   const sprites: Sprites = {};
   await Promise.all(
-    Object.entries(atlas).map(async ([name, entry]) => {
+    entries.map(async ([name, entry]) => {
       const img: GameSprite = new Image();
       img.src = asset(entry.file);
       await img.decode();
