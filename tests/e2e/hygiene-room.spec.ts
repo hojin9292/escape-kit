@@ -44,15 +44,16 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
     expect(toothJudge(toothStepToValue(12))).toBe("high");
   });
 
-  test("hand-sanitizer-pump: HY-004 구간(1~2회)과 일치한다", () => {
+  test("hand-sanitizer-pump: 이 제품의 안내량 1회와 일치한다", () => {
     expect(SANI_GOOD_MIN).toBe(1);
-    expect(SANI_GOOD_MAX).toBe(2);
+    expect(SANI_GOOD_MAX).toBe(1);
     expect(saniJudge(SANI_SOLVE_COUNT)).toBe("good");
     expect(saniJudge(0)).toBe("low");
+    expect(saniJudge(2)).toBe("high");
     expect(saniJudge(4)).toBe("high");
   });
 
-  test("brushing-timer: 네 부위를 다 보기 전엔 low, 그 뒤엔 good, 한 바퀴 더 돌면 high", () => {
+  test("brushing-timer: 2분을 대표하는 네 구역을 다 보기 전엔 low, 그 뒤엔 good", () => {
     expect(judgeAtStep(0)).toBe("low");
     expect(judgeAtStep(GOOD_START - 1)).toBe("low");
     expect(judgeAtStep(GOOD_START)).toBe("good");
@@ -85,6 +86,8 @@ test("「깨끗한 방」 완주 — 청소 4개를 풀고 복습 카드를 확�
   // P1 치약 짜기 — 정답 스텝만큼 짜고 확정
   await openStation(page, isMobile, 4, 3, "puzzle-tooth");
   for (let i = 0; i < TOOTH_SOLVE_STEP; i++) await page.getByTestId("tooth-squeeze").click();
+  const toothpasteRadius = Number(await page.locator(".tooth-blob").getAttribute("rx"));
+  expect(toothpasteRadius).toBeGreaterThanOrEqual(15);
   await page.getByTestId("tooth-confirm").click();
   await expect(page.getByTestId("tooth-done")).toBeVisible();
   await dismissDialogues(page); // #hy-tooth-clear

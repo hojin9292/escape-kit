@@ -1,6 +1,6 @@
 {
   "id": "microwave-wait",
-  "title": "전자레인지 — 띵 소리가 난 뒤에",
+  "title": "전자레인지 — 완료음과 뜸 들이기 확인",
   "act": 1,
   "concept": "적당한 기다림 판단",
   "curriculum": {
@@ -11,19 +11,19 @@
   "narrative": {
     "intro": "story.md#ti-microwave-intro",
     "clear": "story.md#ti-microwave-clear",
-    "extra": { "toolow": "story.md#ti-microwave-toolow", "toohigh": "story.md#ti-microwave-toohigh" },
+    "extra": { "toolow": "story.md#ti-microwave-toolow" },
     "notes": ["note-26"]
   },
   "trigger": { "map": "time-room", "objectId": "microwave-wait" },
   "reward": { "event": "code:microwave-solved" },
   "testIds": { "root": "puzzle-microwave", "solveCheck": "microwave-done" },
   "principle": [
-    "작동이 끝난 뒤에 문을 열어야 음식이 고르게 데워진다.",
-    "너무 일찍 열면 덜 데워지고, 너무 늦게 열면 식어버린다."
+    "작동이 끝난 뒤 포장지나 조리법에 뜸 들이기 시간이 있으면 그 시간까지 기다린다.",
+    "완료 뒤 조금 늦는 것은 실패가 아니며, 문을 천천히 열고 뜨거운 용기와 증기를 조심한다."
   ],
   "hints": [
-    "남은 시간 표시가 0이 되는지 봐요.",
-    "숫자가 몇 번 바뀌었는지 세어보세요.",
-    "너무 오래 두면 식어버려요 — 적당할 때 눌러요."
+    "먼저 작동이 끝나 ‘띵!’ 표시가 나오는지 봐요.",
+    "포장지에 적힌 뜸 들이기 안내가 끝났는지 확인해요.",
+    "꺼낼 때는 뜨거운 용기와 증기를 조심해요."
   ]
 }

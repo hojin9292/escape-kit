@@ -44,8 +44,9 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
     expect(waitJudgeAtStep(20)).toBe("high");
   });
 
-  test("story-turn: 하나도 안 쌓이면 low, 조금 쌓이면 good, 너무 쌓이면 high", () => {
+  test("story-turn: 한 문장은 low, 두세 문장은 good, 너무 쌓이면 high", () => {
     expect(storyJudgeAtStep(0)).toBe("low");
+    expect(storyJudgeAtStep(1)).toBe("low");
     expect(storyJudgeAtStep(STORY_SOLVE_STEP)).toBe("good");
     expect(storyJudgeAtStep(10)).toBe("high");
   });

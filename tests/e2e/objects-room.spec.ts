@@ -6,6 +6,7 @@ import {
   GOOD_MAX as FAUCET_GOOD_MAX,
   SOLVE_STEP as FAUCET_SOLVE_STEP,
   stepToValue as faucetStepToValue,
+  litersAtStep as faucetLitersAtStep,
   judge as faucetJudge,
 } from "../../src/puzzles/faucet-turn/autoplay";
 import { GOOD_MIN as BOOK_GOOD_MIN, GOOD_MAX as BOOK_GOOD_MAX, SOLVE_STEP as BOOK_SOLVE_STEP, judge as bookJudge } from "../../src/puzzles/book-stack/autoplay";
@@ -30,6 +31,7 @@ test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
     expect(FAUCET_GOOD_MIN).toBe(28);
     expect(FAUCET_GOOD_MAX).toBe(50);
     expect(faucetJudge(faucetStepToValue(FAUCET_SOLVE_STEP))).toBe("good");
+    expect(faucetLitersAtStep(FAUCET_SOLVE_STEP)).toBeCloseTo(0.32);
     expect(faucetJudge(faucetStepToValue(0))).toBe("low");
     expect(faucetJudge(faucetStepToValue(12))).toBe("high");
   });
@@ -74,6 +76,8 @@ test("「물건 쓰는 방」 완주 — 네 가지를 풀고 복습 카드를 �
 
   await openStation(page, isMobile, 11, 3, "puzzle-faucet");
   for (let i = 0; i < FAUCET_SOLVE_STEP; i++) await page.getByTestId("faucet-more").click();
+  await expect(page.getByTestId("faucet-amount")).toContainText("0.32 L");
+  await expect(page.locator(".faucet-stream")).toHaveAttribute("height", "27");
   await page.getByTestId("faucet-confirm").click();
   await expect(page.getByTestId("faucet-done")).toBeVisible();
   await dismissDialogues(page);

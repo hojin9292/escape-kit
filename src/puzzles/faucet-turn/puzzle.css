@@ -12,9 +12,9 @@
 
 .faucet-svg {
   width: 100%;
-  max-width: 280px;
+  max-width: 350px;
   align-self: center;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 36 / 29;
 }
 
 .faucet-cup {
@@ -31,6 +31,27 @@
 .faucet-fill {
   fill: color-mix(in srgb, var(--color-hologram) 55%, white);
   transition: y 0.15s ease, height 0.15s ease, opacity 0.15s ease;
+}
+
+.faucet-mark {
+  fill: none;
+  stroke: var(--color-line);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 2;
+}
+
+.faucet-label {
+  fill: var(--color-text);
+  font-family: var(--font-family);
+  font-size: 8px;
+}
+
+.faucet-amount {
+  margin: -0.35rem 0 0;
+  color: var(--color-hologram);
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-align: center;
 }
 
 .faucet-button-row {
@@ -53,7 +74,7 @@
   cursor: pointer;
 }
 
-.faucet-btn-pour {
+.faucet-btn-more {
   border-color: var(--color-hologram);
   background: color-mix(in srgb, var(--color-hologram) 18%, var(--color-bg-deep));
 }
@@ -96,4 +117,4 @@
   color: var(--color-success);
 }
 .faucet-spout { fill: var(--color-line); }
-.faucet-stream { fill: color-mix(in srgb, var(--color-hologram) 55%, white); transition: height 0.15s ease, opacity 0.15s ease; }
+.faucet-stream { fill: color-mix(in srgb, var(--color-hologram) 55%, white); transition: x 0.15s ease, width 0.15s ease, opacity 0.15s ease; }

@@ -29,7 +29,7 @@ export const toothpasteSqueeze: PuzzleModule = {
 
     const sign = document.createElement("p");
     sign.className = "tooth-sign";
-    sign.textContent = "칫솔 위에 치약을 짜 보세요 — 완두콩 한 알만큼이면 딱 좋아요.";
+    sign.textContent = "칫솔모 가운데에 치약을 짜 보세요 — 3세 이상은 완두콩 한 알 정도가 기준이에요.";
 
     // ── 그림: 칫솔 위 치약 덩어리 ────────────────────────
     const view = svgEl("svg");
@@ -72,8 +72,10 @@ export const toothpasteSqueeze: PuzzleModule = {
 
     function drawBlob(): void {
       const value = stepToValue(step);
-      const w = 2 + (value / 100) * 52;
-      const h = value <= 0 ? 0 : 3 + (value / 100) * 18;
+      // 정답 첫 스텝(32)이 칫솔모 폭의 약 40%로 보이게 한다. 이전 값은 약 20%라
+      // 텍스트는 '완두콩'인데 화면에서는 쌀알처럼 보여 실제 권장량보다 지나치게 작았다.
+      const w = 12 + (value / 100) * 60;
+      const h = value <= 0 ? 0 : 5 + (value / 100) * 15;
       blob.setAttribute("rx", String(w / 2));
       blob.setAttribute("ry", String(h));
       // 치약은 칫솔모 중앙(66, 78)을 기준으로만 자란다.
@@ -104,13 +106,13 @@ export const toothpasteSqueeze: PuzzleModule = {
       }
       const j = judge(value);
       if (j === "low") {
-        state.textContent = "조금 더 짜도 괜찮아요.";
+        state.textContent = "쌀알처럼 작아요. 완두콩 크기까지 더 짜요.";
         state.dataset.level = "low";
       } else if (j === "high") {
         state.textContent = "조금 많아요. 줄여볼까요?";
         state.dataset.level = "high";
       } else {
-        state.textContent = "딱 좋은 크기예요!";
+        state.textContent = "완두콩 한 알 정도예요!";
         state.dataset.level = "good";
       }
     }
@@ -156,7 +158,7 @@ export const toothpasteSqueeze: PuzzleModule = {
       if (j === "good") {
         solved = true;
         done.hidden = false;
-        state.textContent = "딱 좋은 크기예요!";
+        state.textContent = "완두콩 한 알 정도예요!";
         state.dataset.level = "good";
         api.solve();
       } else if (j === "low") {

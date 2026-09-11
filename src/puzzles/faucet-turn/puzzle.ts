@@ -5,7 +5,7 @@
 import "./puzzle.css";
 import type { PuzzleApi, PuzzleModule, PuzzleManifest } from "../../engine/puzzle-host/types";
 import manifestJson from "./manifest.json";
-import { MAX_STEPS, stepToValue, judge } from "./autoplay";
+import { MAX_STEPS, stepToValue, litersAtStep, judge } from "./autoplay";
 
 const manifest = manifestJson as PuzzleManifest;
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -24,31 +24,71 @@ export const faucetTurn: PuzzleModule = {
     api.root.classList.add("faucet-root");
     const sign = document.createElement("p");
     sign.className = "faucet-sign";
-    sign.textContent = "수도꼭지를 돌려 보세요 — 물줄기가 곧게 떨어지고 튀지 않을 만큼이면 충분해요.";
+    sign.textContent = "수도를 얼마나 열지 조절해요. 같은 시간 동안 받은 물의 양으로 비교해 볼게요.";
 
     const view = svgEl("svg");
-    view.setAttribute("viewBox", "0 0 100 100");
+    view.setAttribute("viewBox", "0 0 180 145");
     view.classList.add("faucet-svg");
     view.dataset.testid = "faucet-view";
-    const spout = svgEl("rect");
-    spout.setAttribute("x", "35");
-    spout.setAttribute("y", "20");
-    spout.setAttribute("width", "30");
-    spout.setAttribute("height", "12");
-    spout.setAttribute("rx", "4");
+
+    const defs = svgEl("defs");
+    const clip = svgEl("clipPath");
+    clip.setAttribute("id", "faucet-fill-clip");
+    const clipShape = svgEl("path");
+    clipShape.setAttribute("d", "M46 62 H134 L126 140 H54 Z");
+    clip.appendChild(clipShape);
+    defs.appendChild(clip);
+
+    const fill = svgEl("rect");
+    fill.setAttribute("x", "46");
+    fill.setAttribute("width", "88");
+    fill.setAttribute("clip-path", "url(#faucet-fill-clip)");
+    fill.classList.add("faucet-fill");
+
+    const cup = svgEl("path");
+    cup.setAttribute("d", "M46 62 H134 L126 140 H54 Z");
+    cup.classList.add("faucet-cup");
+
+    const halfMark = svgEl("path");
+    halfMark.setAttribute("d", "M50 101 H64 M116 101 H130");
+    halfMark.classList.add("faucet-mark");
+    const halfLabel = svgEl("text");
+    halfLabel.setAttribute("x", "137");
+    halfLabel.setAttribute("y", "105");
+    halfLabel.textContent = "0.5 L";
+    halfLabel.classList.add("faucet-label");
+    const fullLabel = svgEl("text");
+    fullLabel.setAttribute("x", "137");
+    fullLabel.setAttribute("y", "69");
+    fullLabel.textContent = "1 L";
+    fullLabel.classList.add("faucet-label");
+
+    const spout = svgEl("path");
+    spout.setAttribute("d", "M42 13 H102 Q112 13 112 23 V36 H96 V29 H42 Z");
     spout.classList.add("faucet-spout");
     const stream = svgEl("rect");
     stream.classList.add("faucet-stream");
-    stream.setAttribute("x", "46");
-    stream.setAttribute("y", "32");
-    stream.setAttribute("width", "8");
-    view.append(spout, stream);
+    stream.setAttribute("y", "36");
+    stream.setAttribute("height", "27");
+    view.append(defs, fill, cup, halfMark, halfLabel, fullLabel, spout, stream);
 
-    function drawStream(): void {
+    const amount = document.createElement("p");
+    amount.className = "faucet-amount";
+    amount.dataset.testid = "faucet-amount";
+
+    function drawWater(): void {
       const value = stepToValue(step);
-      const h = (value / 100) * 55;
-      stream.setAttribute("height", String(h));
+      const fillHeight = (value / 100) * 76;
+      fill.setAttribute("y", String(140 - fillHeight));
+      fill.setAttribute("height", String(fillHeight));
+      // 흐름의 세기는 폭으로만 표현한다. 길이를 늘리면 '많이 틀수록 물이 더 멀리
+      // 내려간다'는 잘못된 단서가 되므로 수도와 계량통 사이 거리는 고정한다.
+      const streamWidth = 3 + (value / 100) * 12;
+      stream.setAttribute("x", String(104 - streamWidth / 2));
+      stream.setAttribute("width", String(streamWidth));
       stream.style.opacity = value <= 0 ? "0" : "1";
+      fill.style.opacity = value <= 0 ? "0" : "1";
+      amount.textContent = `5초 동안 받은 물: ${litersAtStep(step).toFixed(2)} L`;
     }
 
     const state = document.createElement("p");
@@ -58,11 +98,11 @@ export const faucetTurn: PuzzleModule = {
     const done = document.createElement("div");
     done.className = "faucet-done";
     done.dataset.testid = manifest.testIds["solveCheck"];
-    done.textContent = "딱 좋은 물줄기예요!";
+    done.textContent = "손 씻기에 충분하면서 물을 아끼는 양이에요!";
     done.hidden = true;
 
     function sync(): void {
-      drawStream();
+      drawWater();
       const value = stepToValue(step);
       if (value <= 0) {
         state.textContent = "아직 잠겨 있어요.";
@@ -71,13 +111,13 @@ export const faucetTurn: PuzzleModule = {
       }
       const j = judge(value);
       if (j === "low") {
-        state.textContent = "조금 더 틀어도 괜찮아요.";
+        state.textContent = "받은 물이 적어요. 흐름을 조금 늘려요.";
         state.dataset.level = "low";
       } else if (j === "high") {
-        state.textContent = "물이 튈 것 같아요. 줄여볼까요?";
+        state.textContent = "같은 시간에 물을 너무 많이 썼어요. 흐름을 줄여요.";
         state.dataset.level = "high";
       } else {
-        state.textContent = "물줄기가 곧게 떨어져요!";
+        state.textContent = "5초에 약 0.3~0.5 L예요!";
         state.dataset.level = "good";
       }
     }
@@ -138,7 +178,7 @@ export const faucetTurn: PuzzleModule = {
 
     api.actions.appendChild(confirmBtn);
     sync();
-    api.root.append(sign, view, row, state, done);
+    api.root.append(sign, view, amount, row, state, done);
     return () => {};
   },
 };

@@ -5,7 +5,7 @@
 import "./puzzle.css";
 import type { PuzzleApi, PuzzleModule, PuzzleManifest } from "../../engine/puzzle-host/types";
 import manifestJson from "./manifest.json";
-import { TICK_MS, GOOD_START, GOOD_END, judgeAtStep } from "./autoplay";
+import { TICK_MS, BEEP_STEP, GOOD_START, judgeAtStep } from "./autoplay";
 
 const manifest = manifestJson as PuzzleManifest;
 
@@ -15,12 +15,11 @@ export const microwaveWait: PuzzleModule = {
     let step = 0;
     let solved = false;
     let saidToolow = false;
-    let saidToohigh = false;
 
     api.root.classList.add("microwave-root");
     const sign = document.createElement("p");
     sign.className = "microwave-sign";
-    sign.textContent = "전자레인지가 멈추고 ‘띵!’ 소리가 난 뒤 [꺼내기]를 눌러요.";
+    sign.textContent = "작동이 끝난 뒤 포장지의 뜸 들이기 안내까지 확인하고, 뜨거운 증기를 조심해 꺼내요.";
 
     const display = document.createElement("div");
     display.className = "microwave-display";
@@ -34,14 +33,18 @@ export const microwaveWait: PuzzleModule = {
     const done = document.createElement("div");
     done.className = "microwave-done";
     done.dataset.testid = manifest.testIds["solveCheck"];
-    done.textContent = "음식이 골고루 따뜻해요!";
+    done.textContent = "안내 시간을 지키고 조심히 꺼냈어요!";
     done.hidden = true;
 
     const timer = setInterval(() => {
       if (solved) return;
       step += 1;
       display.classList.toggle("tick");
-      display.textContent = step < GOOD_START ? "데우는 중…" : step <= GOOD_END ? "띵! 작동이 끝났어요" : "작동 완료 — 음식이 기다리고 있어요";
+      display.textContent = step < BEEP_STEP
+        ? "데우는 중…"
+        : step < GOOD_START
+          ? "띵! 포장지 안내: 1분 뜸 들이기"
+          : "뜸 들이기 끝 — 꺼내도 돼요";
     }, TICK_MS);
 
     const confirmBtn = document.createElement("button");
@@ -56,24 +59,16 @@ export const microwaveWait: PuzzleModule = {
         solved = true;
         clearInterval(timer);
         done.hidden = false;
-        state.textContent = "음식이 골고루 따뜻해요!";
+        state.textContent = "문을 천천히 열고 뜨거운 증기를 조심해요.";
         state.dataset.level = "good";
         api.solve();
-      } else if (j === "low") {
+      } else {
         state.dataset.level = "low";
         if (!saidToolow) {
           saidToolow = true;
           void api.say(manifest.narrative.extra!["toolow"]);
         }
         api.fail();
-      } else {
-        state.dataset.level = "high";
-        if (!saidToohigh) {
-          saidToohigh = true;
-          void api.say(manifest.narrative.extra!["toohigh"]);
-        }
-        api.fail();
-        step = 0;
       }
     });
 

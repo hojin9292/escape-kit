@@ -7,10 +7,10 @@ import { TICK_MS as FRIEND_TICK_MS, SOLVE_STEP as FRIEND_SOLVE_STEP, judgeAtStep
 import { RECAP_IDS, isRecapComplete } from "../../src/puzzles/wait-shelf-order/autoplay";
 
 test.describe("정답 상수 검산 — 각 puzzle의 autoplay.ts", () => {
-  test("microwave-wait: 너무 빠르면 low, 적당하면 good, 너무 오래면 high", () => {
+  test("microwave-wait: 뜸 들이기 전은 low, 안내 시간이 지난 뒤에는 계속 good", () => {
     expect(microwaveJudgeAtStep(0)).toBe("low");
     expect(microwaveJudgeAtStep(MICROWAVE_SOLVE_STEP)).toBe("good");
-    expect(microwaveJudgeAtStep(20)).toBe("high");
+    expect(microwaveJudgeAtStep(20)).toBe("good");
   });
 
   test("homework-check: 이름과 빠진 칸을 모두 확인해야 한다", () => {

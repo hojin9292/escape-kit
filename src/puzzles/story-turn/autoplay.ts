@@ -4,7 +4,8 @@
  * "자동으로 쌓이는 것을 지켜보다 너무 많아지기 전에 멈추는" 관찰형(역방향).
  */
 export const TICK_MS = 900;
-export const GOOD_MIN = 1;
+// 화면 안내의 '두세 문장'과 판정이 일치하도록 한 문장은 아직 이름을 붙이는 단계다.
+export const GOOD_MIN = 2;
 export const GOOD_MAX = 3;
 export type Judgment = "low" | "good" | "high";
 export function judgeAtStep(step: number): Judgment {

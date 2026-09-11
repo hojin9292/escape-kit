@@ -28,7 +28,7 @@ export const toiletPaperPull: PuzzleModule = {
 
     const sign = document.createElement("p");
     sign.className = "paper-sign";
-    sign.textContent = "이번 활동에서는 휴지 세 칸을 접어 사용해요. 점선을 보며 세 칸 정도 당겨요.";
+    sign.textContent = "필요한 양은 상황마다 달라요. 이번에는 먼저 세 칸을 접고, 부족하면 더 사용해요.";
 
     const view = svgEl("svg");
     view.setAttribute("viewBox", "0 0 100 100");
@@ -71,7 +71,7 @@ export const toiletPaperPull: PuzzleModule = {
     const done = document.createElement("div");
     done.className = "paper-done";
     done.dataset.testid = manifest.testIds["solveCheck"];
-    done.textContent = "딱 좋은 길이로 끊었어요!";
+    done.textContent = "먼저 쓸 양을 짧게 끊었어요. 부족하면 더 사용해요!";
     done.hidden = true;
 
     function sync(): void {

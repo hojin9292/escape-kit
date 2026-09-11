@@ -16,7 +16,7 @@
 
 | 퍼즐 | 근거 문항 | 조작 | 판정 핵심 | 보상(이벤트) |
 |---|---|---|---|---|
-| P1 microwave-wait | TI-003 | 관찰형(정방향, brushing-timer 계열) | 기다림 스텝 구간 | `code:microwave-solved` |
+| P1 microwave-wait | TI-003 | 관찰형(정방향, brushing-timer 계열) | 작동 완료 + 안내된 뜸 들이기 | `code:microwave-solved` |
 | P2 homework-check | TI-013 | 확인 항목 체크리스트 | 이름·빠진 칸 모두 확인 | `code:homework-solved` |
 | P3 crosswalk-signal | TI-014 | 관찰형(정방향, 안전 특화) | 신호 스텝 구간 | `code:crosswalk-solved` |
 | P4 friend-turn-wait | TI-018 | 관찰형(정방향) | 기다림 스텝 구간 | `code:friend-solved` |

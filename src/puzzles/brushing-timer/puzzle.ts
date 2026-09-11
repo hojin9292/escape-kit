@@ -24,7 +24,7 @@ export const brushingTimer: PuzzleModule = {
 
     const sign = document.createElement("p");
     sign.className = "brush-sign";
-    sign.textContent = "앞니·양쪽 어금니·안쪽 표시가 모두 켜지는지 보고 [골고루 닦았어요]를 눌러요.";
+    sign.textContent = "실제 약 2분을 짧게 연습해요. 앞니·양쪽 어금니·안쪽을 약 30초씩 닦는다고 생각해요.";
 
     const zoneRow = document.createElement("div");
     zoneRow.className = "brush-zone-row";
@@ -48,7 +48,7 @@ export const brushingTimer: PuzzleModule = {
     const done = document.createElement("div");
     done.className = "brush-done";
     done.dataset.testid = manifest.testIds["solveCheck"];
-    done.textContent = "네 군데를 한 번씩 닦았어요!";
+    done.textContent = "약 2분 동안 네 구역을 골고루 닦는 순서를 익혔어요!";
     done.hidden = true;
 
     function highlight(): void {
@@ -76,7 +76,7 @@ export const brushingTimer: PuzzleModule = {
         solved = true;
         clearInterval(timer);
         done.hidden = false;
-        state.textContent = "네 군데를 한 번씩 닦았어요!";
+        state.textContent = "네 구역을 빠짐없이 확인했어요!";
         state.dataset.level = "good";
         api.solve();
       } else if (j === "low") {
